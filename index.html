@@ -15,22 +15,64 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Move content higher */
-      align-items: center;
-      padding-top: 40px; /* Adjust spacing from top */
+      justify-content: flex-start;
+      padding-top: 40px;
     }
 
     h1 {
       font-size: 3em;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-      margin-top: 20px;
     }
 
     p {
       font-size: 1.2em;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
       max-width: 700px;
-      margin: 10px auto;
+      margin: 0 auto 20px auto;
+    }
+
+    img {
+      width: 500px;
+      margin: 20px auto 10px auto;
+      display: block;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    input[type="email"] {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #cc0000;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    a.learn-more {
+      display: block;
+      margin-top: 15px;
+      font-size: 1.1em;
+      color: red;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     footer {
@@ -42,34 +84,21 @@
       color: #ddd;
       text-shadow: 1px 1px 3px black;
     }
-
-    .contact-button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: white;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    }
   </style>
 </head>
 <body>
-  <img src="jitpro-logo.svg" alt="JiTpro Logo"
-       style="width: 500px;
-              margin: 40 auto 20px auto;
-              display: block;
-              background-color: white;
-              padding: 40px;
-              border-radius: 8px;" />
+  <img src="jitpro-logo.svg" alt="JiTpro Logo" />
 
   <main>
     <h1>Welcome to JiTpro</h1>
-    <p>JiTpro streamlines procurement, submittals, and material delivery for construction teams. We help you get the right materials and products to the jobsite at the right time — with less chaos and no missed deadlines.</p>
-    <a href="mailto:info@jit-pro.com" class="contact-button">Contact Us</a>
+    <p>We streamline procurement for construction projects — stay tuned for what's coming next.</p>
+
+    <form action="https://formsubmit.co/info@jit-pro.com" method="POST">
+      <input type="email" name="email" placeholder="Enter your email" required>
+      <button type="submit">Notify Me</button>
+    </form>
+
+    <a href="info.html" class="learn-more">Learn more about JiTpro</a>
   </main>
 
   <footer>
@@ -77,5 +106,3 @@
   </footer>
 </body>
 </html>
-
-
