@@ -42,7 +42,8 @@ jobs:
     # where a change introduces a new one before Dependabot notices.
     # [ORDER REASON: Runs instantly before any code compilation occurs]
     - name: Check for high-severity dependency vulnerabilities
-      run: npm audit --audit-level=high
+      run: npx audit-ci --config ./audit-ci.jsonc
+      # run: npm audit --audit-level=high
 
     # Step 5: Run TypeScript/JavaScript type checking
     - name: Check for coding mistakes
