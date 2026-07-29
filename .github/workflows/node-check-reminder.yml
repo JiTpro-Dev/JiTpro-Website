@@ -1,0 +1,45 @@
+name: Annual Node.js Maintenance Reminder
+on:
+  schedule:
+    # Runs once a year after the holiday season.
+    - cron: '0 9 15 1 *'   # 9am UTC, every January 15th
+  workflow_dispatch:
+
+jobs:
+  create-reminder:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Annual Maintenance: Review Node.js Version';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+            const alreadyOpen = issues.some(issue => issue.title === title);
+            if (alreadyOpen) {
+              console.log('Reminder issue already open, skipping.');
+              return;
+            }
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              labels: ['maintenance'],
+              body: `## Annual Node.js Maintenance
+
+            Review the Node.js version used by the website.
+
+            ### Checklist
+            - [ ] Review the current Node.js LTS release
+            - [ ] Check Node.js end-of-life dates
+            - [ ] Update \`.nvmrc\` if needed
+            - [ ] Verify GitHub Actions and Cloudflare Pages are using the expected Node.js version
+            - [ ] In a Codespace (or locally, if Node.js is installed on your machine), run: \`npm run typecheck\`, \`npm run lint\`, \`npm run build\`
+
+            Reference: https://nodejs.org/en/about/previous-releases`
+            })
