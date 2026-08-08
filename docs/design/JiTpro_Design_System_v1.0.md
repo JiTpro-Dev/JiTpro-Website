@@ -1,8 +1,8 @@
 # JiTpro Design System v1.0
 
-Status: Framework / decision-capture structure
-Owner: TODO
-Last updated: TODO
+Status: Framework (Sections 1-44) + approved implementation standards (Part II, Sections 45-49)
+Owner: Jeff Kaufman
+Last updated: 2026-08-06
 Applies to: Marketing Website, SaaS Application, Internal Dashboard, Printed Reports, Documentation
 
 This document is the structure for the official JiTpro Design System. It is not the finished visual design. It defines where each design decision must live, what must be specified before implementation, and how future designers/developers/AI agents must use the system.
@@ -19,6 +19,13 @@ Normative language:
 - SHOULD = preferred but may need context-specific judgment.
 - MAY = optional.
 - TODO = pending decision; do not invent.
+- APPROVED = decided, in force, and binding on production code. An APPROVED rule overrides any conflicting TODO, audit finding, or existing implementation.
+
+Document structure:
+- Sections 1-44 define design philosophy and capture where each decision must live. They are preserved unchanged.
+- Part II (Sections 45-49) defines the approved implementation standards derived from production work on the marketing website. Where Part II speaks, it is binding.
+- A TODO that Part II has since answered is superseded by Part II. The original TODO text is retained for history, not as an open question.
+- This document is now the single source of truth for colors, design tokens, typography, spacing, animation, visual hierarchy, component styling, interaction states, and accessibility expectations. Implementation conforms to this document; this document does not describe implementation after the fact.
 
 ---
 
@@ -43,6 +50,34 @@ TODO:
 
 | Date | Decision | Scope | Owner | Source/Rationale |
 | --- | --- | --- | --- | --- |
+| 2026-08-07 | `--jp-success` refined from `#10B981` to **`#059669`**. Visual refinement only — the semantic definition, the approved uses, and the prohibitions in Section 8.3.1 are all unchanged, and the token's use is not broadened. | All products | Jeff Kaufman | Section 8.3.1. `#10B981` read as electric against `--jp-background` and competed with the amber system for attention, which is the opposite of what a completed state should do: finished work should settle, not announce itself. `#059669` is more restrained and still unmistakably green. Contrast moves from roughly 8:1 to roughly 5.4:1, which remains clear of the WCAG AA minimum of 4.5:1 at body sizes. |
+| 2026-08-07 | ~~`--jp-success` approved at `#10B981`.~~ **Value SUPERSEDED 2026-08-07 by `#059669` above.** The semantics recorded in this entry remain in force. | All products | Jeff Kaufman | Retained for history; only the hex was superseded. |
+| 2026-08-07 | `--jp-success` approved as a semantic **state** color meaning confirmed successful completion. Restricted to completed milestones, completed timeline structure, and confirmed successful outcomes. NOT a second accent: prohibited on CTAs, headings, hover states, navigation, and any decorative or merely "positive-looking" use. First approved implementation is the marketing hero timeline's forward pass. The travelling marker remains `--jp-brand-amber-active` and the upper planning indicator remains `--jp-brand-amber`; neither turns green. | All products | Jeff Kaufman | Sections 8.3.1 and 8.8. Section 8.3 already reserved green for "successfully resolved, completed, or verified" states and forbade it as a branding or general accent color; this names the value and enforces the restriction. `#10B981` measures roughly 8:1 against `--jp-background`, clearly separable from both the neutral text ramp and the amber system, without the fluorescence of a lime or traffic-light green. Reconciles with the Section 8.1 exclusion list, which governs **brand identity** colors rather than semantic state — see 8.3.1. |
+| 2026-08-07 | Sequence carousel approved for ordered sets that carry a progression. Initializes only on section intersection, once, never auto-advances; one active index drives the layout; hover, focus and tap are equivalent; all stage copy stays in the document at all times. Supersedes the sequential scroll reveal recorded earlier the same day. | Marketing website | Jeff Kaufman | Section 46.7. The homepage "small miss → constraint → field impact" row is an argument in order. The reveal it replaces had two defects: it ran on load while the reader was still at the hero, so the section was already finished by the time it was reached; and a one-shot reveal gave the reader nothing to do with a progression they should be able to move through. Restricted to genuine progressions so it does not become a generic effect on every group of three. |
+| 2026-08-06 | Token implementation architecture approved: approved `--jp-*` custom properties are declared in `:root` in `src/index.css`, and Tailwind v4 `@theme inline` aliases (`--color-jp-*`) reference those variables rather than restating their values. | All products | Jeff Kaufman | Section 45.2. Tailwind v4 only generates utilities from `--color-*` names, but Section 8.8 mandates the `--jp-*` names. Aliasing satisfies both from one authoritative declaration; restating the hex inside `@theme` would create the second definition site Section 45.2 forbids. |
+| 2026-08-06 | Centered-caption exception approved: short figure captions and concise explanatory statements directly associated with a centered diagram MAY be centered when their measure is constrained. Ordinary body copy and long explanatory paragraphs remain left-aligned. | All products | Jeff Kaufman | Section 7.7. A caption belongs to its figure, not to the reading column. The prohibition in 7.7 exists to stop long centered prose, not to break the association between a centered visual and the one line that explains it. |
+| 2026-08-06 | `slate-500` and `slate-200` resolved against the existing token set rather than by adding neutrals. Quieter-than-muted text is `--jp-text-muted` at reduced opacity; the replay control rests at `--jp-text-muted` and hovers to `--jp-text-primary`. | All products | Jeff Kaufman | Section 8.8. The approved neutral set already spans the required range. Two more near-identical grays is the specific failure this system exists to prevent, and neither use expresses a semantic level the three text tokens do not already cover. |
+| 2026-08-06 | Subtle divider treatment approved: section dividers and structural hairlines use `--jp-border` at **12%** opacity. Replaces the ad-hoc `white/10` and `white/12` pair. Functional diagram hairlines may retain their existing perceptual weight; the base hue must always be `--jp-border`. | All products | Jeff Kaufman | Section 8.8. Two divider opacities two points apart are indistinguishable and fragment the palette for no gain. One approved level is named; opacity tokens are NOT created, per the standing preference against growing a token per component. |
+| 2026-08-06 | Section step/sequence numbers (`01` / `02` / `03`) standardized on `--jp-brand-amber` at restrained opacity across every equivalent section. | Marketing website | Jeff Kaufman | Section 48.9. The homepage rendered the same component role in two unrelated conventions - amber in two sections, a neutral gray in a third. Equivalent roles must not carry different color conventions. |
+| 2026-08-06 | Keyboard focus outline on amber controls and appropriate dark-surface controls approved as `--jp-text-primary`. No focus-specific color token is created. | All products | Jeff Kaufman | Sections 48.1 and 8.1.1. An amber outline on an amber button is low-contrast against the control it marks. `--jp-text-primary` is the highest-contrast value in the approved set against every dark surface, and reusing it avoids a token whose only job is to be visible. |
+| 2026-08-06 | `--jp-brand-amber-active` approved for genuine interactive active states, hover included. Hover on a primary action is an active state, not a static one. | All products | Jeff Kaufman | Section 8.1.1. Active Amber's rule is that it must never be a *static* brand color; it has always been permitted for illuminated and active states. A hover is a real, transient active state, and expressing it as the brand amber dimmed would read as disabled rather than responsive. |
+| 2026-08-06 | Hero cool depth wash `rgba(51,74,120,0.30)` **removed** rather than tokenized or replaced. **Supersedes** the same-date decision to replace it with a `slate-700`-derived treatment. No neutral token is added, and `--jp-hero-glow-cool` remains rejected. | Marketing website | Jeff Kaufman | Sections 8.8 and 47.4. The wash is decorative and carries no information. A decorative effect is not grounds for expanding the token system, and the restraint test in 47.4 answers the question directly: what is lost is that the hero looks plainer, which is the goal. |
+| 2026-08-06 | ~~Hero cool depth wash `rgba(51,74,120,0.30)` to be replaced with a `slate-700` `#334155`-derived treatment during the homepage migration.~~ **SUPERSEDED 2026-08-06 by the removal decision above.** Retained for history. | Marketing website | Jeff Kaufman | Section 8.8. Superseded once implementation review established that no conformant expression of a `#334155`-derived treatment existed without adding a token the system did not want. |
+| 2026-08-06 | Component-specific color token for the hero glow REJECTED. `--jp-hero-glow-cool` and any equivalent hero-scoped color token will not be created. | All products | Jeff Kaufman | Section 8.8. Component-scoped color tokens turn a shared system into a collection of private palettes, and each one makes the next easier to justify. A recurring cool-lighting role may be evaluated as a semantic token in future through Section 49; one hero is not a role. |
+| 2026-08-06 | `--jp-shadow` remains RESERVED with no value. DEFERRED. | All products | Jeff Kaufman | Section 8.8. Review of the marketing homepage found no neutral shadow of any kind; the only shadows present are amber emphasis glows derived from `--jp-brand-amber`. A token is not approved merely because its name was reserved. |
+| 2026-08-06 | `--jp-border` approved at `#94A3B8`, deliberately sharing its base value with `--jp-text-muted`. Opacity may vary by semantic use; recurring levels must be formalized through Section 49 rather than invented per component. | All products | Jeff Kaufman | Section 8.8. Neutral structure and de-emphasized text belong to the same tonal family; two different grays would fragment the palette for no communicative gain. They remain separate tokens because they express separate intents and a future decision may move one without the other. |
+| 2026-08-06 | `--jp-text-primary` approved at `#F1F5F9`, consolidating the previous `#F8FAFC` and `#F1F5F9` usage into a single primary text color. | All products | Jeff Kaufman | Section 8.8. The two values differ by roughly seven points per channel and 0.87 in contrast ratio against `#020617` - imperceptible, and precisely the near-identical grays this system exists to prevent. Emphasis above body copy is carried by type scale and weight, not by a second, brighter white (Section 47.3). |
+| 2026-08-06 | `--jp-text-muted` approved at `#94A3B8` as an ADDITION to the previously reserved token set. | All products | Jeff Kaufman | Section 8.8. Primary, secondary, and muted text are three genuinely different semantic levels. The muted level cannot be synthesised from `--jp-text-secondary` by opacity: `#CBD5E1` faded over `#020617` converges in the red channel but falls materially short in blue, because `#94A3B8` is the bluer color rather than merely the dimmer one. Approximating it would have shipped a visibly different value while claiming it was the same. |
+| 2026-08-06 | Neutral token set approved: `--jp-background` `#020617`, `--jp-surface` `#0F172A`, `--jp-text-primary` `#F1F5F9`, `--jp-text-secondary` `#CBD5E1`, `--jp-text-muted` `#94A3B8`, `--jp-border` `#94A3B8`. | All products | Jeff Kaufman | Section 8.8. Values derived from the dominant neutrals already in production rather than newly chosen, so approval formalizes existing practice instead of imposing a new palette. Unblocks the homepage token migration. The approved amber system is unchanged. |
+| 2026-08-06 | Design Decision Process approved: the Design System is updated before production code, never after. | All products | Jeff Kaufman | Section 49 |
+| 2026-08-06 | Component consistency standard approved for buttons, cards, timeline, icons, badges, section spacing, accent usage, and illustration. | All products | Jeff Kaufman | Section 48 |
+| 2026-08-06 | Visual hierarchy standard approved: the qualities JiTpro must project, and the qualities it must never project. | All products | Jeff Kaufman | Section 47 |
+| 2026-08-06 | Animation standard approved: animation must communicate, never decorate; all elements of a single animated idea derive from one shared state. | All products | Jeff Kaufman | Section 46 |
+| 2026-08-06 | Implementation standard approved: colors are consumed as CSS custom properties, defined once in `src/index.css`. | All products | Jeff Kaufman | Section 45 |
+| 2026-08-06 | Color governance approved: production components may not reference Tailwind amber utilities, raw hex, or rgba amber literals. | All products | Jeff Kaufman | Section 8.9 |
+| 2026-08-06 | Approved design token layer established (`--jp-*` CSS custom properties). | All products | Jeff Kaufman | Section 8.8 |
+| 2026-08-06 | Active Amber approved as `#FDE68A` for illuminated/animated states only. Never a static brand color. | All products | Jeff Kaufman | Section 8.1.1; marketing hero timeline |
+| 2026-08-06 | JiTpro Brand Amber approved as `#F59E0B` as the official primary brand color. | All products | Jeff Kaufman | Section 8.1.1; JiTpro logo artwork |
 | TODO | TODO | TODO | TODO | TODO |
 
 ---
@@ -599,6 +634,55 @@ Responsive typography standards:
 
 ---
 
+## 7.7 APPROVED - Typography Standard
+
+Status: APPROVED (2026-08-06). Binding on all production code.
+
+### Typefaces
+
+| Role | Family | Notes |
+| --- | --- | --- |
+| Headings | **Inter Tight** | The JiTpro heading face. Tight, editorial, confident at large sizes. Used for all headings and for short emphasis lines that behave as headings. |
+| Body and UI | **Inter** | All body copy, labels, controls, and running text. |
+| Data and annotation | **JetBrains Mono** | Reserved for technical annotation, eyebrows, small structural labels, and numeric/tabular data. Never for running prose. |
+
+These are already declared in `src/index.css` under Tailwind's `@theme` block and are the approved values.
+
+### Editorial hierarchy
+
+- Hierarchy MUST be established by typography first - size, weight, and spacing - before color is introduced. A page must remain understandable in greyscale (see Section 7 preamble and 8.1).
+- Each surface should have one clear primary statement. Competing headings at the same weight and scale are a hierarchy failure.
+- Headings MUST use tight tracking at large sizes. Optical spacing loosens as type scales up; negative tracking compensates.
+- A heading and the line that explains it SHOULD be set as one continuous thought - tight vertical spacing, differentiated size and weight - rather than two visually separate blocks.
+
+### Sentence case, minimal uppercase
+
+- Headings and body copy MUST be sentence case.
+- Uppercase is permitted ONLY for small eyebrow and micro-label text, and MUST carry increased letter spacing when used.
+- Uppercase MUST NOT be used for headings, body copy, buttons, or any text longer than a short phrase.
+- Where uppercase is applied, it SHOULD be applied via CSS (`text-transform`) rather than authored in capitals, so assistive technology receives normally-cased text.
+
+### Line length and readability
+
+- Body copy MUST be constrained to a readable measure. The approved ceiling is **52-62 characters** per line; wider measures are a defect.
+- Paragraphs SHOULD be short. Dense explanation blocks are contrary to the product's voice (Section 2).
+- Body copy MUST be left-aligned. Long centered paragraphs are prohibited.
+- Headlines SHOULD use balanced wrapping so no line is left with a single orphaned word.
+
+**Centered captions - approved exception (2026-08-06).** Short figure captions and concise explanatory statements directly associated with a centered diagram or visualization MAY be centered, provided their measure is constrained. A caption belongs to its figure rather than to the reading column, and forcing it left would break the association the centering exists to express.
+
+This exception is narrow:
+- It applies ONLY to a caption bound to a specific centered visual, and only where that caption is short.
+- It does NOT apply to ordinary body copy, lead paragraphs, or long explanatory prose, which remain left-aligned under the rule above.
+- The constrained-measure ceiling in this section still applies. A centered caption is not exempt from 52-62 characters.
+
+### Whitespace
+
+- Whitespace is a primary tool, not leftover space. Generous vertical rhythm between sections is required; crowding is treated as a defect.
+- Type MUST NOT be tightened to fit more content into a viewport. Reduce the content instead.
+
+---
+
 # 8. Color System
 
 Purpose: Define the complete color architecture for brand, surfaces, text, borders, semantic states, interaction, charts, accessibility, and print.
@@ -683,6 +767,59 @@ Brand consistency rules:
 - Avoid multiple competing accent colors.
 - The JiTpro palette should become immediately recognizable through restraint and consistency.
 
+### 8.1.1 APPROVED - Official Brand Colors
+
+Status: APPROVED (2026-08-06). This subsection resolves the "Primary brand color" and "Accent color(s)" decisions listed above. It is binding.
+
+**JiTpro Brand Amber - `#F59E0B`**
+
+`#F59E0B` is the official primary brand color of JiTpro.
+
+Evidence and provenance:
+- The value is taken from the JiTpro logo artwork itself, not chosen independently. `public/assets/logo/JiTpro_Amber.svg` renders the mark in `fill="#f59e0b"` against a `#1e293b` wordmark, and `src/components/JiTproWordmark.tsx` uses the same value.
+- It is already the dominant amber across the codebase by a wide margin, which makes it the lowest-risk canonical choice.
+- It corresponds to Tailwind's `amber-500`, but Tailwind's name is an implementation coincidence, not the authority. The authority is this section.
+
+Brand Amber MUST be used for:
+- the logo
+- primary call-to-action buttons
+- hero eyebrow text
+- hero emphasis typography
+- timeline structure and static timeline elements
+- icons that carry meaning
+- links and primary accents
+
+Brand Amber rules:
+- Brand Amber is the resting, static identity color. It is what JiTpro looks like when nothing is happening.
+- Brand Amber MUST NOT be applied to every interactive element. Its meaning depends on scarcity (see 8.6 and 8.1).
+- Brand Amber MUST be referenced through the approved token (Section 8.8), never as a literal.
+
+**JiTpro Active Amber - `#FDE68A`**
+
+`#FDE68A` is the official illuminated/active amber.
+
+Active Amber MUST be used only when an interface element is genuinely active:
+- a moving timeline indicator or arrow
+- the milestone a moving indicator has currently reached
+- an active glow or illuminated state
+- animation emphasis that marks "this, right now"
+- an interactive control while it is being hovered, pressed, or otherwise engaged (approved 2026-08-06)
+
+Active Amber rules:
+- Active Amber MUST NEVER be used as a static brand color. It has no meaning at rest; it exists to distinguish the active element from the brand-colored elements around it.
+- If Active Amber appears on a page with no animation and no active state, that is a defect.
+- Active Amber MUST be referenced through the approved token (Section 8.8), never as a literal.
+
+**Interactive active states - approved 2026-08-06.** Hover, press, and equivalent engaged states on a control are genuine active states and MAY use Active Amber. A primary action at rest is Brand Amber; the same action under the pointer is Active Amber. This is consistent with the rule above rather than an exception to it: the prohibition is on Active Amber as a *static* color, and a hover is by definition not static.
+
+The corollary matters as much as the permission: where Active Amber expresses the hover, it IS the hover. Section 48.1 permits one hover gesture, and a color change to Active Amber consumes it. Lift, shadow, glow, and icon movement MUST NOT be layered on top of it.
+
+Note also that an amber focus outline on an amber control is low-contrast against the control it is meant to mark. Keyboard focus on amber controls uses `--jp-text-primary` (Section 48.1).
+
+Why two ambers and not one:
+- A single amber cannot express both "this is JiTpro" and "this is happening now." The active element must read as brighter than the brand-colored structure it moves across, or the animation stops communicating.
+- Two approved values is the minimum that preserves that distinction. Additional amber steps are NOT approved and MUST NOT be introduced without a Decision Log entry (Section 49).
+
 ## 8.2 Surface Colors
 
 Purpose: Define backgrounds and elevation surfaces across marketing, app, dashboards, reports, and docs.
@@ -761,6 +898,48 @@ Semantic discipline:
 - Every color must communicate meaning.
 - If a designer wants to introduce a new color, they must first answer: “What does this color communicate?”
 - If the answer is simply “It looks good,” the color should not be added.
+
+### 8.3.1 APPROVED - Success
+
+Status: APPROVED (2026-08-07). Binding on all production code.
+
+**JiTpro Success Green - `#059669`**, exposed as `--jp-success` (Section 8.8).
+
+Success Green means exactly one thing: **this required step has been successfully completed.** It is a statement of fact about work that is finished, not a mood.
+
+Approved uses:
+- completed timeline milestones and their labels
+- completed timeline structure - the portion of a sequence already executed
+- confirmed successful outcome states
+
+Prohibited uses:
+- primary or secondary call-to-action buttons
+- headings, body copy, or general accents
+- hover, focus, or any other interaction state
+- navigation
+- icons that do not denote completion
+- decoration, or any use whose justification is that the result "looks positive"
+
+**Success Green MUST NOT become a second general JiTpro accent.** Its meaning survives only while it is rare and literal. A surface showing green that a reader cannot point at and say "that finished" is a defect.
+
+**Relationship to the Section 8.1 exclusions.** Section 8.1 excludes emerald from the JiTpro *brand identity* - the colors that say "this is JiTpro". That exclusion stands and is unchanged: Success Green is never a brand color, never an identity color, and never an accent. This token lives under Section 8.3, which has always reserved green for "successfully resolved, completed, or verified" states and has always forbidden it as a branding or general accent color. Identity and state are different jobs; this is state.
+
+**Why this value.** `#059669` measures approximately 5.4:1 against `--jp-background` - clear of the WCAG AA minimum of 4.5:1 at body sizes - and reads as unmistakably green rather than teal. It is materially darker and less saturated than a lime, a fluorescent, or a traffic-light green; the register is a considered emerald, not a safety vest.
+
+Refined from `#10B981` on 2026-08-07. That value was electric against the dark canvas and competed with the amber system for attention, which is the opposite of what a completed state should do. Amber is what is happening now and has first call on the eye; completed work should settle behind it rather than announce itself.
+
+**Color alone MUST NOT carry the meaning** (Section 8.7). Where Success Green marks completion, an accompanying label, state change, or text must carry the same information. Green reinforces a completed state that is already legible without it.
+
+### The four-state color language
+
+| State | Token | Means |
+| --- | --- | --- |
+| Not yet reached | `--jp-text-secondary`, `--jp-border` | Structure and work still ahead |
+| Planned / required | `--jp-brand-amber` | JiTpro structure: what the plan requires |
+| Happening now | `--jp-brand-amber-active` | The one element currently active |
+| Successfully completed | `--jp-success` | Work confirmed finished |
+
+The active element and the completed trail behind it MUST remain distinguishable. A marker moving through a sequence stays `--jp-brand-amber-active` for the whole of its travel; it does not adopt the completion color of the ground it has covered. Planning and directional graphics stay in the amber system and MUST NOT turn green - the plan is not the execution.
 
 ## 8.4 Text Hierarchy
 
@@ -872,6 +1051,168 @@ Accessibility rules:
 Guiding principle:
 - The JiTpro interface should never become more colorful than the construction project it represents.
 - Color should communicate priority, never decoration.
+
+---
+
+## 8.8 Approved Design Tokens
+
+Status: APPROVED (2026-08-06). This subsection resolves the token questions raised in Sections 38 and 39 for color, including the neutral token values approved on the same date. It is binding.
+
+Purpose: Give every approved color exactly one name, so that a color can be changed in one place and so that no component ever has to decide what "the amber" is.
+
+Naming convention: `--jp-<role>` or `--jp-<family>-<role>`. Token names describe role, not appearance, with the single exception of the two brand primitives, which are named for the brand itself.
+
+### Approved color tokens
+
+**Brand colors** (approved 2026-08-06, Section 8.1.1):
+
+| Token | Value | Status | Purpose |
+| --- | --- | --- | --- |
+| `--jp-brand-amber` | `#F59E0B` | APPROVED | Primary JiTpro brand color. Logo, CTA buttons, hero eyebrow, hero emphasis, timeline, icons, links, primary accents. |
+| `--jp-brand-amber-active` | `#FDE68A` | APPROVED | Animated emphasis only. Active timeline arrow, active nodes, illuminated highlights, animated emphasis. Never static. |
+
+There is no approved third amber. Any additional amber step requires approval through Section 49 before use.
+
+**Semantic state colors** (approved 2026-08-07, Section 8.3.1):
+
+| Token | Value | Status | Purpose |
+| --- | --- | --- | --- |
+| `--jp-success` | `#059669` | APPROVED | Confirmed successful completion. Completed milestones, completed sequence structure, confirmed successful outcomes. Never a brand color, never an accent, never an interaction state. |
+
+`--jp-success` is a **state** token, not a brand token. The restrictions in Section 8.3.1 are part of its definition: a use outside them is a defect even where the result looks agreeable.
+
+**Neutral colors** (approved 2026-08-06):
+
+| Token | Value | Status | Purpose |
+| --- | --- | --- | --- |
+| `--jp-background` | `#020617` | APPROVED | Primary page/background canvas. The deepest, least-lit surface in the hierarchy. |
+| `--jp-surface` | `#0F172A` | APPROVED | Secondary elevated or alternating dark surface. Cards, panels, sheets, alternating sections. |
+| `--jp-text-primary` | `#F1F5F9` | APPROVED | Primary headings and highest-emphasis text. |
+| `--jp-text-secondary` | `#CBD5E1` | APPROVED | Normal body copy and secondary readable text. |
+| `--jp-text-muted` | `#94A3B8` | APPROVED | Captions, supporting information, tertiary labels, and intentionally de-emphasized text. |
+| `--jp-border` | `#94A3B8` | APPROVED | Structural separation: borders, hairlines, connector lines, dividers, table rules, input outlines, and similar neutral UI structure. Opacity varies by semantic use. |
+
+**Reserved, value deferred:**
+
+| Token | Value | Status | Purpose |
+| --- | --- | --- | --- |
+| `--jp-shadow` | DEFERRED | Name approved, value deliberately withheld | Elevation shadow color. Depth is expressed through this token, never through a decorative glow. |
+
+### Why three text levels, not two
+
+The neutral set was originally reserved with two text tokens. Implementation review established that three are required.
+
+`--jp-text-primary`, `--jp-text-secondary`, and `--jp-text-muted` represent three genuinely different semantic levels: what the reader must read first, what they read as the substance, and what supports without competing. Collapsing any two of them would remove a distinction the design actually uses.
+
+The muted level in particular cannot be synthesised from the secondary level. `#CBD5E1` reduced in opacity over `#020617` does not reproduce `#94A3B8` - the red channel converges but the blue channel remains materially short, because `#94A3B8` is the bluer color, not merely the dimmer one. Approximating it with opacity would have produced a visibly different value while pretending to be the same one. `--jp-text-muted` is therefore an APPROVED addition to the reserved set rather than an opacity treatment of an existing token.
+
+### Why `--jp-text-primary` consolidates two existing values
+
+Production code previously used two near-identical values for high-emphasis text: `#F8FAFC` for section headings and `#F1F5F9` for sub-headings. They differ by roughly seven points per channel and by 0.87 in contrast ratio against `#020617` - a distinction no reader can perceive, and precisely the "multiple nearly identical grays" this system exists to prevent.
+
+Both consolidate into `--jp-text-primary` at `#F1F5F9`, which is the more widely used of the two across the codebase. Emphasis above body copy is carried by type scale and weight, not by a second, imperceptibly brighter white (Section 47.3).
+
+### Why `--jp-border` shares a value with `--jp-text-muted`
+
+`--jp-border` and `--jp-text-muted` intentionally share the base value `#94A3B8`. They remain separate tokens because they express separate intents: one is text a reader consumes, the other is structure a reader should barely notice. A future decision may move one without the other, and the token names preserve that option.
+
+Sharing a base value is deliberate rather than accidental. Neutral structure and de-emphasized text belong to the same tonal family; expressing them as two different grays would fragment the palette for no communicative gain.
+
+Opacity rules for `--jp-border`:
+- Opacity MAY vary according to semantic use. A section divider and a diagram hairline legitimately sit at different weights.
+- Varying opacity is NOT permission to create unlimited new visual treatments. Existing approved opacity treatments SHOULD be reused wherever practical.
+- If recurring opacity levels prove stable enough to warrant naming, semantic opacity or border tokens MUST be created through the normal approval process in Section 49 - not invented per component.
+
+**Approved subtle divider treatment (2026-08-06).** Section dividers and structural hairlines use `--jp-border` at **12%** opacity. This is a single approved level, replacing the ad-hoc pair of white-alpha treatments previously in production; two divider weights two points apart are indistinguishable and fragment the palette for no communicative gain.
+
+This does NOT make 12% mandatory for every use of `--jp-border`. Functional hairlines inside a diagram - connector lines, leader lines, gradient rules that must remain readable against the surface - MAY retain the perceptual weight their function requires. What is fixed is the hue: the base color MUST always be `--jp-border`, never white, never a slate utility, never a literal.
+
+No opacity tokens are created at this time. If further recurring levels prove stable, they are formalized through Section 49.
+
+### Resolution of `slate-500` and `slate-200` (2026-08-06)
+
+Production contained two neutrals with no approved token: `#64748B` (`slate-500`) for de-emphasized sequence numbers and a quiet indicator, and `#E2E8F0` (`slate-200`) for one control's hover.
+
+Neither becomes a token. The approved three-level text set already spans the required range, and neither use expresses a semantic level that set does not cover:
+- Text quieter than muted is `--jp-text-muted` at reduced opacity, per Section 45.4.
+- A control resting at `--jp-text-muted` brightens to `--jp-text-primary` on hover. Moving up the existing scale is the approved way to express engagement in neutral text.
+
+Adding two more grays adjacent to values already approved is precisely the failure Section 8 exists to prevent.
+
+### Why `--jp-shadow` remains deferred
+
+No neutral shadow requirement currently exists. Review of the marketing homepage found no neutral shadow of any kind; the only shadows present are amber emphasis glows that derive from `--jp-brand-amber`.
+
+A token is not approved merely because its name was reserved. `--jp-shadow` stays reserved with no value until a real elevation requirement appears, and MUST NOT be referenced in production until then.
+
+### Rules for reserved tokens
+
+- A reserved token MUST NOT be referenced in production code until its value is APPROVED and recorded in the Decision Log.
+- Introducing a value for a reserved token is a design-system change and follows Section 49, not a component-level decision.
+- The reserved list is deliberately small. Additional tokens require a Decision Log entry; the system should not grow a token per component.
+
+### Recorded migration decision: hero cool depth wash
+
+**Final decision (2026-08-06): the bespoke cool hero wash is REMOVED, not tokenized and not replaced.**
+
+The marketing hero contained the bespoke literal `rgba(51, 74, 120, 0.30)`, used as a cool depth wash behind the hero content. It corresponded to no approved token and to no Tailwind slate - it is bluer than `slate-700` `#334155`.
+
+Standing rejections, unchanged:
+- This value does **not** become a component-specific design token. `--jp-hero-glow-cool`, or any equivalent hero-scoped color token, is explicitly rejected. Component-scoped color tokens defeat the purpose of the token layer: they turn a shared system into a collection of private palettes, and each one makes the next one easier to justify.
+- `slate-700` `#334155` is **not** added to the neutral token set for this purpose.
+
+Superseded: an earlier decision on the same date required the literal to be replaced with a `#334155`-derived opacity treatment. Implementation review established that no conformant expression of that treatment existed - a raw `rgba()` and a `slate-700` utility are both prohibited by Section 8.9, and a token was not wanted. A migration obligation with no conformant implementation is not a decision that can stand.
+
+The wash is decorative. It carries no information, and Section 47.4 answers the question directly: what is lost by removing it is that the hero looks plainer, which is the goal. A decorative effect is not grounds for expanding the token system.
+
+If a recurring cool-lighting role later emerges across multiple JiTpro interfaces, it MAY be evaluated as a semantic design token at that time, through Section 49. One hero is not a role.
+
+### Token expansion, deferred
+
+Motion, spacing, radius, elevation, typography, and breakpoint tokens are not yet approved. Sections 11, 12, 13, 15, and 35 remain the place those decisions live. Until they are approved, existing implementation values remain in force but MUST NOT be treated as canonical (Appendix C).
+
+---
+
+## 8.9 Color Governance
+
+Status: APPROVED (2026-08-06). Binding on all production code.
+
+Purpose: Prevent the failure this section exists because of - the same color arriving in five slightly different values because each component chose independently.
+
+### Prohibited in production components
+
+Production components MUST NOT reference:
+- `amber-300`, `amber-400`, `amber-500`, or any other Tailwind amber utility
+- raw hexadecimal color values (`#F59E0B`, `#fbbf24`, `#fde68a`, and so on)
+- RGBA amber literals (`rgba(245, 158, 11, 0.5)` and similar)
+- arbitrary-value Tailwind color syntax carrying a literal, such as `bg-[#F59E0B]` or `text-[rgba(245,158,11,0.8)]`
+
+This prohibition applies equally to:
+- Tailwind class names
+- inline `style` objects
+- SVG presentation attributes (`fill`, `stroke`, `stop-color`)
+- CSS-in-JS and template literals
+- generated or injected stylesheets
+
+SVG is called out explicitly because it is where the drift historically began: SVG attributes cannot accept Tailwind class names, so authors reached for hex literals and the palette split.
+
+### Required instead
+
+- All components MUST reference the approved tokens from Section 8.8.
+- Opacity variation on an approved color is permitted and is the correct way to express a lighter or dimmer treatment. It MUST be expressed against the token, not against a new literal.
+- If a design calls for a color that no approved token expresses, the correct response is to stop and follow Section 49 - not to pick a near-miss value.
+
+### Approval requirement
+
+- All future brand colors MUST be approved inside this Design System, recorded in the Decision Log, and given a token, before any production use.
+- A color that appears in a component but not in Section 8.8 is a defect, regardless of how good it looks.
+- A Tailwind utility currently used in the website is not automatically an official token (Appendix C).
+
+### Enforcement
+
+- Code review MUST reject color literals in components.
+- A lint rule forbidding hex and Tailwind color utilities in `src/components/**` and `src/pages/**` SHOULD be added; until it exists, review is the control.
+- The audit at `docs/design/current-theme-audit.md` is evidence of the pre-governance state. It is a record of what exists, not a list of what is permitted.
 
 ---
 
@@ -1275,6 +1616,9 @@ TODO:
 - TODO: Define when motion must be minimal.
 - TODO: Define reduced-motion requirements.
 
+APPROVED resolution:
+- The approved motion personality, the communicate-not-decorate rule, and the reduced-motion requirement are defined in **Section 46, Animation Standards**. Section 46 is binding and supersedes the TODOs above.
+
 ---
 
 # 15. Motion Specifications
@@ -1303,6 +1647,10 @@ TODO:
 - TODO: Define page transition policy.
 - TODO: Define chart/timeline animation policy.
 - TODO: Define loading-state motion policy.
+
+APPROVED resolution:
+- The timeline animation policy, and the shared-state synchronization requirement that governs it, are defined in **Section 46, Animation Standards**. Section 46 is binding for any composed animation.
+- Duration, easing, and transition tokens remain TODO. Until approved, existing implementation values remain in force but are not canonical (Appendix C).
 
 ---
 
@@ -2220,6 +2568,13 @@ Token category placeholders:
 - Component tokens: TODO
 - Print tokens: TODO
 
+APPROVED resolution (color only):
+- Token storage format: **CSS custom properties**, defined once in `src/index.css`. See Section 45.
+- Token naming convention: `--jp-<role>`. See Section 8.8.
+- Approved color tokens and reserved token names: **Section 8.8**.
+- Governance over which colors may exist at all: **Section 8.9**.
+- The remaining categories in this section - typography, spacing, radius, shadow, motion, breakpoints, z-index, component, and print tokens - remain TODO and are not superseded.
+
 ---
 
 # 39. Tailwind Architecture
@@ -2248,6 +2603,13 @@ TODO:
 - TODO: Define class composition strategy.
 - TODO: Define dark/light theme class or data-attribute strategy.
 - TODO: Define lint/enforcement strategy for non-token values.
+
+APPROVED resolution (color only):
+- CSS variable layer: approved. Defined in `src/index.css`. See Section 45.
+- Token-to-Tailwind mapping for color: approved. Tokens are exposed through Tailwind's `@theme` block so a single definition serves both utility classes and raw `var()` references. See Section 45.
+- Arbitrary value policy for color: approved and restrictive. Color literals in arbitrary-value syntax are prohibited in production components. See Section 8.9.
+- Tailwind does not own JiTpro's color decisions. Tailwind's `amber-500` and JiTpro's Brand Amber currently share a value; that is coincidence, not authority. If they ever diverge, this document wins.
+- The remaining TODOs in this section - class composition strategy, dark/light theme strategy, and lint enforcement tooling - are not superseded.
 
 ---
 
@@ -2309,6 +2671,28 @@ Draft rule placeholders:
 - Rule: Do not use arbitrary colors unless approved. Status: TODO
 - Rule: Do not introduce new component variants without documenting them. Status: TODO
 - Rule: Ask when a section says TODO. Status: TODO
+
+APPROVED resolution:
+
+Mandatory pre-read before any visual work:
+1. This document, `docs/design/JiTpro_Design_System_v1.0.md`, in full for the areas being touched.
+2. Section 8.8 (approved tokens) and Section 8.9 (color governance) before touching any color.
+3. Section 46 before touching any animation.
+4. Section 49 before introducing any convention this document does not already define.
+
+Approved agent rules:
+- Rule: Use approved tokens only. Status: **APPROVED** (Section 8.8).
+- Rule: Do not use arbitrary colors, Tailwind color utilities, hex, or rgba literals in production components. Status: **APPROVED** (Section 8.9).
+- Rule: Do not introduce new component variants or visual conventions without updating this document first. Status: **APPROVED** (Section 49).
+- Rule: Ask when a section says TODO; do not infer the value from existing code. Status: **APPROVED** (Appendix C).
+
+Stop conditions - an agent MUST stop and ask rather than proceed when:
+- a required color has no approved token;
+- the design calls for a value this document marks TODO;
+- the implementation it is asked to write would conflict with an APPROVED rule;
+- it is about to introduce a visual convention that does not yet exist in this document.
+
+An agent MUST NOT resolve any of the above by choosing a value that looks close enough. Silence in this document is not permission.
 
 ---
 
@@ -2432,11 +2816,11 @@ Purpose: Keep unresolved decisions visible.
 Open questions:
 - TODO: Should JiTpro maintain both dark and light themes, or one primary theme with contextual exceptions?
 - TODO: What typography direction best fits JiTpro across web, app, reports, and documentation?
-- TODO: What is the official JiTpro color palette and semantic color model?
+- ANSWERED (2026-08-06): The official palette is Brand Amber #F59E0B and Active Amber #FDE68A (Section 8.1.1). The semantic color model beyond amber remains TODO.
 - TODO: Should shadcn/ui be adopted for app primitives?
-- TODO: What is the source of truth for tokens: markdown, JSON, TypeScript, CSS variables, or a design-token tool?
+- ANSWERED (2026-08-06): The source of truth for color tokens is CSS custom properties defined in src/index.css (Sections 8.8 and 45). Other token categories remain TODO.
 - TODO: How should printed reports relate visually to the web/app design?
-- TODO: What is the governance process for approving new components?
+- ANSWERED (2026-08-06): The governance process for approving new visual conventions is defined in Section 49. Component-specific approval criteria remain TODO.
 
 ---
 
@@ -2451,6 +2835,372 @@ Rules:
 - An inspiration reference is not a decision.
 - A component name is not a decision until its anatomy, variants, states, and tokens are approved.
 - A Tailwind utility currently used in the website is not automatically an official token.
+- Note (2026-08-06): this policy remains in force for every section still marked TODO. It does NOT apply to Part II, or to Sections 7.7, 8.1.1, 8.8, and 8.9, which are approved decisions rather than placeholders.
 
 TODO:
 - TODO: Replace this section with formal governance once approved.
+
+---
+
+# Part II - Approved Implementation Standards
+
+Status: APPROVED (2026-08-06).
+
+Sections 1-44 describe how JiTpro design decisions should be reasoned about. Part II describes how JiTpro is actually built. These sections were derived from production work on the marketing website; they are not proposals.
+
+Where Part II conflicts with existing implementation, **the implementation is wrong and must change.** Where Part II conflicts with a TODO in Sections 1-44, Part II wins.
+
+---
+
+# 45. Implementation Standard - Color in Code
+
+Purpose: Define how approved colors reach production code, so that a color exists in exactly one place.
+
+## 45.1 CSS Custom Properties are the mechanism
+
+Colors MUST be implemented as CSS custom properties and consumed by reference. Duplicated color literals are the failure mode this standard exists to prevent.
+
+Components MUST reference:
+
+```
+var(--jp-brand-amber)
+```
+
+Components MUST NOT reference:
+
+```
+#F59E0B
+amber-500
+rgba(245, 158, 11, 1)
+```
+
+## 45.2 Centralized definition
+
+There MUST be exactly one definition site for color tokens.
+
+Approved location: **`src/index.css`**, which already carries the Tailwind v4 `@theme` block and is loaded once for the whole application.
+
+`src/styles/theme.css` is an acceptable alternative if the token layer grows large enough to warrant its own file. If it is adopted, `src/index.css` MUST import it and MUST NOT also define tokens. Two definition sites is the condition this standard forbids.
+
+### Approved architecture: `:root` declaration with `@theme inline` aliases (2026-08-06)
+
+The approved `--jp-*` names from Section 8.8 are declared once in `:root`. Tailwind v4 `@theme inline` aliases then reference those variables so components can also consume semantic utilities:
+
+```css
+:root {
+  --jp-brand-amber: #F59E0B;
+  /* ... */
+}
+
+@theme inline {
+  --color-jp-brand-amber: var(--jp-brand-amber);
+  /* ... */
+}
+```
+
+Why this shape rather than declaring the values directly in `@theme`:
+- Tailwind v4 generates utilities only from theme variables named `--color-*`. Section 8.8 mandates the names `--jp-*`. Neither requirement can be dropped, so the alias reconciles them.
+- `@theme inline` substitutes the referenced value rather than emitting a second independent variable, which keeps `--jp-*` authoritative.
+- The result serves all three consumers from one declaration: Tailwind utilities (`bg-jp-brand-amber`, `text-jp-text-muted/80`), raw CSS, and SVG presentation attributes via `var()`.
+
+Rules:
+- Authoritative hex values MUST appear only in the `:root` block. Restating a value inside `@theme` creates the second definition site this section forbids.
+- `@theme` entries MUST be aliases (`var(--jp-*)`), never literals.
+- A reserved token with no approved value MUST NOT be declared in either block. `--jp-shadow` is not defined (Section 8.8).
+
+## 45.3 Why custom properties rather than Tailwind alone
+
+- SVG presentation attributes (`fill`, `stroke`, `stop-color`) cannot accept Tailwind class names, but they can accept `var()`. A CSS variable is the only mechanism that serves markup, CSS, and SVG from one definition. This is precisely where the palette previously fractured.
+- A custom property can be changed in one place and take effect everywhere, including inside inline styles and generated stylesheets.
+- Defining tokens inside Tailwind's `@theme` block yields both a Tailwind utility for class-based usage and a raw custom property for SVG and arbitrary CSS, from a single declaration.
+
+## 45.4 Opacity
+
+Opacity variants MUST be derived from the token rather than authored as new literals. A dimmer brand amber is the brand amber at reduced opacity - it is not a different color, and it MUST NOT be written as one.
+
+## 45.5 Migration expectation
+
+Existing production code predates this standard and does not conform. That is expected. Conformance is scheduled work (Section 49.4), not a reason to weaken the standard. New and modified code MUST conform immediately.
+
+---
+
+# 46. Animation Standards
+
+Purpose: Define why JiTpro animates, and the structural requirement that keeps composed animations correct.
+
+## 46.1 Animation exists to communicate
+
+**Animation exists to communicate. It never exists to decorate.**
+
+Animation MUST:
+- explain something that is genuinely hard to explain statically
+- reinforce hierarchy by directing attention to what matters now
+- improve understanding of sequence, causality, or state
+
+Animation MUST NOT:
+- exist because movement is possible
+- exist to signal that the product is modern
+- compete with the content beside it
+- delay comprehension
+
+If an animation were removed and nothing became harder to understand, it was decoration and should not have been built.
+
+## 46.2 Comprehension is not gated on motion
+
+- Essential copy MUST be readable without waiting for an animation to finish. Motion may resolve after the message has landed; the message may never wait for the motion.
+- An animation MAY continue after the page is comprehensible. It MUST NOT be a precondition of comprehension.
+
+## 46.3 Single shared state - the synchronization rule
+
+This is the load-bearing rule of this section.
+
+**Every element that participates in one animated idea MUST derive its behavior from one shared animation state.**
+
+For the marketing timeline this means the moving indicator, milestone highlighting, milestone labels, connector lines, and the directional heading are all expressed as positions within a single cycle, from a single definition, with a single delay.
+
+Prohibited:
+- independent timers per element
+- separate animation delays that happen to line up
+- duplicated timing constants
+- any arrangement in which two elements could drift out of agreement
+
+Why this is mandatory rather than advisory: when a composed animation is assembled from independently timed parts, it does not fail loudly. It fails as a slow, hard-to-diagnose disagreement between elements - a label lighting before the indicator reaches it, an arrow pointing against its own travel. Deriving everything from one state makes those failures structurally impossible rather than merely unlikely.
+
+Corollary: if two elements must always agree about a state, they MUST be driven by the same declaration, not by two declarations configured identically.
+
+## 46.4 Restraint
+
+Prohibited in all JiTpro products:
+- spinning, bouncing, and elastic or overshooting easing
+- pulsing or flashing as an ambient state
+- particle effects, comet trails, and neon bloom
+- looping motion that never resolves, where a single resolved pass would communicate the same thing
+- animation on more than one focal element at a time within a viewport
+
+Motion SHOULD be linear or gently eased. Constant-speed travel is preferred where an animation represents progress through a real sequence, because varying speed implies a meaning that is not there.
+
+## 46.5 Reduced motion is a first-class state
+
+`prefers-reduced-motion: reduce` MUST be honored, and MUST be designed rather than merely obeyed.
+
+- Reduced motion MUST present the animation's **resolved, meaningful final state** - not an empty frame, and not a mid-animation frame.
+- All information conveyed by the animation MUST remain available without it.
+- Controls that exist only to drive animation, such as a replay control, SHOULD be hidden under reduced motion, since they have nothing to do.
+- Reduced-motion behavior MUST be verified, not assumed.
+
+## 46.7 Sequence carousel
+
+Status: APPROVED (2026-08-07).
+
+An ordered set MAY be presented as an interactive carousel **only when the set is a genuine progression** - the order carries meaning, and showing every stage open at once would flatten an argument into a list. A group of three that happens to sit in a row is not a progression.
+
+**Entry**
+- The interaction MUST NOT begin on page load, component mount, or a timer. It initializes only when the section itself intersects the viewport, at roughly a third visible, once, and never resets.
+- Motion MUST NOT occur off screen. A reader who never reaches the section must never have caused it to move.
+- The only automatic behaviour is the carousel's own arrival. Auto-advancing through the stages is prohibited: the reader controls the progression.
+
+**State**
+- The whole layout derives from one active index plus one entered flag (Section 46.3). Competing per-item animation states are prohibited.
+- Hover, keyboard focus, and tap MUST all resolve to that same active index. No input method may have behaviour the others lack.
+
+**Motion**
+- The track repositions around the selected stage; a stage MUST NOT travel independently across the surface.
+- Permitted: width change, horizontal repositioning, clipped copy reveal, opacity, a subtle border response. Prohibited: bouncing, flipping, rotation, aggressive scaling, large vertical movement, springy easing, glow (Sections 46.4, 47.2).
+- Copy MUST become readable promptly. A reader may not be made to wait out an animation before reading (Section 46.2).
+- The interaction MUST NOT change the section's height. Stage copy is laid out at its open width regardless of the stage's current width, so switching stages never reflows the page.
+- Exactly centring the first or last of three stages would push the far stage off the edge. Where that conflict exists the track SHOULD travel most of the way rather than all of it, so every stage stays on screen.
+
+**Accessibility**
+- Each stage MUST be operable by keyboard, with a real control and a visible focus ring that is not clipped by the carousel's overflow.
+- All stage copy MUST be present in the document at all times. Visibility is a visual state, never a content state, so assistive technology and search engines receive the complete argument.
+- An ordinal marker MAY take `--jp-brand-amber-active` as its stage becomes active and settle back to the resting `--jp-brand-amber` (Section 8.1.1).
+- Under reduced motion, selection resolves instantly: the chosen stage and its complete copy appear with no travel, no expansion animation, and no illumination. The interaction itself MUST continue to work (Section 46.5).
+
+**Responsive**
+- Where three stages cannot hold a readable measure side by side, the layout MUST adapt to a single primary stage with its neighbours partially visible, rather than compressing three narrow columns or reducing type size (Section 7.7).
+- Overflow MUST be contained by the carousel. The page itself must never scroll horizontally.
+
+## 46.6 User control
+
+Where an animation runs longer than a few seconds it SHOULD resolve once and stop rather than loop indefinitely, and SHOULD offer an explicit replay control. Perpetual motion in peripheral vision is a cost paid by every reader on every visit.
+
+---
+
+# 47. Visual Hierarchy Standard
+
+Purpose: Define the qualities JiTpro must project, so visual decisions can be judged against something other than taste.
+
+## 47.1 JiTpro should feel
+
+- **Premium** - considered, and expensive to have made.
+- **Executive** - respectful of a reader who decides rather than browses.
+- **Disciplined** - consistent to the point of being predictable.
+- **Technical** - precise, measured, construction-literate.
+- **Purposeful** - every element earns its place.
+- **Confident** - never straining for attention.
+- **Calm** - the interface does not manufacture urgency; real project conditions do.
+- **Construction-specific** - recognizable to someone who builds, not to someone who buys software.
+
+## 47.2 JiTpro should never feel
+
+- **Generic SaaS** - interchangeable with any other dark dashboard product.
+- **Gaming** - glowing, neon, high-energy, score-like.
+- **Playful** - cute, illustrated, informal.
+- **Neon** - saturated color used for excitement rather than meaning.
+- **Over-animated** - moving because it can.
+- **Busy** - many competing elements at similar weight.
+- **Decorative** - visual elements carrying no information.
+
+## 47.3 How hierarchy is established
+
+In priority order:
+1. Typography - size, weight, and the relationship between a statement and its explanation.
+2. Spacing - proximity, grouping, and generous separation between ideas.
+3. Alignment - a consistent left edge across sections reads as discipline.
+4. Contrast - light against dark, dense against open.
+5. Color - **last**, and only for what genuinely deserves attention.
+
+A layout that requires color to be understood has failed at steps 1-4.
+
+## 47.4 The restraint test
+
+Before adding any visual element it must survive one question: *what would be lost if this were removed?*
+
+If the answer is "it would look plainer," remove it. Plainer is the goal.
+
+---
+
+# 48. Component Consistency Standard
+
+Purpose: Define the shared conventions that make separate surfaces read as one product.
+
+**Visual consistency is more important than novelty.** A component that is slightly worse but consistent with the rest of the product is preferred over one that is slightly better and unlike everything around it. Novelty in a single surface is a defect, not a contribution.
+
+## 48.1 Buttons
+
+- One primary action per surface. A second amber button competing with the first is prohibited.
+- The primary action uses Brand Amber. Secondary actions are quiet - text or hairline-bordered - and MUST NOT approach the primary in visual weight.
+- Buttons MUST be sentence case (Section 7.7).
+- Hover MUST be a single restrained gesture. Multiple simultaneous hover effects are prohibited.
+- **The approved hover gesture for a primary amber action is the color change from `--jp-brand-amber` to `--jp-brand-amber-active`** (Section 8.1.1, approved 2026-08-06). That change IS the gesture. Lift or translate, shadow or glow intensification, and movement of a nested icon MUST NOT accompany it, and MUST NOT be substituted for it.
+- Focus MUST be visibly indicated with a high-contrast outline that clears the button edge. Focus indication is not optional and MUST be verified with real keyboard navigation, not programmatic focus.
+- **Keyboard focus on amber controls, and on appropriate dark-surface controls, uses `--jp-text-primary`** (approved 2026-08-06), unless another approved accessibility rule applies. An amber outline on an amber control is low-contrast against the very control it marks. Outline offset MUST be preserved so the ring clears the control edge. No focus-specific color token exists and none is to be created.
+- Touch targets MUST meet the minimum defined in Sections 34 and 36.
+
+## 48.2 Cards
+
+- Cards are for genuinely grouped content, not for visual variety.
+- One card style per surface. Multiple competing card treatments on one page are prohibited.
+- Cards MUST NOT be colored to create interest (Section 8.1).
+- Prefer hairline separation and whitespace over a card when the content is not truly a discrete unit. Most content does not need a card.
+
+## 48.3 Timeline
+
+- The timeline is a JiTpro signature element and MUST remain construction-literate rather than abstract.
+- Structure uses Brand Amber; the active element uses Active Amber (Section 8.1.1).
+- A moving indicator MUST NOT obscure the milestone it refers to. It stops adjacent to the milestone with a small visual gap.
+- Every element of the timeline animation derives from one shared state (Section 46.3).
+- Milestone labels MUST be legible at every supported width. Where a wide layout cannot hold them, a distinct compact layout is provided rather than shrinking type past legibility.
+
+## 48.4 Icons
+
+- Icons support meaning; they never fill space.
+- One icon library (`lucide-react`). Mixing icon families is prohibited.
+- Icons MUST be sized to their adjacent type, never oversized.
+- Decorative icons MUST be hidden from assistive technology.
+- Icons MUST NOT substitute for a label.
+
+## 48.5 Badges
+
+- Badges are for genuine status, never for emphasis or decoration.
+- Pills and badges MUST NOT be used to make ordinary text look important.
+- Badge color MUST carry semantic meaning (Section 8.3), and meaning MUST NOT be conveyed by color alone (Section 8.7).
+
+## 48.6 Section spacing
+
+- Sections share a consistent vertical rhythm and a consistent horizontal container. A shared left edge across every section is a primary signal of discipline.
+- Section boundaries SHOULD be expressed through spacing and hairline borders, not heavy dividers or alternating decoration.
+- Where adjacent sections share a background, the transition MUST be seamless. A visible seam between two surfaces intended to read as one is a defect.
+
+## 48.7 Accent usage
+
+- Amber marks what deserves attention. Its effectiveness is a function of how little it is used.
+- No surface should carry more than a small number of amber elements. If everything is accented, nothing is.
+- Amber MUST NOT be used merely to indicate that something is interactive.
+
+## 48.8 Illustration philosophy
+
+- JiTpro does not use stock photography, illustrated characters, or generic technology imagery.
+- Visuals MUST be purpose-built, informational, and construction-specific.
+- Prohibited: cranes, hard hats, blueprints, skyline silhouettes, abstract node graphs, glowing networks, fake dashboards, and fabricated product screenshots.
+- A visual should show a real mechanism the reader recognizes from their own work. If a visual would be equally at home on any other company's site, it is wrong for JiTpro.
+
+## 48.9 Section step and sequence numbers
+
+Status: APPROVED (2026-08-06).
+
+Ordinal markers that number the steps or stages of a section - `01`, `02`, `03` - are one component role and MUST carry one convention.
+
+- Step and sequence numbers use `--jp-brand-amber` at a restrained opacity. They are structural markers, not accents competing for attention (Section 48.7).
+- Equivalent numbering in different sections MUST NOT use unrelated conventions. Amber in one section and a neutral gray in another is a consistency defect, not a per-section choice (Section 48 preamble).
+- The number is set in the data face at small size with increased tracking (Sections 7.3, 7.7). It is a label, not a metric.
+- Numbering MUST NOT be the only expression of sequence. The copy carries the order on its own (Section 8.7).
+
+---
+
+# 49. Design Decision Process
+
+Purpose: Define how visual decisions are made, so conventions stop being invented inside components.
+
+## 49.1 The required sequence
+
+All future visual work MUST follow this order:
+
+1. **Review** `docs/design/JiTpro_Design_System_v1.0.md`.
+2. **Determine whether an existing standard already covers the situation.** If it does, conform to it. Preference, habit, and "this looks better here" are not grounds for deviation.
+3. **If a new visual convention is genuinely required:**
+   a. Update the Design System **first**.
+   b. Record the decision in the Decision Log.
+   c. Then update production code to match.
+
+**A new visual convention MUST NEVER be invented inside a React component.**
+
+## 49.2 Why the order is non-negotiable
+
+A convention invented in a component is invisible. It does not announce itself, it is not reviewable as a decision, and the next author cannot tell it apart from an approved standard. Five components each making a locally reasonable choice is exactly how a single brand color becomes five values - the specific failure that produced this section.
+
+Updating the document first makes a visual decision an explicit, reviewable act rather than a side effect of shipping a feature.
+
+## 49.3 Handling conflict with existing implementation
+
+When implementation conflicts with this document:
+- **Update the implementation.** The document is the source of truth.
+- Do **not** update the document to match what the code happens to do. Documenting an accident does not make it a decision.
+- Do **not** silently create a new visual convention to resolve the conflict.
+- If the standard itself is genuinely wrong, change the standard through 49.1 - deliberately, with a Decision Log entry - and then change the code.
+
+## 49.4 Migration of pre-existing code
+
+Code written before a standard was approved is non-conforming, not exempt.
+- New code MUST conform immediately.
+- Modified code SHOULD be brought into conformance as it is touched.
+- Wholesale migration of existing surfaces is scheduled as explicit work and MUST NOT be attempted as an uncontrolled side effect of an unrelated change.
+
+### Recorded future cleanup
+
+Non-conforming code identified during a migration but deliberately left out of its scope is recorded here so it is not lost and not silently absorbed into an unrelated change.
+
+| Recorded | Item | Why deferred |
+| --- | --- | --- |
+| 2026-08-06 | `src/index.css` carries nine unused hero keyframes (`heroPulse1-3`, `heroNodeSlow/Med/Fast`, `heroHouseBuild`, `heroWindowPulse`, `heroAmbientGlow`, `heroFlowMove`). They express ambient pulsing and glowing-network effects prohibited by Sections 46.4 and 48.8, and are referenced only by components the current homepage does not render. | Removing them touches legacy surfaces outside the homepage token migration. Scheduled as separate work per 49.4; the migration PR is not broadened to include it. |
+| 2026-08-06 | Homepage decorative treatments - grain/noise overlay, amber radial glows, amber top hairline - raise Section 47.4 restraint questions but are conformant once tokenized. | Evaluated in a later visual-refinement pass. The token migration is conformance work, not a redesign. |
+
+## 49.5 Proposing a change
+
+A proposal to add or change a standard should state:
+- what is being proposed, precisely enough to implement;
+- what problem it solves that no existing standard solves;
+- what it supersedes;
+- what production code becomes non-conforming as a result.
+
+Approval is recorded in the Decision Log with a date, owner, and rationale.

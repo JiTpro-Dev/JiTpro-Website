@@ -9,6 +9,58 @@
   --font-mono: JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+/* ---------------------------------------------------------------------------
+   JiTpro design tokens — the single authoritative definition site.
+
+   Approved in `docs/design/JiTpro_Design_System_v1.0.md` §8.8, implemented per
+   §45.2. Hex values live here and nowhere else: components reference the token,
+   never the literal (§8.9). Opacity variants derive from the token rather than
+   being authored as new colors (§45.4).
+
+   `--jp-shadow` is deliberately absent. Its name is reserved but its value is
+   DEFERRED, and §8.8 forbids referencing it in production until approved.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Brand (§8.1.1) */
+  --jp-brand-amber: #f59e0b; /* static brand identity — the resting color */
+  --jp-brand-amber-active: #fde68a; /* illuminated, animated, and hover/active states only */
+
+  /* Semantic state (§8.3.1) — confirmed successful completion, and nothing
+     else. Not a brand color, not an accent, not an interaction state. */
+  --jp-success: #059669;
+
+  /* Neutrals (§8.8) */
+  --jp-background: #020617; /* page canvas — the deepest surface */
+  --jp-surface: #0f172a; /* elevated / alternating dark surface */
+  --jp-text-primary: #f1f5f9; /* headings, highest-emphasis text, focus outlines */
+  --jp-text-secondary: #cbd5e1; /* body copy */
+  --jp-text-muted: #94a3b8; /* captions, supporting labels, de-emphasized text */
+  --jp-border: #94a3b8; /* borders, hairlines, connectors, dividers — opacity varies */
+}
+
+/*
+  Tailwind v4 generates utilities only from `--color-*` theme variables, but
+  §8.8 mandates the `--jp-*` names. `@theme inline` reconciles the two: these
+  are aliases that substitute the value above, not second declarations of it
+  (§45.2). Never restate a hex here.
+
+  Yields both `bg-jp-surface` / `text-jp-text-muted/80` for markup and
+  `var(--jp-*)` for SVG attributes and raw CSS, from one source.
+*/
+@theme inline {
+  --color-jp-brand-amber: var(--jp-brand-amber);
+  --color-jp-brand-amber-active: var(--jp-brand-amber-active);
+
+  --color-jp-success: var(--jp-success);
+
+  --color-jp-background: var(--jp-background);
+  --color-jp-surface: var(--jp-surface);
+  --color-jp-text-primary: var(--jp-text-primary);
+  --color-jp-text-secondary: var(--jp-text-secondary);
+  --color-jp-text-muted: var(--jp-text-muted);
+  --color-jp-border: var(--jp-border);
+}
+
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -163,21 +215,117 @@
   }
 }
 
-/* Homepage hero staged reveal — the three hero beats and the CTA row fade in
-   sequentially on first load (delays set inline). Reduced motion shows all
-   content immediately. */
-@keyframes hero-beat-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Homepage hero entrance.
+
+   The copy lands first: five elements on a 70ms stagger, each a 560ms rise, so
+   the last one settles at ~840ms. The hero visual resolves after the copy and
+   never loops. Per-element timing comes from the `--hero-delay` custom property
+   set inline. Reduced motion renders everything in its final state at once. */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-.hero-beat {
-  animation: hero-beat-in 900ms ease-out both;
+/* Commitments resolve backward, sliding in from the anchored field date. */
+@keyframes hero-plan-in {
+  from {
+    opacity: 0;
+    transform: translate3d(10px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+.hero-plan-in {
+  animation: hero-plan-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+.hero-fade-in {
+  animation: hero-fade-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+/* Each commitment lights as the trace reaches it — short, so seven of them in
+   sequence read as distinct steps rather than one blur. */
+.hero-light {
+  animation: hero-fade-in 300ms ease-out both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+/* The amber trace running forward through the plan. `--trace-len` is the line's
+   length in SVG user units, set inline by the component. With only a `to` frame
+   the animation starts from the element's own dashoffset. */
+@keyframes hero-trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero-trace {
+  stroke-dasharray: var(--trace-len);
+  stroke-dashoffset: var(--trace-len);
+  animation: hero-trace var(--trace-duration, 750ms) cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: var(--hero-delay, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-beat {
+  .hero-rise,
+  .hero-plan-in,
+  .hero-fade-in,
+  .hero-light {
     animation: none;
     opacity: 1;
+    transform: none;
+  }
+
+  /* Resolved state: the plan is complete and the field date was met. */
+  .hero-trace {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* "Small misses compound over time" — the stage number lights as its card
+   becomes the active one, then settles back to the resting brand amber.
+
+   Only a `from` frame, so the resting value is whatever the element already
+   computes: the token treatment is never restated here, and the animation does
+   not hold, it releases (Design System §8.1.1). */
+@keyframes jp-stage-lit {
+  from {
+    color: var(--jp-brand-amber-active);
+  }
+}
+
+.jp-stage-lit {
+  animation: jp-stage-lit 760ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-stage-lit {
+    animation: none;
   }
 }
