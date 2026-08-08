@@ -760,8 +760,8 @@ const traceStyle = (len: number) =>
     '--trace-duration': `${TRACE_DURATION}ms`,
   }) as CSSProperties;
 
-const HEADING_BACKWARD = 'Required dates drive every step.';
-const HEADING_FORWARD = 'Leading every step protects the field.';
+const HEADING_BACKWARD = 'Plan backward from when the field needs it.';
+const HEADING_FORWARD = 'Manage forward to make sure it gets there.';
 
 /** Straight segments only: two `L` commands give a clean mitred right angle. */
 const routeTo = (from: number, to: number) =>

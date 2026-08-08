@@ -61,7 +61,7 @@ export default function HomeHero() {
               className={`font-mono text-[0.6875rem] font-medium uppercase tracking-[0.24em] text-jp-brand-amber/90 sm:text-xs sm:tracking-[0.26em] ${rise(0).className}`}
               style={rise(0).style}
             >
-              Protect the field from upstream problems.
+              Protect the field from early misses.
             </p>
 
             {/* The claim and its explanation are set tight so they read as one
@@ -70,7 +70,7 @@ export default function HomeHero() {
               className={`mt-5 font-heading text-[2rem] font-extrabold leading-[1.1] tracking-[-0.022em] text-balance text-jp-text-primary sm:mt-6 sm:text-[2.75rem] sm:leading-[1.08] lg:text-[3.25rem] xl:text-[3.75rem] xl:leading-[1.06] ${rise(1).className}`}
               style={rise(1).style}
             >
-              You don&apos;t control all the work. You still have to manage its impact.
+              You don&apos;t own every decision. But your project depends on how you manage them.
             </h1>
             <p
               className={`mt-2 font-heading text-[1.4375rem] font-semibold leading-[1.22] tracking-[-0.015em] text-balance text-jp-brand-amber sm:mt-2.5 sm:text-[2rem] lg:text-[2.375rem] xl:mt-3 xl:text-[2.75rem] xl:leading-[1.18] ${rise(2).className}`}

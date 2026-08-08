@@ -6,9 +6,10 @@ import { ChevronRight } from 'lucide-react';
  * Section 2 — helps the contractor recognise the actual problem.
  *
  * The three stages are a progression, not a list, so they are presented as one
- * carousel that repositions around whichever stage the reader is on. Nothing
- * moves until the section itself is genuinely in view: the visitor can sit at
- * the hero indefinitely and this section stays still.
+ * carousel that resolves around whichever stage the reader is on — widening it
+ * where all three fit side by side, sliding it into the middle where they do
+ * not. Nothing moves until the section itself is genuinely in view: the visitor
+ * can sit at the hero indefinitely and this section stays still.
  *
  * Two pieces of state drive everything (Design System §46.3):
  *   entered — has the section been seen, once and never reset
@@ -24,13 +25,17 @@ const WIDE_QUERY = '(min-width: 64rem)';
 /**
  * Card widths as a percentage of the carousel's own width.
  *
- * `damping` is how far the track travels toward centring the open card.
- * Centring the first or last of three exactly would push the far stage off the
- * edge entirely, so on wide screens the track moves most of the way and keeps
- * every stage on screen. The peek layout has no such conflict and centres fully.
+ * The wide composition is sized to fill the carousel exactly — the open stage,
+ * both closed stages and both gaps total 100 — so the row always occupies the
+ * section's content bounds and no stage can cross an edge. Opening a stage
+ * redistributes that width between the three; it never widens the row.
+ *
+ * The peek layout overflows on purpose. There only the open stage has to be
+ * fully legible, and its neighbours showing at the edges is what says the row
+ * continues.
  */
-const WIDE = { open: 52, closed: 20, gap: 2, damping: 0.45 };
-const PEEK = { open: 80, closed: 80, gap: 4, damping: 1 };
+const WIDE = { open: 52, closed: 22, gap: 2 };
+const PEEK = { open: 80, closed: 80, gap: 4 };
 
 type Geometry = typeof WIDE;
 
@@ -48,9 +53,27 @@ const GLIDE_MS = 0.45;
 const FADE_MS = 0.22;
 const COPY_DELAY_MS = 0.18;
 
-/** Cards before the open one are always closed, so the sum is a single term. */
-const trackOffset = (g: Geometry, active: number) =>
-  (50 - (active * (g.closed + g.gap) + g.open / 2)) * g.damping;
+/** Width of the whole three-stage composition, in percent of the carousel. */
+const trackWidth = (g: Geometry) => g.open + 2 * g.closed + 2 * g.gap;
+
+/**
+ * Centre the open stage, then hold the track inside the carousel.
+ *
+ * Centring on its own is what clipped: the composition is the same width
+ * whichever stage is open, so pulling the open one to the middle drags the far
+ * end past the boundary — the first stage's heading off the left edge when the
+ * last stage opened, the third stage's off the right when the first did. The
+ * offset is therefore clamped to the travel the composition actually leaves.
+ * A layout that fills the carousel has none and stays put; the peek layout
+ * overflows by design, so it keeps centring freely.
+ *
+ * Stages before the open one are always closed, so their run is a single term.
+ */
+const trackOffset = (g: Geometry, active: number) => {
+  const centred = 50 - (active * (g.closed + g.gap) + g.open / 2);
+  const travel = 100 - trackWidth(g);
+  return travel < 0 ? centred : Math.min(Math.max(centred, 0), travel);
+};
 
 const BLOCKS = [
   {
@@ -63,7 +86,7 @@ const BLOCKS = [
   },
   {
     title: 'The field pays for it',
-    body: 'Project managers chase answers. Superintendents resequence work. Crews and subcontractors work around what is missing. Productivity drops, and the cost of a small miss starts multiplying.',
+    body: "Superintendents are left to work around what isn't ready. Work gets resequenced. Crews are sent away and called back. Productivity collapses and costs multiply—often without anyone knowing exactly where the money went.",
   },
 ];
 
