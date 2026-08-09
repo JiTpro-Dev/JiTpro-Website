@@ -21,12 +21,12 @@ const OPEN_CONDITIONS = [
 
 export default function ProjectWarningSignsSection() {
   return (
-    <section className="bg-jp-background px-6 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28">
+    <section className="bg-jp-background px-6 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-32">
       <div className="mx-auto max-w-7xl">
-        <h2 className="max-w-[20ch] font-heading text-[1.875rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.5rem] lg:text-[3rem]">
+        <h2 className="max-w-[18ch] font-heading text-[2rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.75rem] lg:text-[3.5rem] min-[1440px]:text-[4rem]">
           What&apos;s the most important thing you need to resolve today to keep the field moving six months from now?
         </h2>
-        <p className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:text-[1.1875rem]">
+        <p className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:mt-8 lg:text-[1.1875rem]">
           The field may not need the results for months. Resources are finite, and when everything feels urgent, priorities have to be clear. JiTpro works backward from when the field needs it to identify what needs to move now.
         </p>
 
