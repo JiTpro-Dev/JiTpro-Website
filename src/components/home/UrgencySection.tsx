@@ -58,10 +58,6 @@ export default function UrgencySection() {
             </li>
           ))}
         </ol>
-
-        <p className="mt-14 max-w-[46ch] font-heading text-[1.375rem] font-semibold leading-[1.3] tracking-[-0.015em] text-balance text-jp-text-primary sm:text-[1.625rem] lg:mt-16 lg:text-[1.875rem]">
-          JiTpro helps your team act while there is still time to protect the field.
-        </p>
       </div>
     </section>
   );

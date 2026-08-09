@@ -1,6 +1,7 @@
 import HomeHero from '../components/home/HomeHero';
 import ReactiveProjectsSection from '../components/home/ReactiveProjectsSection';
 import UrgencySection from '../components/home/UrgencySection';
+import HomeThesisStatement from '../components/home/HomeThesisStatement';
 import WhatJiTproDoesSection from '../components/home/WhatJiTproDoesSection';
 import OutcomesSection from '../components/home/OutcomesSection';
 import ProjectWarningSignsSection from '../components/home/ProjectWarningSignsSection';
@@ -27,6 +28,7 @@ export default function Home() {
       <HomeHero />
       <ReactiveProjectsSection />
       <UrgencySection />
+      <HomeThesisStatement />
       <WhatJiTproDoesSection />
       <OutcomesSection />
       <ProjectWarningSignsSection />
