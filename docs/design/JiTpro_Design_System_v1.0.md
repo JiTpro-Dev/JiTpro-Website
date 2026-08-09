@@ -50,6 +50,7 @@ TODO:
 
 | Date | Decision | Scope | Owner | Source/Rationale |
 | --- | --- | --- | --- | --- |
+| 2026-08-08 | Centered CTA supporting copy approved as a narrow exception: short supporting body copy MAY be centered when it belongs to a deliberately centered call-to-action composition and directly supports the CTA heading and action - at most four rendered lines at the intended desktop composition, measure no more than roughly 52ch, never for ordinary explanatory sections or long-form copy, used sparingly. Ordinary body copy site-wide remains left-aligned. First approved use: the homepage final CTA, centered at `sm:` and above; the mobile presentation stays left-aligned. | Marketing website | Jeff Kaufman | Sections 7.7 and 48.6. The page's decision point had the weakest composition on the page - a narrow left column pressed against the widest empty space. Centering the close resolves the page on its own axis, and its supporting paragraph must be able to follow the composition it belongs to. Recorded separately from the centered-editorial-statement exception so neither quietly broadens the other. |
 | 2026-08-08 | Centered editorial statement approved as a narrow page-level composition exception: a single short, heading-behaving statement MAY be set centered in its own full-width section as a deliberate pause or transition between arguments - constrained measure, no eyebrow, no supporting body copy, no controls, no graphic, used sparingly (at most one or two per page). Ordinary sections and body copy remain left-aligned on the shared left edge; NO centered-body-copy allowance is created. First approved use: the homepage thesis statement between the urgency and product sections. | Marketing website | Jeff Kaufman | Sections 7.7 and 48.6. The page's central claim was set as an ordinary closing paragraph inside a section, giving the thesis less visual presence than any section heading. Setting it alone and centered marks the page's turn from problem to answer; the exception is kept narrow because the interruption only carries meaning while the shared-left-edge discipline it interrupts remains the rule. |
 | 2026-08-07 | `--jp-success` refined from `#10B981` to **`#059669`**. Visual refinement only — the semantic definition, the approved uses, and the prohibitions in Section 8.3.1 are all unchanged, and the token's use is not broadened. | All products | Jeff Kaufman | Section 8.3.1. `#10B981` read as electric against `--jp-background` and competed with the amber system for attention, which is the opposite of what a completed state should do: finished work should settle, not announce itself. `#059669` is more restrained and still unmistakably green. Contrast moves from roughly 8:1 to roughly 5.4:1, which remains clear of the WCAG AA minimum of 4.5:1 at body sizes. |
 | 2026-08-07 | ~~`--jp-success` approved at `#10B981`.~~ **Value SUPERSEDED 2026-08-07 by `#059669` above.** The semantics recorded in this entry remain in force. | All products | Jeff Kaufman | Retained for history; only the hex was superseded. |
@@ -684,6 +685,15 @@ This exception is narrow:
 - Its measure MUST remain tightly constrained (well inside the body-copy ceiling above) so it breaks as a few balanced lines, not a wide band of display type.
 - It MUST be used sparingly. A page earns at most one or two such moments; a rhythm of centered bands is a different, unapproved design.
 - Ordinary sections, headings, and body copy remain governed by the left-alignment rule above and the shared-left-edge rule in Section 48.6. This exception does not create any allowance for centered body copy.
+
+**Centered CTA supporting copy - approved exception (2026-08-08).** Short supporting body copy MAY be centered when it belongs to a deliberately centered call-to-action composition - heading, supporting line, and action all set on the center axis - and directly supports that heading and action. The paragraph follows the composition it belongs to; it is a close, not a reading column.
+
+This exception is narrow:
+- It applies ONLY within a deliberately centered CTA composition. A centered paragraph inside an otherwise left-aligned section remains prohibited.
+- The copy MUST be short: no more than four rendered lines at the intended desktop composition.
+- Its measure MUST NOT exceed approximately 52ch.
+- It does NOT apply to ordinary explanatory sections or long-form body copy, which remain left-aligned under the rule above.
+- It MUST be used sparingly - a page-level close, not a recurring section pattern.
 
 ### Whitespace
 
@@ -3128,7 +3138,7 @@ Purpose: Define the shared conventions that make separate surfaces read as one p
 ## 48.6 Section spacing
 
 - Sections share a consistent vertical rhythm and a consistent horizontal container. A shared left edge across every section is a primary signal of discipline.
-- **Approved exception (2026-08-08):** a centered editorial statement standing alone in its own section (Section 7.7) deliberately departs from the shared left edge. The departure is the signal - it reads as a pause only because every ordinary section continues to hold the shared edge, so it MUST remain rare.
+- **Approved exception (2026-08-08):** a centered editorial statement standing alone in its own section (Section 7.7) deliberately departs from the shared left edge. The departure is the signal - it reads as a pause only because every ordinary section continues to hold the shared edge, so it MUST remain rare. The same narrow allowance covers a deliberately centered final-CTA composition (Section 7.7, centered CTA supporting copy).
 - Section boundaries SHOULD be expressed through spacing and hairline borders, not heavy dividers or alternating decoration.
 - Where adjacent sections share a background, the transition MUST be seamless. A visible seam between two surfaces intended to read as one is a defect.
 
