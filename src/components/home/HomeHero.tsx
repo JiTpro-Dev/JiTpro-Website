@@ -32,7 +32,7 @@ export default function HomeHero() {
       : { className: '', style: undefined };
 
   return (
-    <section className="relative isolate overflow-hidden bg-jp-background">
+    <section className="relative isolate overflow-hidden bg-jp-background px-6 py-14 sm:px-8 sm:py-20 lg:px-10 lg:pt-20 lg:pb-24">
       {/* Lighting, tonal depth and grain. The stack resolves to the page
           background at the bottom edge so the hand-off to the section below
           has no visible seam.
@@ -54,8 +54,8 @@ export default function HomeHero() {
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,color-mix(in_oklab,var(--jp-brand-amber)_32%,transparent)_26%,color-mix(in_oklab,var(--jp-brand-amber)_50%,transparent)_52%,transparent)]"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-20 lg:px-10 lg:py-24 xl:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.02fr)] lg:gap-14 xl:gap-20">
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.13fr)_minmax(0,0.87fr)] lg:gap-14 xl:gap-20">
           <div>
             <p
               className={`font-mono text-[0.6875rem] font-medium uppercase tracking-[0.24em] text-jp-brand-amber/90 sm:text-xs sm:tracking-[0.26em] ${rise(0).className}`}
@@ -67,20 +67,20 @@ export default function HomeHero() {
             {/* The claim and its explanation are set tight so they read as one
                 continuous thought rather than two stacked blocks. */}
             <h1
-              className={`mt-5 font-heading text-[2rem] font-extrabold leading-[1.1] tracking-[-0.022em] text-balance text-jp-text-primary sm:mt-6 sm:text-[2.75rem] sm:leading-[1.08] lg:text-[3.25rem] xl:text-[3.75rem] xl:leading-[1.06] ${rise(1).className}`}
+              className={`mt-5 font-heading text-[2rem] font-extrabold leading-[1.1] tracking-[-0.022em] text-balance text-jp-text-primary sm:mt-6 sm:text-[2.75rem] sm:leading-[1.08] lg:text-[3.25rem] min-[1440px]:text-[3.75rem] min-[1440px]:leading-[1.06] ${rise(1).className}`}
               style={rise(1).style}
             >
               You don&apos;t own every decision. But your project depends on how you manage them.
             </h1>
             <p
-              className={`mt-2 font-heading text-[1.4375rem] font-semibold leading-[1.22] tracking-[-0.015em] text-balance text-jp-brand-amber sm:mt-2.5 sm:text-[2rem] lg:text-[2.375rem] xl:mt-3 xl:text-[2.75rem] xl:leading-[1.18] ${rise(2).className}`}
+              className={`mt-2 font-heading text-[1.4375rem] font-semibold leading-[1.22] tracking-[-0.015em] text-balance text-jp-brand-amber sm:mt-2.5 sm:text-[2rem] lg:text-[2.375rem] min-[1440px]:mt-3 min-[1440px]:text-[2.75rem] min-[1440px]:leading-[1.18] ${rise(2).className}`}
               style={rise(2).style}
             >
               Small misses today become expensive recoveries tomorrow.
             </p>
 
             <p
-              className={`mt-6 max-w-[52ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-7 sm:text-[1.1875rem] lg:text-[1.25rem] xl:text-[1.3125rem] ${rise(3).className}`}
+              className={`mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-7 sm:text-[1.1875rem] lg:text-[1.25rem] min-[1440px]:text-[1.3125rem] ${rise(3).className}`}
               style={rise(3).style}
             >
               JiTpro helps general contractors identify and manage the critical decisions, responsibilities, and commitments required to get products, materials, and services to the field when they are needed—before small misses become schedule delays and expensive recovery.
