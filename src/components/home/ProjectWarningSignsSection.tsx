@@ -51,7 +51,7 @@ export default function ProjectWarningSignsSection() {
 
         <div className="mt-12 max-w-[58ch] border-t border-jp-border/12 pt-8 lg:mt-14">
           <p className="text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem]">
-            Every project has several of these open at any time. That is normal. What matters is whether each one has a date and an owner before the field needs it.
+            Complex projects carry hundreds of decisions and commitments across the project team. The challenge is knowing which ones must move now, who owns the next step, and when they must be resolved to keep the field moving six months from now.
           </p>
           <p className="mt-5 font-heading text-[1.25rem] font-semibold leading-[1.35] tracking-[-0.01em] text-balance text-jp-brand-amber sm:text-[1.4375rem]">
             The earlier the work becomes visible, the more options your team has.
