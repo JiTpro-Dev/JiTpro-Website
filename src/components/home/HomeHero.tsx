@@ -83,7 +83,7 @@ export default function HomeHero() {
               className={`mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-7 sm:text-[1.1875rem] lg:text-[1.25rem] min-[1440px]:text-[1.3125rem] ${rise(3).className}`}
               style={rise(3).style}
             >
-              JiTpro helps general contractors identify and manage the critical decisions, responsibilities, and commitments required to get products, materials, and services to the field when they are needed—before small misses become schedule delays and expensive recovery.
+              JiTpro gives general contractors control over the critical decisions, responsibilities, and commitments their projects depend on—so products, materials, and services reach the field when they are needed, before small misses become schedule delays and expensive recovery.
             </p>
 
             <div className={`mt-9 sm:mt-10 ${rise(4).className}`} style={rise(4).style}>
