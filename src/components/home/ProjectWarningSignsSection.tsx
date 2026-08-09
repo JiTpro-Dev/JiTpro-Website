@@ -37,9 +37,9 @@ export default function ProjectWarningSignsSection() {
           {OPEN_CONDITIONS.map((condition) => (
             <li
               key={condition}
-              className="flex break-inside-avoid items-start gap-4 border-t border-jp-border/12 py-4 text-[1rem] leading-[1.6] text-jp-text-secondary sm:text-[1.0625rem]"
+              className="flex break-inside-avoid items-start gap-4 border-t border-jp-border/12 py-5 text-[1.0625rem] leading-[1.6] text-jp-text-secondary sm:text-[1.125rem]"
             >
-              <span aria-hidden="true" className="mt-3 h-px w-4 shrink-0 bg-jp-brand-amber/70" />
+              <span aria-hidden="true" className="mt-3 h-0.5 w-4 shrink-0 bg-jp-brand-amber/70" />
               {/* The two columns are wider than a readable measure at desktop
                   widths, so the text is capped rather than the column. The rule
                   above each item still spans the full column, which keeps the
