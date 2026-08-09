@@ -21,12 +21,12 @@ const OPEN_CONDITIONS = [
 
 export default function ProjectWarningSignsSection() {
   return (
-    <section className="bg-jp-background px-6 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28">
+    <section className="bg-jp-background px-6 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-32">
       <div className="mx-auto max-w-7xl">
-        <h2 className="max-w-[20ch] font-heading text-[1.875rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.5rem] lg:text-[3rem]">
+        <h2 className="max-w-[18ch] font-heading text-[2rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.75rem] lg:text-[3.5rem] min-[1440px]:text-[4rem]">
           What&apos;s the most important thing you need to resolve today to keep the field moving six months from now?
         </h2>
-        <p className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:text-[1.1875rem]">
+        <p className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:mt-8 lg:text-[1.1875rem]">
           The field may not need the results for months. Resources are finite, and when everything feels urgent, priorities have to be clear. JiTpro works backward from when the field needs it to identify what needs to move now.
         </p>
 
@@ -37,9 +37,9 @@ export default function ProjectWarningSignsSection() {
           {OPEN_CONDITIONS.map((condition) => (
             <li
               key={condition}
-              className="flex break-inside-avoid items-start gap-4 border-t border-jp-border/12 py-4 text-[1rem] leading-[1.6] text-jp-text-secondary sm:text-[1.0625rem]"
+              className="flex break-inside-avoid items-start gap-4 border-t border-jp-border/12 py-5 text-[1.0625rem] leading-[1.6] text-jp-text-secondary sm:text-[1.125rem]"
             >
-              <span aria-hidden="true" className="mt-3 h-px w-4 shrink-0 bg-jp-brand-amber/70" />
+              <span aria-hidden="true" className="mt-3 h-0.5 w-4 shrink-0 bg-jp-brand-amber/70" />
               {/* The two columns are wider than a readable measure at desktop
                   widths, so the text is capped rather than the column. The rule
                   above each item still spans the full column, which keeps the
@@ -51,7 +51,7 @@ export default function ProjectWarningSignsSection() {
 
         <div className="mt-12 max-w-[58ch] border-t border-jp-border/12 pt-8 lg:mt-14">
           <p className="text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem]">
-            Every project has several of these open at any time. That is normal. What matters is whether each one has a date and an owner before the field needs it.
+            Complex projects carry hundreds of decisions and commitments across the project team. The challenge is knowing which ones must move now, who owns the next step, and when they must be resolved to keep the field moving six months from now.
           </p>
           <p className="mt-5 font-heading text-[1.25rem] font-semibold leading-[1.35] tracking-[-0.01em] text-balance text-jp-brand-amber sm:text-[1.4375rem]">
             The earlier the work becomes visible, the more options your team has.

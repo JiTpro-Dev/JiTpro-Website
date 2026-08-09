@@ -6,18 +6,23 @@ import { Link } from 'react-router-dom';
  *
  * The job here is to shrink the perceived commitment: one project, alongside the
  * existing team. Exactly one action, with no secondary link to dilute it.
+ *
+ * Centered on the page axis from `sm:` up so the page closes on a quiet
+ * resolution rather than a column in a corner; below `sm` the block stays
+ * left-aligned and stacked (Design System §7.7 centered CTA supporting copy
+ * exception, §48.6; Decision Log 2026-08-08).
  */
 export default function HomeFinalCTA() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-jp-border/12 bg-jp-background px-6 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-36">
+    <section className="relative isolate overflow-hidden border-t border-jp-border/12 bg-jp-background px-6 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-40">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(62%_58%_at_18%_100%,color-mix(in_oklab,var(--jp-brand-amber)_12%,transparent),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(62%_58%_at_50%_100%,color-mix(in_oklab,var(--jp-brand-amber)_12%,transparent),transparent_70%)]"
       />
 
       <div className="relative mx-auto max-w-7xl">
-        <div className="max-w-[46ch]">
-          <h2 className="font-heading text-[2.125rem] font-extrabold leading-[1.08] tracking-[-0.022em] text-balance text-jp-text-primary sm:text-[2.875rem] lg:text-[3.5rem]">
+        <div className="max-w-[46ch] sm:max-w-none sm:text-center">
+          <h2 className="font-heading text-[2.125rem] font-extrabold leading-[1.08] tracking-[-0.022em] text-balance text-jp-text-primary sm:mx-auto sm:max-w-[24ch] sm:text-[2.875rem] lg:text-[3.5rem]">
             Start with one upcoming project.
           </h2>
 
@@ -25,7 +30,7 @@ export default function HomeFinalCTA() {
             You do not need to change how your whole company works.
           </p>
 
-          <p className="mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:text-[1.1875rem]">
+          <p className="mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mx-auto sm:max-w-[52ch] sm:text-[1.125rem] lg:text-[1.1875rem]">
             Start with the next project. JiTpro works alongside your team to identify the critical work, clarify who owns the next move, and put required dates around the decisions and commitments the project depends on—while there is still time to act.
           </p>
 

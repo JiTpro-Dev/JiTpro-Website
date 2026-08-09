@@ -1,79 +1,45 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { LayoutGroup, motion, useInView, useReducedMotion } from 'framer-motion';
 
 /**
  * Section 2 — helps the contractor recognise the actual problem.
  *
- * The three stages are a progression, not a list, so they are presented as one
- * carousel that resolves around whichever stage the reader is on — widening it
- * where all three fit side by side, sliding it into the middle where they do
- * not. Nothing moves until the section itself is genuinely in view: the visitor
- * can sit at the hero indefinitely and this section stays still.
+ * The three stages are a progression presented as a stage selector (Design
+ * System §46.8): every numbered title stays visible as a centred group of
+ * pill controls, and a single content area beneath presents the active stage.
+ * The pills state the interaction — three choices, one lit — instead of
+ * asking the reader to discover it, which is what the sequence carousel this
+ * replaces required (Decision Log 2026-08-08).
  *
- * Two pieces of state drive everything (Design System §46.3):
- *   entered — has the section been seen, once and never reset
- *   active  — which stage is open, 0 | 1 | 2
+ * Three pieces of state drive everything (Design System §46.3):
+ *   entered     — has the section been seen, once and never reset
+ *   active      — which stage is open, 0 | 1 | 2
+ *   tookControl — the visitor has deliberately selected a stage
+ *
+ * On first entry the selector walks itself 01 → 02 → 03 at reading pace and
+ * stops (§46.8 guided progression; Decision Log 2026-08-08): one finite pass,
+ * only while the section is on screen, never under reduced motion, and
+ * cancelled permanently by any deliberate interaction. Nothing moves until
+ * the section itself is genuinely in view: the visitor can sit at the hero
+ * indefinitely and this section stays still.
  */
 
-/* Above this width the three stages sit side by side and all stay legible.
-   Below it the row cannot hold three readable columns, so it becomes a
-   single-card carousel with its neighbours peeking (§9 of the brief:
-   readability wins over preserving the desktop geometry). */
-const WIDE_QUERY = '(min-width: 64rem)';
-
-/**
- * Card widths as a percentage of the carousel's own width.
- *
- * The wide composition is sized to fill the carousel exactly — the open stage,
- * both closed stages and both gaps total 100 — so the row always occupies the
- * section's content bounds and no stage can cross an edge. Opening a stage
- * redistributes that width between the three; it never widens the row.
- *
- * The peek layout overflows on purpose. There only the open stage has to be
- * fully legible, and its neighbours showing at the edges is what says the row
- * continues.
- */
-const WIDE = { open: 52, closed: 22, gap: 2 };
-const PEEK = { open: 80, closed: 80, gap: 4 };
-
-type Geometry = typeof WIDE;
-
-/* An even deceleration. The curve this replaced covered most of its distance in
-   the first quarter of its duration, which read as a snap no matter how long
-   the duration was; spending the time evenly is what makes the movement
-   followable rather than merely slow. */
+const FADE_S = 0.22;
 const EASE_OUT = 'easeOut' as const;
 
-/* The card starts moving, then the copy arrives as it settles — so the reader
-   perceives one gesture rather than two things happening at once. Closing has
-   no such delay: the copy leaves immediately rather than lingering over a
-   shrinking card. */
-const GLIDE_MS = 0.45;
-const FADE_MS = 0.22;
-const COPY_DELAY_MS = 0.18;
+/* Stage-change choreography — one continuous event, not four state flips:
+   the leaving copy releases first, the single amber enclosure glides to the
+   destination, and the arriving copy settles in as the pill lands. The glide
+   is a deterministic tween — a spring would bounce, and the movement itself
+   is meant to be readable (§46.4, §46.8). */
+const GLIDE_S = 0.68;
+const GLIDE_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const COPY_OUT_S = 0.26;
+const COPY_IN_S = 0.38;
+const COPY_IN_DELAY_S = 0.3;
 
-/** Width of the whole three-stage composition, in percent of the carousel. */
-const trackWidth = (g: Geometry) => g.open + 2 * g.closed + 2 * g.gap;
-
-/**
- * Centre the open stage, then hold the track inside the carousel.
- *
- * Centring on its own is what clipped: the composition is the same width
- * whichever stage is open, so pulling the open one to the middle drags the far
- * end past the boundary — the first stage's heading off the left edge when the
- * last stage opened, the third stage's off the right when the first did. The
- * offset is therefore clamped to the travel the composition actually leaves.
- * A layout that fills the carousel has none and stays put; the peek layout
- * overflows by design, so it keeps centring freely.
- *
- * Stages before the open one are always closed, so their run is a single term.
- */
-const trackOffset = (g: Geometry, active: number) => {
-  const centred = 50 - (active * (g.closed + g.gap) + g.open / 2);
-  const travel = 100 - trackWidth(g);
-  return travel < 0 ? centred : Math.min(Math.max(centred, 0), travel);
-};
+/** How long the guided progression holds each stage before advancing. */
+const GUIDE_HOLD_MS = 4800;
 
 const BLOCKS = [
   {
@@ -96,27 +62,39 @@ export default function ReactiveProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   /* Once the section is genuinely a third visible, and never reset after. */
   const entered = useInView(sectionRef, { amount: 0.35, once: true });
+  /* Whether it is on screen right now — the guided progression must never
+     change stages the visitor cannot see (§46.8). */
+  const visible = useInView(sectionRef, { amount: 0.35 });
 
   const [active, setActive] = useState(0);
-  const [wide, setWide] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(WIDE_QUERY).matches,
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia(WIDE_QUERY);
-    const sync = () => setWide(mq.matches);
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
-
-  const geo: Geometry = wide ? WIDE : PEEK;
+  const [tookControl, setTookControl] = useState(false);
   const shown = entered || still;
+
+  /* Any deliberate selection — hover, focus, click, or tap — hands the
+     interaction to the visitor for good; the guided progression never
+     resumes (§46.8). */
+  const choose = (i: number) => {
+    setTookControl(true);
+    setActive(i);
+  };
+
+  /* The guided first pass: one pending timeout at a time, keyed on the
+     current stage. Advancing re-runs the effect and schedules the next hold;
+     reaching stage 03 schedules nothing, so the progression ends there and
+     can never loop. Scrolling away clears the pending hold (cleanup) and a
+     return re-schedules it from the current stage — a pause, not an
+     off-screen advance. Reduced motion never schedules at all (§46.5). */
+  useEffect(() => {
+    if (still || tookControl || !entered || !visible) return;
+    if (active >= BLOCKS.length - 1) return;
+    const hold = window.setTimeout(() => setActive(active + 1), GUIDE_HOLD_MS);
+    return () => window.clearTimeout(hold);
+  }, [still, tookControl, entered, visible, active]);
 
   /* Under reduced motion every transition resolves instantly — the interaction
      still works, it simply arrives rather than travels (§46.5). */
-  const glide = still ? { duration: 0 } : { duration: GLIDE_MS, ease: EASE_OUT };
-  const fade = still ? { duration: 0 } : { duration: FADE_MS, ease: EASE_OUT };
+  const fade = still ? { duration: 0 } : { duration: FADE_S, ease: EASE_OUT };
+  const glide = still ? { duration: 0 } : { duration: GLIDE_S, ease: GLIDE_EASE };
 
   return (
     <section
@@ -131,122 +109,113 @@ export default function ReactiveProjectsSection() {
           Projects depend on hundreds of decisions and commitments across the project team. Most problems do not begin as major problems. They begin as small misses—an unanswered question, an unclear responsibility, or a commitment that was discussed but never documented and driven to a required date.
         </p>
 
-        {/* The negative inset restores the section's shared left edge (§48.6)
-            while the padding leaves room for a focus ring that would otherwise
-            be clipped by the carousel's own overflow. */}
         <motion.div
-          className="-mx-2 mt-12 overflow-hidden p-2 lg:mt-14"
+          className="mt-12 lg:mt-14"
           initial={false}
           animate={{ opacity: shown ? 1 : 0 }}
           transition={fade}
         >
-          <motion.ol
-            className="flex items-stretch"
-            style={{ gap: `${geo.gap}%` }}
-            initial={false}
-            animate={{ x: `${trackOffset(geo, active)}%` }}
-            transition={glide}
-          >
-            {BLOCKS.map((block, i) => {
-              const isActive = i === active;
-              const width = isActive ? geo.open : geo.closed;
-              const lit = isActive && shown && !still;
+          {/* Three pill selectors in the site's established selector-control
+              language (§46.8, Decision Log 2026-08-08): muted at rest, a
+              brightening wash on approach, and an enclosed amber outline and
+              tint when selected. The FAQ category selector defines the family;
+              this expresses the same treatment in approved tokens. A
+              transparent border keeps the inactive footprint identical, so
+              nothing shifts with state. Below sm the pills stack full-width. */}
+          <LayoutGroup id="stage-selector">
+            <ol className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
+              {BLOCKS.map((block, i) => {
+                const isActive = i === active;
+                const lit = isActive && shown && !still;
 
-              return (
-                <motion.li
-                  key={block.title}
-                  className="group relative shrink-0"
-                  initial={false}
-                  animate={{ width: `${width}%` }}
-                  transition={glide}
-                >
-                  <div
-                    className={`h-full overflow-hidden border-t pt-6 transition-colors duration-300 motion-reduce:transition-none ${
-                      isActive ? 'border-jp-brand-amber/30' : 'border-jp-border/12'
-                    }`}
-                  >
-                    <span
-                      key={lit ? `lit-${i}` : `rest-${i}`}
-                      className={`block font-mono text-xs tracking-[0.2em] text-jp-brand-amber/80${
-                        lit ? ' jp-stage-lit' : ''
-                      }`}
-                    >
-                      {`0${i + 1}`}
-                    </span>
-                    {/* Reserved height: the heading wraps differently open than
-                        closed, and min-height absorbs that without ever
-                        clipping — it grows if a heading needs more room. */}
-                    <div className="mt-4 flex min-h-[3.25rem] items-start gap-3 lg:min-h-[3.5rem]">
-                      <h3 className="min-w-0 flex-1 font-heading text-[1.1875rem] font-semibold leading-snug text-jp-text-primary sm:text-[1.25rem]">
-                        {block.title}
-                      </h3>
-                      {/* The affordance: it says the stage can open, and says it
-                          in the direction the stage opens. Muted at rest so the
-                          surface gains no further amber (§48.7), and gone once
-                          the stage is open, where it would mean nothing. */}
-                      <span
-                        aria-hidden="true"
-                        className={`mt-0.5 shrink-0 text-jp-text-muted transition duration-[170ms] ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0 ${
-                          isActive ? 'opacity-0' : 'opacity-100'
+                return (
+                  <li key={block.title}>
+                    <h3>
+                      <button
+                        type="button"
+                        aria-pressed={isActive}
+                        onMouseEnter={() => choose(i)}
+                        onFocus={() => choose(i)}
+                        onClick={() => choose(i)}
+                        className={`relative flex w-full items-baseline gap-2.5 rounded-full border border-transparent px-4 py-2.5 text-left transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-jp-text-primary motion-reduce:transition-none sm:w-auto sm:whitespace-nowrap ${
+                          isActive
+                            ? 'cursor-default text-jp-brand-amber'
+                            : 'cursor-pointer text-jp-text-muted hover:bg-jp-text-primary/5 hover:text-jp-text-primary'
                         }`}
                       >
-                        <ChevronRight size={16} strokeWidth={2} />
-                      </span>
-                    </div>
-                    {/* The body's width MUST NOT be a percentage. The card's
-                        width is animated, so a percentage re-resolves on every
-                        frame: the copy would render narrow at the start of an
-                        open, wrap to extra lines, and push the whole page down
-                        until the card caught up. `ch` is independent of the
-                        card, so the copy keeps one width, one line count, and
-                        one height — the row never reflows and nothing below the
-                        section moves.
+                        {/* The one amber enclosure. Rendered inside whichever
+                            selector is active, so the shared layoutId makes it
+                            glide between selectors rather than switch off and
+                            on — the buttons themselves never move. The radius
+                            lives in style so the glide cannot distort it. */}
+                        {isActive && (
+                          <motion.span
+                            layoutId="stage-selector-active-pill"
+                            aria-hidden="true"
+                            initial={false}
+                            transition={glide}
+                            style={{ borderRadius: 9999 }}
+                            className="absolute inset-0 border border-jp-brand-amber/30 bg-jp-brand-amber/10"
+                          />
+                        )}
+                        <span
+                          key={lit ? `lit-${i}` : `rest-${i}`}
+                          className={`relative shrink-0 font-mono text-xs tracking-[0.2em] text-jp-brand-amber/80${
+                            lit ? ' jp-stage-lit' : ''
+                          }`}
+                        >
+                          <span className="sr-only">Stage </span>
+                          {`0${i + 1}`}
+                        </span>
+                        {/* A control label, not a heading: the body face per
+                            §7.7, but a step above the FAQ's label scale — these
+                            three titles carry the section's argument, not just
+                            its navigation. */}
+                        <span className="relative min-w-0 text-[1.0625rem] font-medium sm:text-[1.125rem]">
+                          {block.title}
+                        </span>
+                      </button>
+                    </h3>
+                  </li>
+                );
+              })}
+            </ol>
+          </LayoutGroup>
 
-                        On the peek layout every card is the same width in both
-                        states, so a percentage is already stable there and the
-                        measure can follow the card. */}
-                    <motion.div
-                      style={wide ? { width: '46ch' } : { width: '100%', maxWidth: '46ch' }}
-                      initial={false}
-                      animate={{
-                        opacity: isActive ? 1 : 0,
-                        clipPath: isActive ? 'inset(0 0 0 0)' : 'inset(0 100% 0 0)',
-                      }}
-                      transition={
-                        still
-                          ? { duration: 0 }
-                          : {
-                              duration: FADE_MS,
-                              ease: EASE_OUT,
-                              delay: isActive ? COPY_DELAY_MS : 0,
-                            }
-                      }
-                    >
-                      <p className="mt-3 text-[1rem] leading-[1.65] text-jp-text-muted">
-                        {block.body}
-                      </p>
-                    </motion.div>
-                  </div>
+          {/* One content area, centred beneath the whole group so the active
+              copy belongs to the control rather than to column 01. The text
+              itself stays left-aligned (§7.7); only the block is centred.
+              Every stage's copy stays in the document — visibility is opacity
+              only, so assistive technology always receives the complete
+              argument (§46.8) — and the bodies share one grid cell, so the
+              tallest reserves the height and switching never reflows the page.
 
-                  {/* The interaction layer sits outside the clipped content so
-                      its focus ring is never cut off. Hover, focus and tap all
-                      resolve to the same single `active` state. */}
-                  <button
-                    type="button"
-                    aria-pressed={isActive}
-                    onMouseEnter={() => setActive(i)}
-                    onFocus={() => setActive(i)}
-                    onClick={() => setActive(i)}
-                    className={`absolute inset-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-jp-text-primary ${
-                      isActive ? 'cursor-default' : 'cursor-pointer'
-                    }`}
-                  >
-                    <span className="sr-only">{`Stage 0${i + 1}: ${block.title}`}</span>
-                  </button>
-                </motion.li>
-              );
-            })}
-          </motion.ol>
+              The fade is two-phase: the leaving paragraph releases first, and
+              the arriving one starts in as the pill approaches its landing —
+              opacity only, always in the same reading position. Framer
+              replaces in-flight animations on retarget, so a rapid sweep
+              across the pills resolves to the latest stage with no queue. */}
+          <div className="mt-8 grid sm:mt-10">
+            {BLOCKS.map((block, i) => (
+              <motion.p
+                key={block.title}
+                className={`col-start-1 row-start-1 mx-auto max-w-[52ch] text-[1rem] leading-[1.65] text-jp-text-muted ${
+                  i === active ? '' : 'pointer-events-none'
+                }`}
+                initial={false}
+                animate={{ opacity: i === active ? 1 : 0 }}
+                transition={
+                  still
+                    ? { duration: 0 }
+                    : i === active
+                      ? { duration: COPY_IN_S, ease: EASE_OUT, delay: COPY_IN_DELAY_S }
+                      : { duration: COPY_OUT_S, ease: EASE_OUT }
+                }
+              >
+                {block.body}
+              </motion.p>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
