@@ -49,16 +49,7 @@ The check covers:
 | Broken links, images & files | A dead internal link, missing image, or missing file | ✅ Yes |
 |
 
-As of July 2026, this check uses `audit-ci` instead of plain `npm audit`, so specific, reviewed vulnerabilities can be knowingly excepted (documented, not silently ignored) rather than blocking every future change until fully fixed.
-
-**Currently excepted:**
-
-| Package | Why | Real fix tracked in |
-|---|---|---|
-| `react-router` | Vulnerability only affects React Router's unstable RSC APIs, which this site does not use | [Issue #22](https://github.com/JiTproLabs/JiTpro-Website/issues/22) |
-|
-
-> You may notice [Dependabot alert #26](https://github.com/JiTproLabs/JiTpro-Website/security/dependabot/26) still showing as open in the Security tab, this is expected, not neglect. The alert stays open until the underlying package is actually upgraded (tracked in [#22](https://github.com/JiTproLabs/JiTpro-Website/issues/22)); we've just told our own CI check not to block on this specific, reviewed one in the meantime.
+As of July 2026, this check uses `audit-ci` instead of plain `npm audit`, so specific, reviewed vulnerabilities can be knowingly excepted (documented, not silently ignored) rather than blocking every future change until fully fixed. Nothing is currently excepted, the allowlist is empty.
 
 ## Branch Protection (`main`)
 
@@ -94,6 +85,8 @@ GitHub automatically opens Pull Requests (via **Dependabot**) when a package the
 
 - **Patch/minor updates** (e.g. `5.4.20 → 5.4.21`) are usually safe to merge after a quick check.
 - **Major updates** (e.g. `5.x → 8.x`) can include breaking changes and need closer review. Sometimes fixing one package's vulnerability requires an unrelated tool to be updated too (for example, a Tailwind CSS security fix once required upgrading Tailwind itself from v3 to v4). When this happens, it's worth pausing to review the change carefully, including a full visual check of the site, before merging, rather than rushing it through.
+
+> ⚠️ **A word choice worth being careful about:** if a PR only *allowlists* a vulnerability (defers it, doesn't actually fix it), don't write `Closes #__` in the description, that auto-closes the tracking Issue even though the real fix hasn't happened yet. This actually happened once (Issue #22 closed itself two weeks before the real fix landed). Use `Relates to #__` instead for anything that isn't the genuine, complete fix.
 
 ## Cloudflare Deployment
 
@@ -185,5 +178,5 @@ If something is actively harmful and even a minute or two is too long to wait, t
 | Default branch | `main` |
 | Hosting / Deployment | Cloudflare Pages |
 | Node.js version | 24 (see `.nvmrc`) |
-| Last updated | July 29, 2026 |
+| Last updated | August 11, 2026 |
 |
