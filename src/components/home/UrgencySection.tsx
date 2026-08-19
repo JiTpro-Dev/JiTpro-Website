@@ -1,5 +1,5 @@
 /**
- * Section 3 — why the problem must be solved early.
+ * Section 4 — why the problem must be solved early.
  *
  * The escalation is carried by one continuous rail above the stages rather
  * than by a diagram: it starts as a neutral hairline and warms toward amber

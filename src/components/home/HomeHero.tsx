@@ -61,7 +61,7 @@ export default function HomeHero() {
               className={`font-mono text-[0.6875rem] font-medium uppercase tracking-[0.24em] text-jp-brand-amber/90 sm:text-xs sm:tracking-[0.26em] ${rise(0).className}`}
               style={rise(0).style}
             >
-              Protect the field from early misses.
+              Order → Control → Flow
             </p>
 
             {/* The claim and its explanation are set tight so they read as one

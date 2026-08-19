@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion, useInView, useReducedMotion } from 'framer-motion';
 
 /**
- * Section 2 — helps the contractor recognise the actual problem.
+ * Section 3 — helps the contractor recognise the actual problem.
+ *
+ * Top padding is tighter than the page's standard rhythm: the opening
+ * argument (PriorityClaritySection) hands off directly into this section,
+ * and the two split the boundary evenly so the narrative reads continuous
+ * rather than as two separate full-screen panels.
  *
  * The three stages are a progression presented as a stage selector (Design
  * System §46.8): every numbered title stays visible as a centred group of
@@ -99,7 +104,7 @@ export default function ReactiveProjectsSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-jp-background px-6 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
+      className="bg-jp-background px-6 pt-10 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-10 lg:pt-14 lg:pb-28"
     >
       <div className="mx-auto max-w-7xl">
         <h2 className="max-w-[20ch] font-heading text-[1.875rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.5rem] lg:text-[3rem]">

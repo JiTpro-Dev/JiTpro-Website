@@ -1,5 +1,5 @@
 /**
- * Section 5 — the practical difference, kept deliberately plain.
+ * Section 6 — the practical difference, kept deliberately plain.
  * No statistics, no percentages, no guarantees.
  */
 

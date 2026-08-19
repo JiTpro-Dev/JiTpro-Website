@@ -1,5 +1,5 @@
 /**
- * Section 4 — JiTpro in the simplest possible terms.
+ * Section 5 — JiTpro in the simplest possible terms.
  *
  * Heading and intro sit left, steps stack right, so the rhythm differs from the
  * three-column sections either side of it without introducing a new card style.
