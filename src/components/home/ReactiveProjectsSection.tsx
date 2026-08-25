@@ -1,227 +1,251 @@
-import { useEffect, useRef, useState } from 'react';
-import { LayoutGroup, motion, useInView, useReducedMotion } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, motionValue, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion';
 
 /**
- * Section 3 — helps the contractor recognise the actual problem.
+ * Section 3 — the five-step JiTpro process, presented as a scroll-driven
+ * sequential process reveal (Design System §46.9, revised 2026-08-20).
  *
- * Top padding is tighter than the page's standard rhythm: the opening
- * argument (PriorityClaritySection) hands off directly into this section,
- * and the two split the boundary evenly so the narrative reads continuous
- * rather than as two separate full-screen panels.
+ * One stage at a time: a 400vh region supplies the scroll distance, a
+ * sticky h-screen frame holds the presentation spatially stable, and the
+ * five stages are stacked in one grid cell sharing a single constant
+ * footprint. Continuous section-relative scroll progress is the single
+ * source of truth (§46.3).
  *
- * The three stages are a progression presented as a stage selector (Design
- * System §46.8): every numbered title stays visible as a centred group of
- * pill controls, and a single content area beneath presents the active stage.
- * The pills state the interaction — three choices, one lit — instead of
- * asking the reader to discover it, which is what the sequence carousel this
- * replaces required (Decision Log 2026-08-08).
+ * Delivery is deliberately single-subscription: ONE scroll listener
+ * recomputes every stage's opacity and drift together from the same
+ * delivered progress value and writes them to plain MotionValues — never
+ * React state. Per-stage `useTransform` subscriptions were the previous
+ * architecture, and one of them silently dropping updates mid-scroll left
+ * an exited stage frozen at partial opacity on top of a later stage.
+ * With one subscription the stages cannot diverge: even a missed event
+ * leaves them mutually consistent, and the next event corrects them all.
  *
- * Three pieces of state drive everything (Design System §46.3):
- *   entered     — has the section been seen, once and never reset
- *   active      — which stage is open, 0 | 1 | 2
- *   tookControl — the visitor has deliberately selected a stage
+ * Visibility windows are strictly disjoint (§46.9): each stage owns
+ * u ∈ (0.01, 0.99) of its interval, so between stages there is a brief
+ * neutral moment — release → clear → reveal — and two stages can never be
+ * simultaneously readable, adjacent or otherwise. The single `XX / 05`
+ * indicator reuses each stage's own opacity value for its digit, so it
+ * can never show two readable numbers.
  *
- * On first entry the selector walks itself 01 → 02 → 03 at reading pace and
- * stops (§46.8 guided progression; Decision Log 2026-08-08): one finite pass,
- * only while the section is on screen, never under reduced motion, and
- * cancelled permanently by any deliberate interaction. Nothing moves until
- * the section itself is genuinely in view: the visitor can sit at the hero
- * indefinitely and this section stays still.
+ * Below lg, and always under reduced motion, the pinned architecture is
+ * dropped for the normal-flow sequential presentation (§46.9).
  */
 
-const FADE_S = 0.22;
-const EASE_OUT = 'easeOut' as const;
-
-/* Stage-change choreography — one continuous event, not four state flips:
-   the leaving copy releases first, the single amber enclosure glides to the
-   destination, and the arriving copy settles in as the pill lands. The glide
-   is a deterministic tween — a spring would bounce, and the movement itself
-   is meant to be readable (§46.4, §46.8). */
-const GLIDE_S = 0.68;
-const GLIDE_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const COPY_OUT_S = 0.26;
-const COPY_IN_S = 0.38;
-const COPY_IN_DELAY_S = 0.3;
-
-/** How long the guided progression holds each stage before advancing. */
-const GUIDE_HOLD_MS = 4800;
-
-const BLOCKS = [
+const STEPS = [
   {
-    title: 'It starts with a small miss',
-    body: "A decision stays open. A responsibility is unclear. A requirement is communicated verbally but never clearly assigned, dated, and documented. Everything feels urgent, but what needs attention first isn't always clear.",
+    title: 'Scope Validation',
+    body: 'We validate the contractor’s existing scope against the project documentation to determine whether the work required to complete the project has been identified and covered.',
   },
   {
-    title: 'The miss becomes a constraint',
-    body: 'Time passes. The unanswered decision begins affecting approvals, fabrication, sequencing, or delivery. What was easy to solve early becomes harder and more expensive to solve later.',
+    title: 'Scope Gap Analysis',
+    body: 'We identify missing, unclear, conflicting, or uncovered scope—and the decisions, information, and responsibilities that must be resolved before they become constraints against the schedule.',
   },
   {
-    title: 'The field pays for it',
-    body: "Superintendents are left to work around what isn't ready. Work gets resequenced. Crews are sent away and called back. Productivity collapses and costs multiply—often without anyone knowing exactly where the money went.",
+    title: 'Commitment Capture',
+    body: 'Required actions are assigned to responsible parties and tracked as Commitments, giving the project team a clear record of what must happen, who owns the next move, and when it is required.',
+  },
+  {
+    title: 'Product Register',
+    body: 'We identify and register the products, materials, and services the project will need, connecting what must arrive on site to the decisions, approvals, and Commitments required to get it there.',
+  },
+  {
+    title: 'Backward Scheduling',
+    body: 'Starting with when each product, material, or service is required on site, JiTpro works backward to establish the dates for the Commitments that support it.',
   },
 ];
 
-export default function ReactiveProjectsSection() {
-  const still = Boolean(useReducedMotion());
+/* 100vh of the region stays pinned; the remaining 300vh is travel — 60vh
+   per stage, of which roughly 43vh is fully-readable hold. */
+const REGION_HEIGHT_CLASS = 'h-[400vh]';
 
-  const sectionRef = useRef<HTMLElement>(null);
-  /* Once the section is genuinely a third visible, and never reset after. */
-  const entered = useInView(sectionRef, { amount: 0.35, once: true });
-  /* Whether it is on screen right now — the guided progression must never
-     change stages the visitor cannot see (§46.8). */
-  const visible = useInView(sectionRef, { amount: 0.35 });
+const STAGE_COUNT = STEPS.length;
 
-  const [active, setActive] = useState(0);
-  const [tookControl, setTookControl] = useState(false);
-  const shown = entered || still;
+/* Visibility windows, as fractions of one stage interval (60vh each).
+   Enter: 1%–13% (~7vh). Hold: 13%–85% (~43vh). Exit: 85%–99% (~8.4vh).
+   The 99%→101% seam between stages (~1.2vh) is a deliberate neutral
+   moment: the outgoing stage is fully gone before the incoming one
+   begins. Windows are therefore strictly disjoint. */
+const ENTER_START = 0.01;
+const ENTER_END = 0.13;
+const EXIT_START = 0.85;
+const EXIT_END = 0.99;
 
-  /* Any deliberate selection — hover, focus, click, or tap — hands the
-     interaction to the visitor for good; the guided progression never
-     resumes (§46.8). */
-  const choose = (i: number) => {
-    setTookControl(true);
-    setActive(i);
+/* Small vertical drift on entry/exit — opacity carries the transition;
+   the drift is polish only and can never interleave text because two
+   stages are never visible at once. */
+const ENTER_Y = 12;
+const EXIT_Y = -10;
+
+/** 0→1 linear ramp of v across [a, b], clamped. */
+function ramp(v: number, a: number, b: number) {
+  if (v <= a) return 0;
+  if (v >= b) return 1;
+  return (v - a) / (b - a);
+}
+
+/** A stage's visual state as a pure function of region progress. The
+    first stage skips its entrance (open on arrival); the last skips its
+    exit (open while the region releases). */
+function stageVisual(index: number, progress: number) {
+  const u = progress * STAGE_COUNT - index;
+  const entered = index === 0 ? 1 : ramp(u, ENTER_START, ENTER_END);
+  const exited = index === STAGE_COUNT - 1 ? 0 : ramp(u, EXIT_START, EXIT_END);
+  return {
+    opacity: entered * (1 - exited),
+    y: ENTER_Y * (1 - entered) + EXIT_Y * exited,
   };
+}
 
-  /* The guided first pass: one pending timeout at a time, keyed on the
-     current stage. Advancing re-runs the effect and schedules the next hold;
-     reaching stage 03 schedules nothing, so the progression ends there and
-     can never loop. Scrolling away clears the pending hold (cleanup) and a
-     return re-schedules it from the current stage — a pause, not an
-     off-screen advance. Reduced motion never schedules at all (§46.5). */
+/** Whether the viewport is wide enough for the pinned architecture (lg). */
+function useDesktop() {
+  const [desktop, setDesktop] = useState(
+    () => window.matchMedia('(min-width: 1024px)').matches,
+  );
   useEffect(() => {
-    if (still || tookControl || !entered || !visible) return;
-    if (active >= BLOCKS.length - 1) return;
-    const hold = window.setTimeout(() => setActive(active + 1), GUIDE_HOLD_MS);
-    return () => window.clearTimeout(hold);
-  }, [still, tookControl, entered, visible, active]);
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const update = () => setDesktop(mq.matches);
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return desktop;
+}
 
-  /* Under reduced motion every transition resolves instantly — the interaction
-     still works, it simply arrives rather than travels (§46.5). */
-  const fade = still ? { duration: 0 } : { duration: FADE_S, ease: EASE_OUT };
-  const glide = still ? { duration: 0 } : { duration: GLIDE_S, ease: GLIDE_EASE };
+export default function ReactiveProjectsSection() {
+  const reduced = Boolean(useReducedMotion());
+  const desktop = useDesktop();
+  const pinned = desktop && !reduced;
+
+  const regionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: regionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  /* Plain MotionValues, initialised to the resolved progress-0 state.
+     Writing to them bypasses React entirely — no state in the scroll
+     path. The indicator digits bind the same opacity values as their
+     stages, so digit and stage agree by construction (§46.3). */
+  const opacities = useMemo(
+    () => STEPS.map((_, i) => motionValue(stageVisual(i, 0).opacity)),
+    [],
+  );
+  const drifts = useMemo(
+    () => STEPS.map((_, i) => motionValue(stageVisual(i, 0).y)),
+    [],
+  );
+
+  /* The single scroll subscription: every stage recomputed together from
+     the same delivered value, every event. */
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    for (let i = 0; i < STAGE_COUNT; i += 1) {
+      const visual = stageVisual(i, v);
+      opacities[i].set(visual.opacity);
+      drifts[i].set(visual.y);
+    }
+  });
 
   return (
-    <section
-      ref={sectionRef}
-      className="bg-jp-background px-6 pt-10 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-10 lg:pt-14 lg:pb-28"
-    >
+    <section className="bg-jp-background px-6 pt-10 pb-20 sm:px-8 sm:pt-12 sm:pb-24 lg:px-10 lg:pt-14 lg:pb-28">
+      {/* Centered introduction to the methodology (approved). */}
       <div className="mx-auto max-w-7xl">
-        <h2 className="max-w-[20ch] font-heading text-[1.875rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.5rem] lg:text-[3rem]">
-          Small misses compound over time
+        <h2 className="mx-auto max-w-[26ch] text-center font-heading text-[1.875rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.5rem] lg:text-[3rem]">
+          JiTpro gets your project ready before the field has to react.
         </h2>
-        <p className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:text-[1.1875rem]">
-          Projects depend on hundreds of decisions and commitments across the project team. Most problems do not begin as major problems. They begin as small misses—an unanswered question, an unclear responsibility, or a commitment that was discussed but never documented and driven to a required date.
+        <p className="mx-auto mt-6 max-w-[62ch] text-center text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:mt-8 lg:text-[1.1875rem]">
+          JiTpro works through the project systematically to identify what is missing, establish accountability, and determine what must happen—and when—to support the construction schedule.
         </p>
+      </div>
 
-        <motion.div
-          className="mt-12 lg:mt-14"
-          initial={false}
-          animate={{ opacity: shown ? 1 : 0 }}
-          transition={fade}
-        >
-          {/* Three pill selectors in the site's established selector-control
-              language (§46.8, Decision Log 2026-08-08): muted at rest, a
-              brightening wash on approach, and an enclosed amber outline and
-              tint when selected. The FAQ category selector defines the family;
-              this expresses the same treatment in approved tokens. A
-              transparent border keeps the inactive footprint identical, so
-              nothing shifts with state. Below sm the pills stack full-width. */}
-          <LayoutGroup id="stage-selector">
-            <ol className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
-              {BLOCKS.map((block, i) => {
-                const isActive = i === active;
-                const lit = isActive && shown && !still;
+      {/* The process. Pinned sequential reveal at lg with motion allowed;
+          otherwise the normal-flow presentation (§46.9). */}
+      <div
+        ref={regionRef}
+        className={`mt-16 sm:mt-20 lg:mt-24 ${pinned ? REGION_HEIGHT_CLASS : ''}`}
+      >
+        {pinned ? (
+          /* Auto-height sticky pinned at an upper-middle optical position:
+             during the approach the stage follows the introduction at the
+             region's own margin (no manufactured frame-top void), while
+             pinned it sits deliberately in the upper-middle of the
+             viewport clear of the fixed navigation, and at release the
+             conclusion follows tightly behind it. A full-height centered
+             frame here would re-create (100vh − content) / 2 of dead space
+             on both seams. */
+          <div className="sticky top-[24vh]">
+            <div className="mx-auto w-full max-w-7xl">
+              {/* One persistent position indicator: the static "/ 05" never
+                  moves, and the current digit crossfades using its stage's
+                  own opacity value. Hidden from assistive technology — each
+                  stage carries its own sr-only label. */}
+              <div aria-hidden="true" className="font-mono text-xs tracking-[0.2em]">
+                <span className="inline-grid">
+                  {STEPS.map((step, i) => (
+                    <motion.span
+                      key={step.title}
+                      style={{ opacity: opacities[i] }}
+                      className="col-start-1 row-start-1 text-jp-brand-amber/80"
+                    >
+                      {`0${i + 1}`}
+                    </motion.span>
+                  ))}
+                </span>
+                <span className="text-jp-text-muted">{` / 0${STAGE_COUNT}`}</span>
+              </div>
 
-                return (
-                  <li key={block.title}>
-                    <h3>
-                      <button
-                        type="button"
-                        aria-pressed={isActive}
-                        onMouseEnter={() => choose(i)}
-                        onFocus={() => choose(i)}
-                        onClick={() => choose(i)}
-                        className={`relative flex w-full items-baseline gap-2.5 rounded-full border border-transparent px-4 py-2.5 text-left transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-jp-text-primary motion-reduce:transition-none sm:w-auto sm:whitespace-nowrap ${
-                          isActive
-                            ? 'cursor-default text-jp-brand-amber'
-                            : 'cursor-pointer text-jp-text-muted hover:bg-jp-text-primary/5 hover:text-jp-text-primary'
-                        }`}
-                      >
-                        {/* The one amber enclosure. Rendered inside whichever
-                            selector is active, so the shared layoutId makes it
-                            glide between selectors rather than switch off and
-                            on — the buttons themselves never move. The radius
-                            lives in style so the glide cannot distort it. */}
-                        {isActive && (
-                          <motion.span
-                            layoutId="stage-selector-active-pill"
-                            aria-hidden="true"
-                            initial={false}
-                            transition={glide}
-                            style={{ borderRadius: 9999 }}
-                            className="absolute inset-0 border border-jp-brand-amber/30 bg-jp-brand-amber/10"
-                          />
-                        )}
-                        <span
-                          key={lit ? `lit-${i}` : `rest-${i}`}
-                          className={`relative shrink-0 font-mono text-xs tracking-[0.2em] text-jp-brand-amber/80${
-                            lit ? ' jp-stage-lit' : ''
-                          }`}
-                        >
-                          <span className="sr-only">Stage </span>
-                          {`0${i + 1}`}
-                        </span>
-                        {/* A control label, not a heading: the body face per
-                            §7.7, but a step above the FAQ's label scale — these
-                            three titles carry the section's argument, not just
-                            its navigation. */}
-                        <span className="relative min-w-0 text-[1.0625rem] font-medium sm:text-[1.125rem]">
-                          {block.title}
-                        </span>
-                      </button>
+              {/* All five stages stacked in one grid cell — one constant
+                  footprint; title and body move as one unit. Copy is always
+                  in the document in reading order. */}
+              <ol className="mt-5 grid">
+                {STEPS.map((step, i) => (
+                  <motion.li
+                    key={step.title}
+                    style={{ opacity: opacities[i], y: drifts[i] }}
+                    className="col-start-1 row-start-1"
+                  >
+                    <span className="sr-only">{`Step ${i + 1} of ${STAGE_COUNT}`}</span>
+                    <h3 className="max-w-[24ch] font-heading text-[1.75rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[2.25rem] lg:text-[2.5rem]">
+                      {step.title}
                     </h3>
-                  </li>
-                );
-              })}
-            </ol>
-          </LayoutGroup>
-
-          {/* One content area, centred beneath the whole group so the active
-              copy belongs to the control rather than to column 01. The text
-              itself stays left-aligned (§7.7); only the block is centred.
-              Every stage's copy stays in the document — visibility is opacity
-              only, so assistive technology always receives the complete
-              argument (§46.8) — and the bodies share one grid cell, so the
-              tallest reserves the height and switching never reflows the page.
-
-              The fade is two-phase: the leaving paragraph releases first, and
-              the arriving one starts in as the pill approaches its landing —
-              opacity only, always in the same reading position. Framer
-              replaces in-flight animations on retarget, so a rapid sweep
-              across the pills resolves to the latest stage with no queue. */}
-          <div className="mt-8 grid sm:mt-10">
-            {BLOCKS.map((block, i) => (
-              <motion.p
-                key={block.title}
-                className={`col-start-1 row-start-1 mx-auto max-w-[52ch] text-[1rem] leading-[1.65] text-jp-text-muted ${
-                  i === active ? '' : 'pointer-events-none'
-                }`}
-                initial={false}
-                animate={{ opacity: i === active ? 1 : 0 }}
-                transition={
-                  still
-                    ? { duration: 0 }
-                    : i === active
-                      ? { duration: COPY_IN_S, ease: EASE_OUT, delay: COPY_IN_DELAY_S }
-                      : { duration: COPY_OUT_S, ease: EASE_OUT }
-                }
-              >
-                {block.body}
-              </motion.p>
-            ))}
+                    <p className="mt-5 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:text-[1.1875rem]">
+                      {step.body}
+                    </p>
+                  </motion.li>
+                ))}
+              </ol>
+            </div>
           </div>
-        </motion.div>
+        ) : (
+          <ol className="mx-auto max-w-7xl space-y-14 sm:space-y-16">
+            {STEPS.map((step, i) => (
+              <li key={step.title}>
+                <p className="font-mono text-xs tracking-[0.2em] text-jp-brand-amber/80">
+                  <span className="sr-only">Step </span>
+                  {`0${i + 1}`}
+                </p>
+                <h3 className="mt-3 max-w-[24ch] font-heading text-[1.5rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-balance text-jp-text-primary sm:text-[1.75rem]">
+                  {step.title}
+                </h3>
+                <p className="mt-4 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem]">
+                  {step.body}
+                </p>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+
+      {/* The conclusion, in normal flow after the process releases: the
+          result carries stronger hierarchy with the restrained amber
+          lead-in; the accountability line closes quietly. Neither is a CTA. */}
+      <div className="mx-auto mt-16 max-w-7xl lg:mt-24">
+        <p className="max-w-[62ch] text-[1.125rem] leading-[1.65] text-jp-text-secondary sm:text-[1.1875rem] lg:text-[1.25rem]">
+          <span className="font-semibold text-jp-brand-amber">The result:</span>{' '}
+          The project team sees what must move before it becomes a constraint, required work is driven by when the field actually needs it, and products, materials, and services are managed to arrive{' '}
+          <span className="font-semibold text-jp-text-primary">Just-in-Time</span>.
+        </p>
+        <p className="mt-6 max-w-[62ch] text-[1rem] leading-[1.65] text-jp-text-muted sm:text-[1.0625rem]">
+          When something does run late, the project has a documented record of what was required, who owned it, when it was due, and where the delay occurred.
+        </p>
       </div>
     </section>
   );

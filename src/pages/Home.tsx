@@ -1,6 +1,7 @@
 import HomeHero from '../components/home/HomeHero';
 import PriorityClaritySection from '../components/home/PriorityClaritySection';
 import ReactiveProjectsSection from '../components/home/ReactiveProjectsSection';
+import HomeConstructionImage from '../components/home/HomeConstructionImage';
 import UrgencySection from '../components/home/UrgencySection';
 import HomeThesisStatement from '../components/home/HomeThesisStatement';
 import WhatJiTproDoesSection from '../components/home/WhatJiTproDoesSection';
@@ -29,6 +30,7 @@ export default function Home() {
       <HomeHero />
       <PriorityClaritySection />
       <ReactiveProjectsSection />
+      <HomeConstructionImage />
       <UrgencySection />
       <HomeThesisStatement />
       <WhatJiTproDoesSection />

@@ -50,6 +50,8 @@ TODO:
 
 | Date | Decision | Scope | Owner | Source/Rationale |
 | --- | --- | --- | --- | --- |
+| 2026-08-20 | Section 46.9 REVISED from Scroll-Driven Process Accordion to **Scroll-Driven Sequential Process Reveal (process scrollytelling)**: one stage presented at a time inside the pinned presentation; continuous section-relative scroll progress is the single source of truth, driving enter → generous hold → exit choreography per stage and reversing naturally on upward scroll; the all-titles-visible rail and accordion button semantics (`aria-expanded`/`aria-controls`) are removed as misdescribing a narrative presentation. Stable outer geometry, no timers/autoplay, copy always in the document in reading order, Section 46.4 restraint, and the normal-flow narrow-viewport and reduced-motion fallbacks all carry over. Section 46.8 is unchanged. First approved use: the homepage five-step JiTpro process. | Marketing website | Jeff Kaufman | Section 46.9. The accordion presented the methodology as a menu of five visible rows; the methodology is a narrative the visitor moves through, and presenting one stage at a time with the reveal physically connected to scrolling makes the progression the experience rather than an interaction to discover. Continuous scroll-linked animation also removes the discrete threshold switching that made the accordion feel jerky. |
+| 2026-08-20 | ~~Scroll-Driven Process Accordion approved as a new interaction pattern (Section 46.9): a genuine ordered process presented as a vertically stacked accordion whose active stage is driven by section-relative scroll progress, with click, tap, and keyboard focus activating any stage immediately and simple positional resumption of scroll control afterward — no timers or autoplay of any kind. Scroll is appropriate here because the visitor is progressing through a genuine ordered JiTpro methodology, and this is not autoplay because progression is directly controlled by the reader's own scrolling. A narrow recorded exception to Section 46.8's height rule permits a PINNED accordion's internal layout to unfold as stages change, because the pinned architecture keeps the presentation spatially stable in the viewport while the process unfolds — the surrounding document flow must never jump. Section 46.8 is unchanged and continues to govern stage selectors. First approved use: the homepage five-step JiTpro process section.~~ **Presentation SUPERSEDED same day by the Scroll-Driven Sequential Process Reveal entry above.** The interaction principles recorded here — reader-controlled progression, no timers or autoplay, stable pinned geometry, copy always in the document, Section 46.8 untouched — survive under the revised Section 46.9. Retained for history. | Marketing website | Jeff Kaufman | Section 46.9. Sections 46.3, 46.4, 46.5 apply in full. |
 | 2026-08-18 | Integrated-photography tonal treatment amended: the global `brightness(0.70) saturate(0.75) contrast(0.95)` filter is removed; the token-only blending overlay is the sole darkening mechanism, and the photograph displays at its full natural brightness wherever the overlay has released. | Marketing website | Jeff Kaufman | Section 17.1. Direction supplied by Jeff 2026-08-18: with a uniform filter, even the fully unmasked right side of the scene rendered dim; the darkening's purpose is blending into the page, which the overlay accomplishes alone, so the revealed photograph should be the photograph. |
 | 2026-08-18 | Integrated-photography composition amended from an editorial two-column image block to an environmental composition (Section 17.1): the photograph keeps its native aspect ratio and complete scene, fills the full height of the movement it supports, and reaches left beneath the copy; the dissolve spans the movement rather than the photograph - held solid across the reading zone, releasing rightward until the scene stands clear, with the photograph's left edge fully swallowed so no seam is findable. Supersedes the same-day 55-60/40-45 two-column crop language below; the tonal treatment, token-only gradients, no-frame rule, headline subordination, stacked tablet/mobile presentation, and delivery rules are unchanged. | Marketing website | Jeff Kaufman | Section 17.1. Direction supplied by Jeff 2026-08-18 after review: the cropped right-side block read as an image card beside the copy, with dark margins above and below; the section should instead read as one composed movement, with the photograph as the environment its right side emerges from. |
 | 2026-08-18 | Documentary project-team photography approved for marketing argument sections, with the integrated treatment (Section 17.1): tonal integration at approximately `brightness(0.70) saturate(0.75) contrast(0.95)` tuned per photograph with the subject remaining unmistakable; a text-facing edge dissolve built only from `--jp-background` gradient stops; no card frame, border, or radius; photograph subordinate to the headline. Desktop uses an editorial two-column composition (text 55-60%, photograph 40-45%, photograph away from the shared left edge); tablet and mobile stack the photograph after the introductory copy in a wide cinematic crop with the dissolve removed. Section 48.8's prohibition on stock and generic construction imagery is narrowed, not lifted: approved photography must show the real working mechanism the section argues, and each use is approved individually. First approved use: the project-team meeting photograph in the homepage priority-clarity section, delivered as optimized responsive WebP with an explicit aspect ratio and eager loading. | Marketing website | Jeff Kaufman | Sections 17.1, 47.3, 48.2, 48.6, 48.8, 8.9. Direction supplied by Jeff 2026-08-18: the section argues that a capable team surrounded by project information can already contain the unresolved dependency that stops the field six months out, and the photograph is the evidence that makes that argument tangible - a competent team actively reviewing a project, not chaos, not decoration. |
@@ -3107,6 +3109,50 @@ A genuine progression MAY be presented as a stage selector: every numbered stage
 - Each selector MUST be operable by keyboard, with a visible focus ring that is never clipped.
 - An ordinal marker MAY take `--jp-brand-amber-active` as its stage becomes active and settle back to the resting `--jp-brand-amber` (Section 8.1.1).
 - Under reduced motion, selection resolves instantly: the chosen stage's complete copy appears with no travel and no illumination, and the interaction itself MUST continue to work (Section 46.5).
+
+## 46.9 Scroll-driven sequential process reveal (process scrollytelling)
+
+Status: APPROVED (2026-08-20). REVISED the same day from the scroll-driven process accordion first recorded under this section — see the Decision Log; the accordion presentation is superseded, its interaction principles carried forward here. Does NOT supersede Section 46.8, which remains the approved pattern for stage selectors.
+
+A genuine ordered process MAY be presented as a pinned, scroll-driven sequential reveal: one stage presented at a time inside a spatially stable presentation, with the visitor's own scrolling moving the narrative from stage to stage. This is a sequential narrative, not a menu.
+
+**Source of truth**
+
+- Section-relative scroll progress is the single source of truth. Every participating element — ordinal, title, body copy, any position indicator — derives from that one continuous value (Section 46.3). Competing per-stage animation states are prohibited.
+- Scroll-linked animation SHOULD be continuous: the reveal tracks the visitor's scroll physically, so slow scrolling reveals slowly, fast scrolling progresses quickly, and scrolling backward reverses the sequence naturally. Discrete threshold-fired state switching is the failure mode this rule exists to prevent.
+- No timers, no autoplay, no auto-cycling, and no permanent progression state. This is not autoplay: progression is directly controlled by the reader's own scrolling, in both directions.
+
+**Presentation**
+
+- One stage is presented at a time. Each stage's interval of the region contains an entrance, a generous hold, and an exit — and the hold MUST be the largest part, long enough that the body copy can be read comfortably at a normal scrolling pace.
+- Adjacent stage transition windows may overlap only at visually negligible opacity; two stage titles or bodies must never be simultaneously readable (clarified 2026-08-20). A very brief neutral moment between stages — release, clear, reveal — is preferred over a readable crossfade.
+- All stage copy remains present in the document, in reading order, at all times. Visibility is a visual state, never a content state.
+- A restrained position indicator (for example `01 / 05`, or minimal neutral ticks) MAY accompany the active stage for orientation. It MUST remain subordinate to the stage and MUST NOT become navigation.
+
+**Stable geometry**
+
+- A deliberately tall outer region supplies the scroll distance; a pinned presentation inside it remains spatially stable in the viewport.
+- The outer region's dimensions never change, document height is never animated, document flow outside the region never shifts, and no interaction causes page-level jerk. All stages share one stable presentation footprint; the content changes inside it.
+
+**Motion**
+
+- Permitted: opacity, clip/reveal, and small vertical entrance/exit offsets, directly scroll-linked or gently eased.
+- Prohibited: bouncing, spring overshoot, scaling, rotation, pulsing, decorative glow, and large translations (Section 46.4).
+
+**Responsive**
+
+- Desktop and tablet MAY use the pinned architecture.
+- Narrow viewports SHOULD present the stages sequentially in normal document flow: all copy visible, no interaction required, no sticky trap, no artificial page height, and no horizontal scrolling. The pinned presentation is cinematic; the narrow presentation prioritizes reading.
+
+**Reduced motion**
+
+- The normal-flow sequential presentation is used: no pinning, no scroll-linked animation, and no interaction required to access any copy (Section 46.5). Content and reading order are identical to the pinned presentation.
+
+**Accessibility**
+
+- DOM reading order is the process order and is never affected by the visual state. Assistive technology receives the complete process, in order, with no interaction required.
+- Accordion button semantics (`aria-expanded`, `aria-controls`) are NOT used — they would misdescribe a narrative presentation as a disclosure widget.
+- No precision scrolling may be required to reach any content: standard keyboard scrolling drives the same progression in the pinned presentation, and the narrow and reduced-motion presentations require no interaction at all.
 
 ## 46.6 User control
 
