@@ -1,7 +1,7 @@
 import HomeHero from '../components/home/HomeHero';
 import ProblemDetectionSection from '../components/home/ProblemDetectionSection';
 import ResponseWindowSection from '../components/home/ResponseWindowSection';
-import HomeThesisStatement from '../components/home/HomeThesisStatement';
+import JiTproTurnSection from '../components/home/JiTproTurnSection';
 import ReactiveProjectsSection from '../components/home/ReactiveProjectsSection';
 import HomeConstructionImage from '../components/home/HomeConstructionImage';
 import WhatJiTproDoesSection from '../components/home/WhatJiTproDoesSection';
@@ -29,10 +29,9 @@ import HomeFinalCTA from '../components/home/HomeFinalCTA';
  * Each section creates the question the next one answers. The backgrounds carry
  * the acts, not a section-by-section alternation.
  *
- * REBUILD IN PROGRESS (beat 2 of 5). Slots 01-03 are built. Slots 04-08 are
+ * REBUILD IN PROGRESS (beat 3 of 5). Slots 01-04 are built. Slots 05-08 are
  * still served by their pre-rebuild components, mounted here in the target
  * order so the page reads coherently between beats:
- *   04  HomeThesisStatement    -> becomes the JiTpro turn
  *   05  ReactiveProjectsSection -> becomes the stage selector and its figure
  *   05  HomeConstructionImage   -> folds in as the methodology's field terminal
  *   06  WhatJiTproDoesSection   -> is removed; its space becomes trust
@@ -48,8 +47,9 @@ export default function Home() {
       <ProblemDetectionSection />
       <ResponseWindowSection />
 
-      <HomeThesisStatement />
+      <JiTproTurnSection />
       <ReactiveProjectsSection />
+
       <HomeConstructionImage />
       <WhatJiTproDoesSection />
       <OutcomesSection />
