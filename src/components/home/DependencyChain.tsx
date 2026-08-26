@@ -61,9 +61,10 @@ export default function DependencyChain() {
         How one open question reaches the field
       </figcaption>
 
-      {/* Wide: one straight rule with the consequences stepping down away from
-          it. Narrow: a plain vertical list — the step is a desktop composition
-          device and would only cramp a phone. */}
+      {/* Wide: five risers hanging from one datum, each longer than the last, so
+          the consequences step away from the line that caused them. Narrow: a
+          plain vertical list — the descent is a desktop composition device and
+          would only cramp a phone. */}
       <ol className="mt-7 grid gap-y-9 lg:mt-9 lg:grid-cols-5 lg:gap-x-6 lg:gap-y-0 xl:gap-x-8">
         {LINKS.map((link, i) => (
           <li
@@ -71,23 +72,28 @@ export default function DependencyChain() {
             className="lg:flex lg:flex-col"
             style={{ '--step': `${i * STEP}px` } as CSSProperties}
           >
-            {/* The rule and its node sit at a constant height across all five
-                columns; only the text below them descends. */}
-            <div aria-hidden="true" className="flex items-center gap-3">
+            {/* A drop line, not a rail. Every riser starts on the same datum and
+                each one is longer than the last, so the figure measures the slip
+                rather than merely listing the steps. This is deliberately NOT the
+                dot-and-hairline vocabulary the response-window ladder uses: that
+                one is an escalation, this one is a displacement, and equivalent
+                marks for different roles is a consistency defect (§48 preamble,
+                §48.9). For the same reason the links carry no ordinals — the
+                descent already states the order, and numbering must never be the
+                only expression of sequence (§48.9). */}
+            <div aria-hidden="true" className="hidden lg:block">
+              <span className="block h-px w-full bg-jp-border/20" />
               <span
-                className={`h-1.5 w-1.5 shrink-0 rounded-full ${
-                  i === LINKS.length - 1 ? 'bg-jp-text-secondary' : 'bg-jp-text-muted/70'
-                }`}
+                className="block w-px bg-jp-border/20"
+                style={{ height: `calc(var(--step) + 1.25rem)` }}
               />
-              <span className="h-px flex-1 bg-jp-border/20" />
             </div>
 
-            <div className="mt-4 lg:mt-[calc(1rem+var(--step))]">
-              <p className="font-mono text-[0.6875rem] tracking-[0.2em] text-jp-text-muted">
-                <span className="sr-only">Step </span>
-                {`0${i + 1}`}
-              </p>
-              <h4 className="mt-2.5 max-w-[26ch] font-heading text-[1.0625rem] font-semibold leading-snug text-balance text-jp-text-primary sm:text-[1.125rem]">
+            {/* Narrow: the drop line collapses to a single leading tick. */}
+            <div aria-hidden="true" className="h-px w-10 bg-jp-border/20 lg:hidden" />
+
+            <div className="mt-4 lg:mt-0">
+              <h4 className="max-w-[26ch] font-heading text-[1.0625rem] font-semibold leading-snug text-balance text-jp-text-primary sm:text-[1.125rem]">
                 {link.label}
               </h4>
               <p className="mt-2 max-w-[34ch] text-[0.9375rem] leading-[1.6] text-jp-text-muted">
