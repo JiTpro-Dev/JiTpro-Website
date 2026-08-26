@@ -94,12 +94,22 @@ export default function HomeHero() {
             standing empty. */}
         <div className="mt-14 border-t border-jp-border/12 pt-10 sm:mt-16 lg:mt-20 lg:grid lg:grid-cols-12 lg:gap-x-10 lg:pt-12 xl:gap-x-16">
           {/* Recognition — the condition, introduced and not explained. Section
-              2 is what explains why these things stay invisible. */}
+              2 is what explains why these things stay invisible.
+
+              The growth-stage condition is not one project getting larger. It is
+              more projects, larger and more complex, while management capacity
+              and systems stay where they were. Counts are explanatory context
+              and are deliberately not published (§20.1, audience qualitative
+              only).
+
+              "every decision, approval, product, material, and service" is
+              load-bearing and must not be narrowed to long-lead work (§20.1,
+              long-lead terminology). */}
           <p
             className={`max-w-[46ch] text-[1.125rem] leading-[1.65] text-jp-text-secondary sm:text-[1.25rem] lg:col-span-5 lg:text-[1.3125rem] ${rise(1).className}`}
             style={rise(1).style}
           >
-            The bigger the project, the harder it gets to keep decisions, approvals and long-lead work ahead of the field.
+            As contractors take on more projects&mdash;and larger, more complex ones&mdash;the work required to keep every decision, approval, product, material, and service ahead of the field grows even faster.
           </p>
 
           {/* Orientation — who this is for and what kind of thing it is, stated
