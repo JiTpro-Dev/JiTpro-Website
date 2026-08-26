@@ -19,14 +19,22 @@
  * the answer side — and because it says WHEN the method acts, which neither the
  * requirement nor the backward direction states.
  *
- * COPY THAT IS LOAD-BEARING (§20.1, the operating requirement). The requirement
- * has two halves and both must survive: WHAT — the correct product or
- * specification, defined and approved for installation; WHEN — available at the
- * moment the field is ready for it. It is an operating requirement and the
- * controls built around it, never a guaranteed outcome, so nothing here may
- * promise delivery, conformance, or a schedule, or suggest JiTpro replaces the
- * project manager's or the design team's responsibilities. "Not late. Not
- * wrong." is retired and must not return.
+ * COPY THAT IS LOAD-BEARING (§20.1, the operating requirement, refined
+ * 2026-08-26). The requirement has two parts and both must survive:
+ * COORDINATION — the right product is coordinated with what is actually being
+ * built in the field; TIMING — it is onsite when the field needs it. The
+ * backward line is plural for that reason — "from those requirements", never
+ * "from that point", which is a moment in time and so names only the timing
+ * half. The superseded "defined and approved for installation" formulation must
+ * not return: approval for installation is one upstream event among many, not
+ * the requirement, and the coordination the field depends on is resolved long
+ * before the physical product exists.
+ *
+ * It is an operating requirement and the controls built around it, never a
+ * guaranteed outcome, so nothing here may promise delivery, conformance, or a
+ * schedule, or suggest JiTpro replaces the project manager's or the design
+ * team's responsibilities. "Not late. Not wrong." is retired and must not
+ * return.
  *
  * COMPOSITION — visual centre of gravity: the requirement, set as the section's
  * display statement across the left two thirds, with the orientation copy
@@ -53,7 +61,7 @@ export default function JiTproTurnSection() {
             light this composition is built on, not leftover space. */}
         <div className="lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-10 xl:gap-x-16">
           <h2 className="font-heading text-[2rem] font-extrabold leading-[1.1] tracking-[-0.025em] text-balance text-jp-background sm:text-[2.5rem] lg:col-span-7 lg:text-[3rem] xl:text-[3.25rem]">
-            The field needs the right product, approved for installation, when the work is ready for it.
+            The right product has to be coordinated with what&apos;s being built in the field and be onsite when the field needs it.
           </h2>
 
           <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.65] text-jp-ink-secondary sm:text-[1.125rem] lg:col-span-5 lg:mt-0">
@@ -74,8 +82,8 @@ export default function JiTproTurnSection() {
                 What
               </p>
               <p className="mt-4 max-w-[40ch] text-[1.1875rem] leading-[1.55] text-jp-ink-secondary sm:text-[1.3125rem]">
-                The correct product or specification has been{' '}
-                <span className="font-semibold text-jp-background">defined and approved for installation</span>.
+                The right product is{' '}
+                <span className="font-semibold text-jp-background">coordinated with what is actually being built in the field</span>.
               </p>
             </div>
 
@@ -84,8 +92,8 @@ export default function JiTproTurnSection() {
                 When
               </p>
               <p className="mt-4 max-w-[40ch] text-[1.1875rem] leading-[1.55] text-jp-ink-secondary sm:text-[1.3125rem]">
-                It is available at the moment the{' '}
-                <span className="font-semibold text-jp-background">field is ready for it</span>.
+                It is{' '}
+                <span className="font-semibold text-jp-background">onsite when the field needs it</span>.
               </p>
             </div>
           </div>
@@ -94,7 +102,7 @@ export default function JiTproTurnSection() {
               the sentence that makes the reader ask what the method actually
               is. Section 5 answers it. */}
           <p className="mt-14 max-w-[34ch] font-heading text-[1.5rem] font-bold leading-[1.2] tracking-[-0.02em] text-balance text-jp-background sm:max-w-none sm:text-[1.75rem] lg:mt-16 lg:text-[2rem]">
-            Everything upstream is planned and managed backward from that point.
+            Everything upstream is planned and managed backward from those requirements.
           </p>
         </div>
 
