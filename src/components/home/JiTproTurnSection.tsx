@@ -68,7 +68,7 @@ export default function JiTproTurnSection() {
             <span className="font-semibold text-jp-background">
               JiTpro is a consultancy-first program for growth-stage general contractors.
             </span>{' '}
-            We work with your construction management team on one project, organizing the decisions, information and commitments they need to keep the work ahead of the field.
+            We work with your team on one project, organizing the decisions, information and commitments they need to keep the work ahead of the field.
           </p>
         </div>
 
