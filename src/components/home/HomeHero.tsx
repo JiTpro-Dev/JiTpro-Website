@@ -109,7 +109,7 @@ export default function HomeHero() {
             className={`max-w-[46ch] text-[1.125rem] leading-[1.65] text-jp-text-secondary sm:text-[1.25rem] lg:col-span-5 lg:text-[1.3125rem] ${rise(1).className}`}
             style={rise(1).style}
           >
-            As contractors take on more projects&mdash;and larger, more complex ones&mdash;the work required to keep every decision, approval, product, material, and service ahead of the field grows even faster.
+            As construction companies grow&mdash;taking on more projects, each larger and more complex&mdash;the work required to keep every decision, approval, product, material, and service ahead of the field grows faster still.
           </p>
 
           {/* Orientation — who this is for and what kind of thing it is, stated
