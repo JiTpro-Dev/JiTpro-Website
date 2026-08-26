@@ -61,7 +61,7 @@ export default function HomeHero() {
               className={`font-mono text-[0.6875rem] font-medium uppercase tracking-[0.24em] text-jp-brand-amber/90 sm:text-xs sm:tracking-[0.26em] ${rise(0).className}`}
               style={rise(0).style}
             >
-              Order → Control → Flow
+              Award through delivery
             </p>
 
             {/* The claim and its explanation are set tight so they read as one
@@ -72,18 +72,24 @@ export default function HomeHero() {
             >
               You don&apos;t own every decision. But your project depends on how you manage them.
             </h1>
+            {/* The company has outgrown its methods, not its people (§20.1: the
+                reader recognises themselves through symptoms, never through a
+                management diagnosis, and is never portrayed as failing). */}
             <p
-              className={`mt-2 font-heading text-[1.4375rem] font-semibold leading-[1.22] tracking-[-0.015em] text-balance text-jp-brand-amber sm:mt-2.5 sm:text-[2rem] lg:text-[2.375rem] min-[1440px]:mt-3 min-[1440px]:text-[2.75rem] min-[1440px]:leading-[1.18] ${rise(2).className}`}
+              className={`mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-7 sm:text-[1.1875rem] lg:text-[1.25rem] min-[1440px]:text-[1.3125rem] ${rise(2).className}`}
               style={rise(2).style}
             >
-              Small misses today become expensive recoveries tomorrow.
+              The projects got bigger. So did the number of people, selections, approvals and long-lead items each one runs on—faster than the meetings, spreadsheets and memory that carried the company here were ever built to hold.
             </p>
 
+            {/* The category, stated once, as a sentence (§20.1). It is unpacked
+                in the turn section; it is not restated there. */}
             <p
-              className={`mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-7 sm:text-[1.1875rem] lg:text-[1.25rem] min-[1440px]:text-[1.3125rem] ${rise(3).className}`}
+              className={`mt-5 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.1875rem] lg:text-[1.25rem] min-[1440px]:text-[1.3125rem] ${rise(3).className}`}
               style={rise(3).style}
             >
-              JiTpro gives general contractors control over the critical decisions, responsibilities, and commitments their projects depend on—so products, materials, and services reach the field when they are needed, before small misses become schedule delays and expensive recovery.
+              <span className="font-semibold text-jp-text-primary">JiTpro is a consultancy-first program for general contractors.</span>{' '}
+              We work alongside your team on one project, on everything that has to be settled upstream before the field can build.
             </p>
 
             <div className={`mt-9 sm:mt-10 ${rise(4).className}`} style={rise(4).style}>
@@ -91,7 +97,7 @@ export default function HomeHero() {
                 to="/contact/contractor"
                 className="inline-flex w-full max-w-md items-center justify-center gap-2.5 rounded-xl bg-jp-brand-amber px-4 py-4 text-center text-[0.875rem] font-semibold text-jp-background shadow-[0_12px_30px_-12px_color-mix(in_oklab,var(--jp-brand-amber)_60%,transparent)] transition-colors duration-200 ease-out hover:bg-jp-brand-amber-active focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-jp-text-primary motion-reduce:transition-none sm:w-auto sm:px-6 sm:text-[0.9375rem]"
               >
-                <span className="[text-wrap:balance]">Start your next project with more control</span>
+                <span className="[text-wrap:balance]">Start with one project</span>
                 <ArrowRight
                   size={17}
                   aria-hidden="true"

@@ -770,10 +770,6 @@ const routeTo = (from: number, to: number) =>
 const routeHead = (x: number) =>
   `M${x - ROUTE_HALF} ${ROUTE_ELBOW} L${x + ROUTE_HALF} ${ROUTE_ELBOW} L${x} ${ROUTE_ELBOW + ROUTE_HEAD} Z`;
 
-/** Static in both directions — the method behind the movement. */
-const METHOD_SENTENCE =
-  'JiTpro works backward from the required on-site date to determine the required date for every commitment.';
-
 const DESCRIPTION =
   'JiTpro works backward from the required on-site date to determine the required date ' +
   'for every commitment, then follows those commitments forward to protect field execution.';
@@ -1222,14 +1218,12 @@ export default function BackwardPlannedTimeline({ animate }: Props) {
         </svg>
       </div>
 
-      {/* The method behind the movement — static in both directions, and real
-          text rather than part of the image description. */}
-      <p
-        className={`relative mx-auto mt-6 max-w-[52ch] text-center text-[0.8125rem] leading-[1.6] text-jp-text-muted sm:mt-7 sm:text-sm ${chrome.className}`}
-        style={chrome.style}
-      >
-        {METHOD_SENTENCE}
-      </p>
+      {/* The method sentence that used to sit here was removed 2026-08-25. The
+          homepage stated backward planning three times before the methodology
+          section arrived — here, in the section below, and in the method itself.
+          The hero's job is to show that the sequence exists and is long; naming
+          the method is the methodology section's job. DESCRIPTION still carries
+          it for assistive technology, where there is no redundancy. */}
 
       {/* Deliberately quiet — the hero has one call to action and this must not
           read as a second one. Hidden under reduced motion, where there is no
