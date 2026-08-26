@@ -2,6 +2,26 @@
  * The cause-and-effect chain for Section 2 — one unresolved condition
  * displacing everything downstream of it, on a single named package.
  *
+ * THE TRACKED EXAMPLE IS CUSTOM STEEL WINDOWS (2026-08-26), replacing
+ * structural steel. This is a positioning decision, not a copy preference.
+ * Structural steel is the package every contractor already watches, so
+ * tracking it answers the section's own question — what can your team not see
+ * — with the obvious item, and it drifts JiTpro toward the long-lead framing
+ * §20.1 forbids. Custom steel windows carry just as much upstream dependency
+ * logic while keeping the argument on what has to be RESOLVED before the
+ * product can move: a perimeter detail, a dimension, an approval, a release.
+ *
+ * The lesson must therefore never be "windows take a long time." It is that an
+ * unresolved upstream condition quietly prevented the next action from
+ * happening while the project still looked healthy. Nothing in this figure
+ * states a lead time, and nothing may be added that does (§20.1, long-lead
+ * terminology).
+ *
+ * The chain stops at exposure. What the shrinking set of remaining options
+ * costs belongs to Section 3, which MUST NOT re-narrate this package — those
+ * are two different arguments and merging them makes one section (§48.9,
+ * §48 preamble).
+ *
  * COMPOSITION (binding, 2026-08-25): this figure spans the full container. It
  * exists partly to break the left reading column that the previous
  * implementation of this section never left, so it must never be constrained to
@@ -15,8 +35,10 @@
  * PROVENANCE (§48.10): methodological. This is the shape of a mechanism, not a
  * dataset — it carries no durations, no dates and no counts, so it makes no
  * claim a reader could mistake for evidence, and needs no provenance line. The
- * arithmetic belongs to the methodology section; naming it twice would spend the
- * figure that has to land there.
+ * package it names is a generic construction category, indefinite throughout,
+ * and never a project: no owner, no site, no schedule, nothing a reader could
+ * take for a client record. The arithmetic belongs to the methodology section;
+ * naming it twice would spend the figure that has to land there.
  */
 
 import type { CSSProperties } from 'react';
@@ -30,24 +52,24 @@ type Link = {
 
 const LINKS: Link[] = [
   {
-    label: 'A connection detail stays open',
-    note: 'One question back to the engineer. Nobody logs it as a problem.',
+    label: 'The head and jamb detail is still open',
+    note: 'One question back to the architect about how the frame meets the wall. Nobody logs it as a problem.',
   },
   {
-    label: 'The submittal cannot be completed',
-    note: 'The package is ready except for the part that depends on the answer.',
+    label: 'The frames cannot be dimensioned',
+    note: 'The fabricator has the elevations. What is missing is how the frame lands in the wall.',
   },
   {
-    label: 'Review and approval move out',
-    note: 'The reviewer’s clock starts when the submittal lands, not when it was due.',
+    label: 'The shop drawings cannot be completed',
+    note: 'The package is ready apart from the sheets that carry the detail in question.',
   },
   {
-    label: 'The fabrication window compresses',
-    note: 'The shop’s slot did not move. What moved is how much of it is left.',
+    label: 'Approval cannot finish, so nothing is released',
+    note: 'A purchase order is not a release. Nothing enters the shop without an approved drawing.',
   },
   {
-    label: 'The date the field needs it does not move',
-    note: 'Everything sequenced behind the steel is now sequenced behind the delay.',
+    label: 'The date the field needs them never moved',
+    note: 'The first time this reads as a schedule problem is the week the openings are ready and the windows are not.',
   },
 ];
 
@@ -58,7 +80,7 @@ export default function DependencyChain() {
   return (
     <figure className="mt-14 lg:mt-16">
       <figcaption className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-jp-text-muted">
-        How one open question reaches the field
+        Custom steel windows: how one open question reaches the field
       </figcaption>
 
       {/* Wide: five risers hanging from one datum, each longer than the last, so

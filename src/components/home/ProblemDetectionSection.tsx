@@ -93,13 +93,17 @@ export default function ProblemDetectionSection() {
         </div>
 
         {/* The mandated cause-and-effect movement, on one named package, at
-            full container width. */}
+            full container width. The tracked example is custom steel windows,
+            not structural steel (2026-08-26): the point is an unresolved
+            upstream condition, and tracking the package the contractor already
+            watches would answer this section's own question with the obvious
+            item. No lead time is stated here or in the figure (§20.1). */}
         <div className="border-t border-jp-border/12 pt-12 lg:pt-14">
           <h3 className="max-w-[46ch] font-heading text-[1.3125rem] font-semibold leading-snug text-balance text-jp-text-primary sm:text-[1.4375rem]">
             None of it looks like a schedule problem while there is still time to fix it.
           </h3>
           <p className="mt-4 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem]">
-            One open question on a steel connection does not stop anything on the day it is asked. It stops something eight months later, and by then it is not a question any more.
+            On a custom steel window package, one open question about how the frame meets the wall does not stop anything on the day it is asked. It stops something months later, and by then it is not a question any more.
           </p>
 
           <DependencyChain />
