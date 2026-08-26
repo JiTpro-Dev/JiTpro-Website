@@ -3,7 +3,17 @@ import { useState } from 'react';
 import { RotateCcw } from 'lucide-react';
 
 /**
- * Homepage hero visual — one idea: control is established before construction.
+ * Backward-planned timeline — one idea: control is established before
+ * construction.
+ *
+ * NOT CURRENTLY RENDERED. This was the homepage hero visual until 2026-08-26,
+ * when the hero was rebuilt as a typographic composition and the page's one
+ * substantial diagram was reserved for the methodology section. That was a
+ * composition decision about the hero, not a judgement about this graphic:
+ * the component is complete, conformant and reusable as it stands, and it
+ * remains the site's most construction-literate visual. Do not dismantle it,
+ * strip its supporting logic, or treat it as dead code — restoring it anywhere
+ * is a one-line mount.
  *
  * A single measured line carries the sequence a project runs through, ending on
  * the date the work is required on site. A marker then walks the line: back from
