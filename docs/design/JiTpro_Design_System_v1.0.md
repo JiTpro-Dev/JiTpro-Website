@@ -50,6 +50,12 @@ TODO:
 
 | Date | Decision | Scope | Owner | Source/Rationale |
 | --- | --- | --- | --- | --- |
+| 2026-08-25 | **Homepage messaging standards approved (new Section 20.1)**, in three parts. (a) The 2026-08-04 retired-language record is formalized and scoped: the retired words "procurement" and "margin" may not appear in homepage copy, **but the mechanism they name must be taught** in operational construction language — retiring a word is not permission to describe the work vaguely. Brand Voice's teach-then-name sequence is homepage-exempt and unchanged elsewhere. (b) The homepage's account of purpose is expressed as an **operating requirement and the controls built around it**, never a guaranteed outcome: the correct product, approved for installation, available when the field is ready, with everything upstream planned and managed backward from that point. Delivery guarantees, quality/conformance warranties, claims to replace PM or design-team conformance responsibility, claims to control supplier execution, and absolute pairs of the "not late, not wrong" form are prohibited. (c) The homepage audience is stated **qualitatively only** — no revenue band, employee count, or project-value band — with recognition carried by symptoms rather than a management diagnosis, and the target contractor never portrayed as dysfunctional. Supersedes Section 20's founder-section and proof-section TODOs by reference to Sections 17.2 and 48.10. | Marketing website | Jeff Kaufman | Sections 20.1, 1, 2, 47.1, Brand Voice. (a) The ban existed with no owner, date, or entry, and was in unresolved tension with Brand Voice; scoping it to the word resolves both. (b) "Not late. Not wrong." reads as an outcome guarantee, and `src/content/faqData.ts:130-133` — live, one nav click from the homepage — answers "Does JiTpro guarantee that everything will arrive when desired?" with a flat **"No."** A homepage claim the company's own FAQ contradicts is worse than a weaker claim. Section 1 already holds the line: JiTpro creates visibility, not optimism. (c) No approved ICP number exists in this system; five live surfaces carry five different figures, so any band published now would contradict a sibling page. |
+| 2026-08-25 | **Figure provenance approved as a new Section 48.10.** Every element of a figure carrying numbers, names, or dates is exactly one of three statuses — **Representative** (constructed to reflect realistic conditions; not from any actual engagement), **Illustrative** (added to demonstrate the method, no basis in the dataset), or **Methodological** (pure diagram, no data) — and the distinction must survive into the rendered page. Prohibited without exception: presenting representative or illustrative content as a customer result or actual project record; describing a synthetic dataset as real or as anonymized real; fabricating a count of anything the dataset does not contain; and rendering a derived value in a register implying precision the source does not carry. Required: one quiet provenance sentence in the caption register (never a disclaimer block or multi-key legend); weaker-provenance elements drawn *lighter* than data-derived ones; derived quantities expressed in the unit the source actually carries; and **at most one kind of absolute date per figure**, every other temporal value typeset as a duration or offset. First approved use: the homepage methodology figure. | All products | Jeff Kaufman | Sections 48.10, 48.8, 47.4. A figure is read as a claim about the world, and a figure whose status is unstated is read as the strongest status it could plausibly have. `src/content/procurementScheduleSnapshot.json` is **synthetic** — constructed to represent realistic sequencing and durations, not a client schedule — and confirmed to contain no scope gaps, no owners, and no responsible parties (verified: step keys are exactly `days`, `name`, `color`, `milestone`; all 42 rows `status: "draft"`). The register rule exists because the instinct is to emphasize whatever is currently being narrated, which is exactly backwards when the narrated element is the one with the weaker provenance. The one-absolute-date rule exists because a required onsite date and a backward-planned offset are different kinds of quantity, and blurring them misstates the method. |
+| 2026-08-25 | **Founder presence approved as a new Section 17.2, explicitly REVERSING the 2026-08-04 homepage decision** that removed the founder section (recorded in `src/archive/homepage/README.md`). Founder presence is a credibility instrument answering one question — did the people who built this method actually do this work — and is finished once that question is answered. Required: the section is about the work and the experience, its heading names the work not the man, credibility comes from specific recognizable construction experience rather than credentials, and exactly one quiet path leads to the deeper story. Prohibited: an oversized founder card, a hero-scale portrait, a résumé or credential list, any career-volume figure, a display-scale first-person pull quote, and any treatment making the founder rather than the reader's project the subject of the page. Portraiture is restrained, late in the section, frameless and token-only. First approved use: the homepage trust section. | Marketing website | Jeff Kaufman | Sections 17.2, 17.1, 48.1, 47.1. The 2026-08-04 removal was right about what it removed — a founder-centric section competing with the contractor's own story — and wrong as a general rule, because it left the site with no owner for the trust question at all. The buyer-journey audit found Trust served by a single objection-handler in the last section of nine, while the strongest credibility writing on the public site sits unlinked on `/about`. The reversal is deliberately narrow: the constraints above are the decision, not the permission. |
+| 2026-08-25 | **Section 48.8's crane prohibition NARROWED, and a terminal field band approved in Section 17.1.** What is prohibited is the cliché — a crane or any construction machine used as generic shorthand for "construction". A crane MAY appear in approved documentary photography when it is performing the specific work the section argues about and the section would be weaker without it; each such use is approved individually. Separately, a photograph MAY close a section as a **full-container terminal band** rather than an environmental composition beside the copy, provided the section has already made its argument in words and the band carries one short line naming what the reader is looking at. The band is a terminal beat, never a transition, and MUST NOT be a standalone section. First approved use: the structural-steel field condition closing the homepage methodology section. | Marketing website | Jeff Kaufman | Sections 48.8, 17.1, 47.4. The prohibition as written banned the machine rather than the cliché, which would exclude authentic documentary photography of the exact field condition a section is arguing about — and the homepage shipped such a photograph in commit `5ff4505` with no entry covering it, so the rule needed resolving either way. The band rule exists because the same photograph placed *between* two arguments is a palate cleanser and placed *at the end of one* is evidence; the wordless-section form was the defect, not the full-bleed presentation. |
+| 2026-08-25 | **Section 46.9 retains APPROVED status with no current production use.** The homepage five-stage methodology — its only approved use — moves to the Section 46.8 stage selector with a Section 46.8.1 accumulating visual. Section 46.9 is **neither superseded nor retired**; the 2026-08-20 "first approved use" designation is released, and a future use requires a fresh entry naming it. Non-conforming as a result: `src/components/home/ReactiveProjectsSection.tsx` in its entirety — the 400vh region, the `useScroll` subscription and the pinned architecture are removed rather than migrated. | Marketing website | Jeff Kaufman | Sections 46.9, 46.8, 46.8.1, 49.1. The 2026-08-20 entry judged the methodology to be a narrative the visitor moves through, and was right about the accordion it rejected. It is reversed here on different grounds: that section's buyer-journey job is establishing competence, and competence is read from the relationship *between* the stages — a presentation that shows exactly one stage at a time by design forecloses the comparison it depends on. The pattern was not the defect; its content was. Retiring a pattern because one surface stopped using it would document a surface decision as a system decision. |
+| 2026-08-25 | **Section 46.8 amended in three places for the divided content stage.** (a) **Hover no longer commits** where a selector drives a substantial content stage: click, tap and keyboard activation commit; hover and keyboard focus indicate availability only, using the inactive approach treatment and never the active amber enclosure. Hover-to-commit remains the default for selectors driving only a short copy swap, and a selector must apply one behaviour to all of its own stages. (b) **A rail MAY be laid out on either axis**, provided every stage number and title stays visible at every width — the axis is a composition decision, the visibility rule is not. (c) **The content area MAY be divided** into a copy column and a persistent visual column beside the rail; in the divided form both columns MUST reserve a height independent of the active index. New **Section 46.8.1** governs the visual column: one accumulating visual system rather than swapped illustrations, elements introduced at one stage persisting at every later stage, no second interaction, legible without motion, and a distinct compact composition rather than a scaled one. | Marketing website | Jeff Kaufman | Sections 46.8, 46.8.1, 46.3, 46.5, 35.1, 48.3. The hover rule was written for a three-stage rail above a short copy area, where an accidental change cost the reader one line. On a five-stage rail driving an accumulating figure, crossing the rail on the way elsewhere re-narrates the argument, and focus-to-commit destroys a keyboard reader's place mid-traversal. The divided stage and the accumulating visual are what convert five sentences that *assert* thoroughness into one object that *shows* what thoroughness produces — which is the difference between a method a reader is told about and one they watch happen. |
 | 2026-08-20 | Section 46.9 REVISED from Scroll-Driven Process Accordion to **Scroll-Driven Sequential Process Reveal (process scrollytelling)**: one stage presented at a time inside the pinned presentation; continuous section-relative scroll progress is the single source of truth, driving enter → generous hold → exit choreography per stage and reversing naturally on upward scroll; the all-titles-visible rail and accordion button semantics (`aria-expanded`/`aria-controls`) are removed as misdescribing a narrative presentation. Stable outer geometry, no timers/autoplay, copy always in the document in reading order, Section 46.4 restraint, and the normal-flow narrow-viewport and reduced-motion fallbacks all carry over. Section 46.8 is unchanged. First approved use: the homepage five-step JiTpro process. | Marketing website | Jeff Kaufman | Section 46.9. The accordion presented the methodology as a menu of five visible rows; the methodology is a narrative the visitor moves through, and presenting one stage at a time with the reveal physically connected to scrolling makes the progression the experience rather than an interaction to discover. Continuous scroll-linked animation also removes the discrete threshold switching that made the accordion feel jerky. |
 | 2026-08-20 | ~~Scroll-Driven Process Accordion approved as a new interaction pattern (Section 46.9): a genuine ordered process presented as a vertically stacked accordion whose active stage is driven by section-relative scroll progress, with click, tap, and keyboard focus activating any stage immediately and simple positional resumption of scroll control afterward — no timers or autoplay of any kind. Scroll is appropriate here because the visitor is progressing through a genuine ordered JiTpro methodology, and this is not autoplay because progression is directly controlled by the reader's own scrolling. A narrow recorded exception to Section 46.8's height rule permits a PINNED accordion's internal layout to unfold as stages change, because the pinned architecture keeps the presentation spatially stable in the viewport while the process unfolds — the surrounding document flow must never jump. Section 46.8 is unchanged and continues to govern stage selectors. First approved use: the homepage five-step JiTpro process section.~~ **Presentation SUPERSEDED same day by the Scroll-Driven Sequential Process Reveal entry above.** The interaction principles recorded here — reader-controlled progression, no timers or autoplay, stable pinned geometry, copy always in the document, Section 46.8 untouched — survive under the revised Section 46.9. Retained for history. | Marketing website | Jeff Kaufman | Section 46.9. Sections 46.3, 46.4, 46.5 apply in full. |
 | 2026-08-18 | Integrated-photography tonal treatment amended: the global `brightness(0.70) saturate(0.75) contrast(0.95)` filter is removed; the token-only blending overlay is the sole darkening mechanism, and the photograph displays at its full natural brightness wherever the overlay has released. | Marketing website | Jeff Kaufman | Section 17.1. Direction supplied by Jeff 2026-08-18: with a uniform filter, even the fully unmasked right side of the scene rendered dim; the darkening's purpose is blending into the page, which the overlay accomplishes alone, so the revealed photograph should be the photograph. |
@@ -1767,6 +1773,48 @@ A photograph placed on a JiTpro dark surface MUST be integrated into the site's 
 - Reserve the layout with an explicit aspect ratio - a photograph MUST NOT shift layout while loading.
 - Photography adjacent to the initial viewport loads eagerly; lazy-loading that visibly pops in during the first scroll is prohibited.
 
+### The terminal field band (approved 2026-08-25)
+
+A photograph MAY be presented as a **full-container band closing the section whose argument it completes**, rather than as an environmental composition beside the copy. This is the one approved presentation in which the photograph is not flanked by the reading column.
+
+The band is a **terminal beat, never a transition**. It exists to show the field condition the section has just explained, at the moment the explanation lands.
+
+- The band MUST close a section that has already made its argument in words, and MUST carry **one short line naming what the reader is looking at** — the Section 17.1 role rule is not relaxed. A wordless band standing on its own is decorative pacing and is prohibited.
+- The band MUST NOT be a standalone section. A photograph that separates two arguments is a palate cleanser; a photograph that concludes one is evidence.
+- No dissolve: the dissolve exists only where text overlaps the image, which does not occur here. No frame, no border, no radius, no filter, no animation (Sections 17.1, 48.2).
+- The band holds the section's own horizontal container and carries no vertical padding of its own, so it reads as part of the section rather than an inserted card.
+- The existing crop ladder applies: the native composition at desktop, the established cinematic crops below it via `object-fit`, explicit aspect ratios reserving the layout.
+
+First approved use: the structural-steel field condition closing the homepage methodology section (Decision Log 2026-08-25).
+
+---
+
+## 17.2 APPROVED - Founder presence on marketing surfaces
+
+Status: APPROVED (2026-08-25). Direction supplied by Jeff Kaufman.
+
+Founder presence is a **credibility instrument, not a biography**. It exists to answer one buyer question — *did the people who built this method actually do this work?* — and it is finished the moment that question is answered.
+
+**Reverses the 2026-08-04 homepage decision** that removed the founder section outright (recorded in `src/archive/homepage/README.md`). That decision was right about what it removed — a founder-centric section competing with the contractor's own story — and wrong as a general rule, because it left the site with no owner for the trust question at all. The reversal is narrow and carries constraints, not a licence to restore what was removed.
+
+**Required**
+- The section is about **the work and the experience behind the method**, never about celebrating the person. Its heading names the work, not the man.
+- Credibility MUST be carried by **specific construction experience** a contractor recognizes from their own projects — meetings attended, conditions managed, failures witnessed — never by generic credentials, years of service, or dollar volume.
+- Exactly **one quiet path** to the deeper founder or about story: a text or hairline link, never a second primary action (Section 48.1).
+
+**Prohibited**
+- An oversized founder card, a hero-scale portrait, or a portrait that competes with the section heading.
+- A résumé, a credential list, an accomplishments tally, or a figure describing career volume.
+- A display-scale first-person pull quote.
+- Any treatment in which the founder, rather than the reader's project, becomes the subject of the page.
+
+**Portraiture**
+- Restrained and late: the portrait is subordinate to the copy it supports and MUST NOT be the first thing the section presents.
+- Frameless and token-only, consistent with Section 17.1 — no card, no border, no radius, no decorative treatment.
+- The Section 17.1 delivery rules apply unchanged.
+
+First approved use: the homepage trust section (Decision Log 2026-08-25).
+
 ---
 
 # 18. Illustration Style
@@ -1854,6 +1902,47 @@ TODO:
 - TODO: Define CTA placement and style rules.
 - TODO: Define founder/story section rules.
 - TODO: Define proof/data section rules.
+
+APPROVED resolution:
+- Founder/story section rules are defined in **Section 17.2**, which is binding. That TODO is superseded.
+- Proof and data-figure rules are defined in **Section 48.10**, which is binding. That TODO is superseded.
+- Homepage messaging standards are defined in **Section 20.1** below. The remaining TODOs stay open.
+
+## 20.1 APPROVED - Homepage messaging standards
+
+Status: APPROVED (2026-08-25). Direction supplied by Jeff Kaufman. Scope: the marketing homepage. Other surfaces are governed by their own decisions and are not changed by this section.
+
+### Retired language: the word may not appear; the mechanism must
+
+The 2026-08-04 rebuild retired **"procurement"** and **"margin"** from the homepage, along with describing JiTpro as software or as "a layer" (recorded in `src/archive/homepage/README.md`). That record had no owner, no date attribution, and no Decision Log entry. It is now recorded properly, and it is **scoped**:
+
+- The retired **words** MUST NOT appear in homepage-facing copy.
+- The **mechanism those words name MUST be taught**, in operational detail, using construction language the reader already owns: scope, products, materials, services, decisions, information, responsibilities, commitments, submittals, approvals, fabrication, release, delivery, Required Onsite Dates, and backward planning.
+- Retiring a word is not permission to describe the work vaguely. A homepage that avoids the category word by becoming abstract has failed this rule, not satisfied it.
+- This resolves the standing tension with the Brand Voice section's teach-then-name sequence: on the homepage the teaching happens and the naming does not. Brand Voice governs every other surface unchanged.
+
+### The operating requirement
+
+The homepage's account of what JiTpro is for MUST be expressed as an **operating requirement and the controls built around it** — never as a guaranteed outcome.
+
+The requirement has two halves, and both are load-bearing:
+
+- **What** — the correct product or specification has been defined and approved for installation.
+- **When** — it is available at the moment the field is ready for it.
+
+JiTpro's role is to establish and manage the upstream planning, visibility, responsibilities, commitments, decisions, approvals, and timing that support that condition. Everything upstream is planned and managed backward from it.
+
+**Prohibited formulations.** The homepage MUST NOT state or imply a delivery guarantee, a quality or conformance warranty, that JiTpro replaces the project manager's or design team's conformance responsibilities, or that JiTpro controls supplier or fabricator execution. Absolute pairs that read as guarantees — of the form "not late, not wrong" — MUST NOT be used. Section 1's position stands: JiTpro creates visibility, not optimism, and the live FAQ answers the guarantee question with a flat "No."
+
+This is a rule about **claim strength, not ambition.** The objective is not weakened; it is described as a requirement JiTpro builds controls around rather than an outcome it warrants.
+
+### Audience: qualitative only
+
+The homepage MUST NOT publish a revenue band, employee count, project-value band, or any other numerical qualification of its audience. No such figure is approved anywhere in this system, and the live surfaces that carry one do not agree with each other.
+
+The audience is a **growth-stage general contractor: a successful contractor whose project complexity has begun to outgrow the systems used to manage it.** That sentence is the definition, not the copy — the homepage MUST let the reader recognize themselves through symptoms they would describe in their own words (more dependencies, more people, information in more places, more chasing, late discovery, manual systems getting harder to hold, growing dependence on intervention) rather than through a management-consulting diagnosis.
+
+The target contractor MUST NOT be portrayed as dysfunctional, disorganized, or failing. They are successful and reaching the limits of the operating methods that brought them here. Copy implying otherwise is a defect against Section 2 and Section 47.1.
 
 ---
 
@@ -3083,7 +3172,7 @@ An ordered set MAY be presented as an interactive carousel **only when the set i
 
 Status: APPROVED (2026-08-08). Supersedes the sequence carousel (Section 46.7) for the homepage small-miss progression.
 
-A genuine progression MAY be presented as a stage selector: every numbered stage title always visible as a rail of selectable controls, with a single content area beneath presenting the active stage. The selector states the interaction structurally — three visible stages, one open — instead of asking the reader to discover it through affordance icons or cropped neighbours.
+A genuine progression MAY be presented as a stage selector: every numbered stage title always visible as a rail of selectable controls, with one content stage presenting the active stage — beneath the rail, or beside it in the divided form of Section 46.8.1 (amended 2026-08-25). The selector states the interaction structurally — every stage visible, one open — instead of asking the reader to discover it through affordance icons or cropped neighbours.
 
 **Entry**
 - The entry rules of Section 46.7 carry over unchanged: nothing animates on page load, component mount, or a timer; the presentation settles in only when the section itself intersects the viewport, at roughly a third visible, once, and never resets. Motion MUST NOT occur off screen.
@@ -3091,19 +3180,34 @@ A genuine progression MAY be presented as a stage selector: every numbered stage
 
 **State**
 - The whole presentation derives from one active index plus one entered flag (Section 46.3). Competing per-item animation states are prohibited.
-- Hover, keyboard focus, click, and tap MUST all resolve to that same active index. No input method may have behaviour the others lack, and touch MUST NOT depend on hover.
+- **Click, tap, and keyboard activation (Enter or Space) MUST all resolve to that same active index.** No committing input method may have behaviour the others lack, and touch MUST NOT depend on hover.
+- **Hover and keyboard focus MAY indicate availability without committing selection (amended 2026-08-25).** Where a selector drives a substantial content stage — a full copy panel, or a persistent visual that accumulates across the stages (Section 46.8.1) — hover and keyboard focus MUST indicate availability only and MUST NOT change the active index. Crossing such a rail on the way elsewhere would otherwise re-narrate the argument, and focus-to-commit would destroy a keyboard reader's place mid-traversal. A selector MUST apply one behaviour to every one of its own stages; hover-to-commit remains permitted, and remains the default, where the selector drives only a short copy swap.
+- Availability and selection MUST be visually distinguishable. Hover and focus use the inactive control's approach treatment — brightening toward primary text with a subtle neutral surface wash — never the active amber enclosure. Keyboard traversal MUST NOT be trapped: focus MAY move between selectors without committing, and Enter or Space commits.
 
 **Selector rail**
 - All stage numbers and titles remain visible at all times. No stage may be hidden behind an icon, an overflow, or a swipe.
 - Selectors are real interactive controls, and the whole selector is the target — never only an icon.
 - The active stage MUST be visually unmistakable without explanatory text. Selector controls use the established JiTpro selector treatment (2026-08-08): pill-shaped (`rounded-full`) controls whose active state is enclosed by `--jp-brand-amber` at restrained opacity — border at roughly 30%, background tint at roughly 10% — with amber text emphasis (Sections 8.1.1, 48.7). Inactive controls are muted but clearly available, brightening toward primary text with a subtle neutral surface wash on hover or focus, and keep the same pill footprint via a transparent border so geometry never shifts with state. Heavy borders, raised cards, shadows, and excessive fills remain prohibited.
-- Where a horizontal rail cannot hold every stage title legibly, the selectors stack rather than shrink, truncate, or scroll horizontally.
+- Where a horizontal rail cannot hold every stage title legibly, the selectors stack rather than shrink, truncate, or scroll horizontally. **A rail MAY be laid out on either axis (amended 2026-08-25)** — horizontal or vertical — provided every stage number and title stays visible at every supported width. The axis is a composition decision; the visibility rule is not.
 
 **Content stage**
 - One content area presents the active stage's copy. Neighbouring stages are not partially shown; the rail already communicates the set. The moving-track, partially-visible-neighbour geometry of Section 46.7 is the superseded presentation, not a variant of this one.
+- **The content area MAY be divided into a copy column and a persistent visual column beside the rail, rather than a single area beneath it (amended 2026-08-25).** Section 46.8.1 governs the visual column. Every other rule in this section applies to the divided form unchanged.
 - All stage copy MUST be present in the document at all times. Visibility is a visual state, never a content state, so assistive technology and search engines receive the complete argument.
-- Switching stages MUST NOT change the section's height. The content area reserves the height of the tallest stage's copy, so selection never reflows the page.
+- Switching stages MUST NOT change the section's height. The content area reserves the height of the tallest stage's copy, so selection never reflows the page. **In the divided form both columns MUST reserve a height independent of the active index** — the copy column by reserving the tallest stage's block, the visual column by holding a fixed aspect ratio (amended 2026-08-25).
 - Copy MUST become readable promptly: a restrained cross-fade or equivalent short transition only.
+
+### 46.8.1 The accumulating visual column
+
+Status: APPROVED (2026-08-25).
+
+Where a stage selector uses the divided content stage, the visual column MUST be **one visual system that accumulates across the stages**, never a set of separate illustrations swapped in and out.
+
+- Elements introduced at one stage MUST persist as the same elements at every later stage. The only permitted removal is a label that a later stage's own structure supersedes; content the visual has established is never withdrawn.
+- The visual MUST NOT introduce a second interaction. It has no controls, no hover states, and no focus targets of its own; the rail is the only interactive element in the section.
+- Accumulation MUST be legible without motion. Under `prefers-reduced-motion: reduce` the selected stage's fully accumulated state appears at once (Section 46.5), and a stage selected directly from a distant stage resolves to the correct accumulated state without animating the intervening ones.
+- Where the visual column cannot hold the visual at full legibility, the two columns reflow to one full-width column before any content is collapsed or stacked (Section 35.1). A distinct compact composition is authored rather than the wide drawing being scaled (Section 48.3).
+- The visual MUST carry the section's meaning in the document as well as on screen: the per-stage meaning is stated in visible text beside it, so comprehension never depends on reading the drawing (Section 46.2).
 
 **Accessibility and reduced motion**
 - Each selector MUST be operable by keyboard, with a visible focus ring that is never clipped.
@@ -3113,6 +3217,8 @@ A genuine progression MAY be presented as a stage selector: every numbered stage
 ## 46.9 Scroll-driven sequential process reveal (process scrollytelling)
 
 Status: APPROVED (2026-08-20). REVISED the same day from the scroll-driven process accordion first recorded under this section — see the Decision Log; the accordion presentation is superseded, its interaction principles carried forward here. Does NOT supersede Section 46.8, which remains the approved pattern for stage selectors.
+
+**As of 2026-08-25 this section has no current production use.** The homepage five-stage JiTpro methodology — its only approved use — moved to the Section 46.8 stage selector with a Section 46.8.1 accumulating visual, because that section's buyer-journey job is establishing competence, and competence is read from the relationship *between* the stages: a presentation that shows exactly one stage at a time by design forecloses the comparison it depends on. **Section 46.9 is neither superseded nor retired.** It remains APPROVED and available for a surface whose content is genuinely a narrative the visitor moves through rather than a method they should be able to see whole. The 2026-08-20 "first approved use" designation is released; a future use requires a fresh Decision Log entry naming it.
 
 A genuine ordered process MAY be presented as a pinned, scroll-driven sequential reveal: one stage presented at a time inside a spatially stable presentation, with the visitor's own scrolling moving the narrative from stage to stage. This is a sequential narrative, not a menu.
 
@@ -3267,7 +3373,8 @@ Purpose: Define the shared conventions that make separate surfaces read as one p
 
 - JiTpro does not use stock photography, illustrated characters, or generic technology imagery.
 - Visuals MUST be purpose-built, informational, and construction-specific.
-- Prohibited: cranes, hard hats, blueprints, skyline silhouettes, abstract node graphs, glowing networks, fake dashboards, and fabricated product screenshots.
+- Prohibited: hard hats, blueprints, skyline silhouettes, abstract node graphs, glowing networks, fake dashboards, and fabricated product screenshots.
+- **The crane prohibition is narrowed (2026-08-25).** What is prohibited is the *cliché* — a crane, or any construction machine, used as a generic visual shorthand meaning "construction". A crane MAY appear in approved documentary photography (Section 17.1) when it is **performing the specific work the section is arguing about** and the section would be weaker without it. The test is the one this section already applies: if the image would be equally at home on any other company's site, it is wrong; if it is the literal field condition the surrounding copy has just explained, it is evidence. Each such use is approved individually and recorded in the Decision Log.
 - A visual should show a real mechanism the reader recognizes from their own work. If a visual would be equally at home on any other company's site, it is wrong for JiTpro.
 
 ## 48.9 Section step and sequence numbers
@@ -3280,6 +3387,34 @@ Ordinal markers that number the steps or stages of a section - `01`, `02`, `03` 
 - Equivalent numbering in different sections MUST NOT use unrelated conventions. Amber in one section and a neutral gray in another is a consistency defect, not a per-section choice (Section 48 preamble).
 - The number is set in the data face at small size with increased tracking (Sections 7.3, 7.7). It is a label, not a metric.
 - Numbering MUST NOT be the only expression of sequence. The copy carries the order on its own (Section 8.7).
+
+## 48.10 Figure provenance
+
+Status: APPROVED (2026-08-25).
+
+Any figure carrying numbers, names, or dates that a reader could mistake for evidence MUST make its provenance unmistakable. This section exists because a figure is read as a claim about the world, and a figure whose status is unstated is read as the strongest status it could plausibly have.
+
+**The three statuses.** Every element in a figure is exactly one of these, and the distinction MUST survive into the rendered page:
+
+| Status | Meaning |
+| --- | --- |
+| **Representative** | Constructed to reflect realistic conditions, sequencing, activities and durations. Not drawn from any actual engagement. |
+| **Illustrative** | Added to demonstrate the method, with no basis in the underlying dataset at all. |
+| **Methodological** | Pure diagram — the shape of the method, carrying no data of any kind. |
+
+**Prohibited without exception**
+- Presenting representative or illustrative content as a **customer result, client outcome, case study, or actual project record**.
+- Describing a synthetic dataset as "real", "actual", "anonymized real", or as originating with a client.
+- Fabricating a **count** of anything the dataset does not contain — findings, gaps, items resolved, projects served.
+- Deriving a figure the source data cannot support, or presenting a derived value in a register that implies a precision the source does not carry.
+
+**Required**
+- **One quiet provenance line**, placed with the figure, in the caption register. One sentence. A figure is not a legal document and MUST NOT be burdened with a disclaimer block, a multi-key legend, or per-element asterisks.
+- **Where a figure mixes statuses, the visual register MUST separate them.** Data-derived values and content with no basis in the data MUST NOT be rendered in the same visual weight; the element with weaker provenance is drawn *lighter*, never emphasized because it is the one currently being narrated.
+- **A derived quantity MUST be expressed in the unit the source actually carries.** Where converting to a more familiar unit requires information the source does not hold — a work calendar, a holiday schedule, a rate — the conversion MUST NOT be performed and rendered as though it were derived. State the quantity in its native unit, or state the approximation as an approximation.
+- **Exactly one kind of quantity per figure may be an absolute date.** Every other temporal value is a duration or an offset and MUST be typeset in a different register, so two quantities of different kinds never look like the same kind of thing.
+
+First approved use: the homepage methodology figure (Decision Log 2026-08-25).
 
 ---
 
