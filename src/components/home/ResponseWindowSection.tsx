@@ -77,11 +77,11 @@ export default function ResponseWindowSection() {
             The problem gets expensive before it becomes obvious.
           </h2>
           <div className="mt-6 max-w-[62ch] space-y-5 text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:mt-2 lg:text-[1.1875rem]">
+            <h3 className="max-w-[36ch] font-heading text-[1.25rem] font-semibold leading-snug text-balance text-jp-text-primary sm:text-[1.375rem]">
+              The problem does not go away. Your options do.
+            </h3>
             <p>
-              The problem does not get worse. Your options do.
-            </p>
-            <p>
-              Every week an open item stays open, the set of things that would still fix it gets smaller—and the ones left cost more, take longer, or need somebody outside your company to agree to them.
+              The longer an issue stays unresolved, the fewer good choices the team has left. What could have been handled early with a calm decision eventually becomes expediting, substitution, resequencing, escalation—or a problem the field has no choice but to absorb.
             </p>
           </div>
         </div>
