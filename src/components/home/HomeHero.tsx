@@ -11,7 +11,9 @@ import { Link } from 'react-router-dom';
  *
  * It does not explain backward planning, demonstrate the method, establish the
  * economic consequence, or carry the growth-stage diagnosis. Those belong to
- * sections 2 through 5, and the page has seven more sections to make them in.
+ * the problem and method sections, and the five-section page makes them there
+ * (Decision Log 2026-08-26). The hero is the page's fastest section by design:
+ * H1, one recognition statement, one orientation statement, one CTA.
  *
  * NO HERO GRAPHIC — deliberate (2026-08-26). `BackwardPlannedTimeline` used to
  * render here and no longer does. The component is intact, unchanged and
@@ -59,7 +61,7 @@ export default function HomeHero() {
       : { className: '', style: undefined };
 
   return (
-    <section className="relative isolate overflow-hidden bg-jp-background px-6 py-20 sm:px-8 sm:py-28 lg:px-10 lg:pt-32 lg:pb-36">
+    <section className="relative isolate overflow-hidden bg-jp-background px-6 py-20 sm:px-8 sm:py-24 lg:px-10 lg:pt-28 lg:pb-28">
       {/* Lighting, tonal depth and grain. The stack resolves to the page
           background at the bottom edge so the hand-off to the section below
           has no visible seam. With the diagram gone, the warm key at the top
@@ -92,9 +94,9 @@ export default function HomeHero() {
         {/* The lower band runs the full container on an asymmetric split, so the
             side the diagram used to occupy is carrying content rather than
             standing empty. */}
-        <div className="mt-14 border-t border-jp-border/12 pt-10 sm:mt-16 lg:mt-20 lg:grid lg:grid-cols-12 lg:gap-x-10 lg:pt-12 xl:gap-x-16">
-          {/* Recognition — the condition, introduced and not explained. Section
-              2 is what explains why these things stay invisible.
+        <div className="mt-14 border-t border-jp-border/12 pt-10 sm:mt-16 lg:grid lg:grid-cols-12 lg:gap-x-10 lg:pt-12 xl:gap-x-16">
+          {/* Recognition — the condition, introduced and not explained. The
+              problem section explains why these things stay invisible.
 
               The growth-stage condition is not one project getting larger. It is
               more projects, larger and more complex, while management capacity
@@ -113,7 +115,10 @@ export default function HomeHero() {
           </p>
 
           {/* Orientation — who this is for and what kind of thing it is, stated
-              once, briefly. The engagement is explained in section 4. */}
+              once, briefly. The category line lives HERE and nowhere else on
+              the page; the engagement model is Section 04's job (§20.1). The
+              line stays within the engagement-model doctrine: alongside your
+              team, never a new external project-team participant. */}
           <div className="mt-12 lg:col-span-5 lg:col-start-8 lg:mt-0">
             <p
               className={`max-w-[42ch] text-[1.0625rem] leading-[1.65] text-jp-text-secondary sm:text-[1.125rem] ${rise(2).className}`}

@@ -1,6 +1,7 @@
 /**
- * The cause-and-effect chain for Section 2 — one unresolved condition
- * displacing everything downstream of it, on a single named package.
+ * The cause-and-effect chain for the problem section's detection movement —
+ * one unresolved condition displacing everything downstream of it, on a
+ * single named package.
  *
  * THE TRACKED EXAMPLE IS CUSTOM STEEL WINDOWS (2026-08-26), replacing
  * structural steel. This is a positioning decision, not a copy preference.
@@ -18,9 +19,9 @@
  * terminology).
  *
  * The chain stops at exposure. What the shrinking set of remaining options
- * costs belongs to Section 3, which MUST NOT re-narrate this package — those
- * are two different arguments and merging them makes one section (§48.9,
- * §48 preamble).
+ * costs belongs to the response-window movement that follows, which MUST NOT
+ * re-narrate this package — two movements, one causal story told once
+ * (Decision Log 2026-08-26; §48.9, §48 preamble).
  *
  * COMPOSITION (binding, 2026-08-25): this figure spans the full container. It
  * exists partly to break the left reading column that the previous
