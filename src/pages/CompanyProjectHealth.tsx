@@ -130,7 +130,7 @@ export default function CompanyProjectHealth() {
             JiTpro gives the team a calmer way to run the path from decision to delivery before the project becomes too deep to control cleanly.
           </p>
           <Link
-            to="/contact/contractor"
+            to="/contact"
             className="inline-flex items-center justify-center rounded-lg bg-amber-500 px-6 py-3 text-base font-semibold text-slate-950 transition-colors hover:bg-amber-400"
           >
             Review my next project
