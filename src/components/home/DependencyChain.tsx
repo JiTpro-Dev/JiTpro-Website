@@ -53,24 +53,24 @@ type Link = {
 
 const LINKS: Link[] = [
   {
-    label: 'The head and jamb detail is still open',
-    note: 'One question back to the architect about how the frame meets the wall. Nobody logs it as a problem.',
+    label: 'Window details are still open',
+    note: 'Interface with interior and exterior finishes unresolved.',
   },
   {
-    label: 'The frames cannot be dimensioned',
-    note: 'The fabricator has the elevations. What is missing is how the frame lands in the wall.',
+    label: 'Final window requirements are not established',
+    note: 'Dimensions, frame conditions, finishes, hardware, and interfaces remain incomplete.',
   },
   {
-    label: 'The shop drawings cannot be completed',
-    note: 'The package is ready apart from the sheets that carry the detail in question.',
+    label: 'Shop drawings move on incomplete information',
+    note: 'The package advances while design and field coordination are still unresolved.',
   },
   {
-    label: 'Approval cannot finish, so nothing is released',
-    note: 'A purchase order is not a release. Nothing enters the shop without an approved drawing.',
+    label: 'Approval and release are late or assumption-based',
+    note: 'Revisions consume time, or fabrication moves forward from information that may not match the field.',
   },
   {
-    label: 'The date the field needs them never moved',
-    note: 'The first time this reads as a schedule problem is the week the openings are ready and the windows are not.',
+    label: 'Windows arrive late or wrong',
+    note: 'The field is ready, but the windows are missing—or they do not coordinate with what was built.',
   },
 ];
 

@@ -16,11 +16,14 @@ import { METHODOLOGY_STAGES } from '../../content/methodologyStages';
  * WHAT DID NOT CARRY OVER from the Turn: the What/When band (it restated the
  * two halves the display statement already says) and the orientation
  * paragraph (the category line lives in the hero; the engagement model is
- * Section 04's job under §20.1's engagement-model doctrine). The requirement,
- * the backward line, and the thesis close all survive verbatim — §20.1's
- * operating-requirement rules apply in full: coordination AND timing, plural
- * "requirements", no delivery guarantee, no conformance warranty, and the
- * superseded "approved for installation" formulation must not return.
+ * Section 04's job under §20.1's engagement-model doctrine). The requirement
+ * and the thesis close survive verbatim, and the backward line carries the
+ * revised §20.1 direction (Decision Log 2026-08-26): backward from the point
+ * it is required onsite — a point-in-time anchor approved for this direction
+ * line only, never as a restatement of the requirement itself. §20.1's
+ * operating-requirement rules apply in full: coordination AND timing, no
+ * delivery guarantee, no conformance warranty, and the superseded "approved
+ * for installation" formulation must not return.
  *
  * HIERARCHY (§7.7): the requirement is the section's only h2. The backward
  * line and the thesis share the existing full-width-statement register.
@@ -71,7 +74,7 @@ export default function MethodSection() {
             the stages (approved plan, 2026-08-26). */}
         <div className="mt-12 border-t border-jp-ink-secondary/20 pt-10 sm:mt-14 lg:mt-16 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-10 lg:pt-12 xl:gap-x-16">
           <p className="max-w-[30ch] font-heading text-[1.5rem] font-bold leading-[1.2] tracking-[-0.02em] text-balance text-jp-background sm:text-[1.75rem] lg:col-span-7 lg:text-[2rem]">
-            Everything upstream is planned and managed backward from those requirements.
+            Everything upstream is planned and managed backward from the point it is required onsite.
           </p>
           <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.7] text-jp-ink-secondary sm:text-[1.125rem] lg:col-span-5 lg:mt-2">
             Five stages, each producing what the next one needs. By the last, every product, material and service the project depends on is tied to the date the field needs it&mdash;and every decision, approval and commitment that gets it there carries an owner and a date.

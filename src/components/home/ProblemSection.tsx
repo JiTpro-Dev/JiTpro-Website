@@ -214,13 +214,6 @@ export default function ProblemSection() {
               </li>
             ))}
           </ol>
-
-          {/* One sentence, closing on the ownership vacuum the Method section
-              answers. Not amber (§48.7). */}
-          <p className="mt-14 max-w-[62ch] text-[1.125rem] leading-[1.65] text-jp-text-secondary sm:text-[1.1875rem] lg:mt-16 lg:text-[1.25rem]">
-            Every one of those moves is available to your team today&mdash;the reason they get used late is that{' '}
-            <span className="font-semibold text-jp-text-primary">nobody&apos;s job was the whole sequence</span>, early enough for the cheap version to still be on the table.
-          </p>
         </div>
       </div>
     </section>
