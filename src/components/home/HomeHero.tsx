@@ -104,7 +104,7 @@ export default function HomeHero() {
             The 30ch cap is what makes the centered wraps read as set lines
             rather than accidents. */}
         <div className={rise(0).className} style={rise(0).style}>
-          <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-jp-brand-amber/80">
+          <p className="text-center font-mono text-sm font-bold uppercase tracking-[0.2em] text-jp-brand-amber">
             Built by contractors
           </p>
 
