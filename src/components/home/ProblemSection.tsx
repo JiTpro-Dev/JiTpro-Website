@@ -135,13 +135,28 @@ export default function ProblemSection() {
         </div>
 
         {/* The mechanism, on one named package, at full container width. The
-            heading is the argument; the figure carries the rest — no setup
+            statement is the argument; the figure carries the rest — no setup
             paragraph re-tells what the chain's first link already says
-            (approved plan: the visual proves it, the prose moves on). */}
+            (approved plan: the visual proves it, the prose moves on).
+
+            It centers on the chain's own axis as the figure's title block
+            (§7.7 centered figure statement, Decision Log 2026-08-27) — held on
+            the left edge it read as a third paragraph of the copy column
+            above. The pair keeps this section's EXISTING registers: the
+            statement stays at 1.3125/1.4375 semibold, the supporting line
+            takes the secondary body register, so the step between them is
+            size, weight and text level only. No divider, no eyebrow, no
+            accent — the section's amber is spent on the rail and the
+            ordinals (§48.7). */}
         <div className="border-t border-jp-border/12 pt-12 lg:pt-14">
-          <h3 className="max-w-[46ch] font-heading text-[1.3125rem] font-semibold leading-snug text-balance text-jp-text-primary sm:text-[1.4375rem]">
-            None of it looks like a schedule problem while there is still time to fix it.
-          </h3>
+          <div className="text-center">
+            <h3 className="mx-auto max-w-[46ch] font-heading text-[1.3125rem] font-semibold leading-snug text-balance text-jp-text-primary sm:text-[1.4375rem]">
+              Preventable schedule failures destroy margin.
+            </h3>
+            <p className="mx-auto mt-4 max-w-[46ch] text-[1.0625rem] leading-[1.7] text-balance text-jp-text-secondary sm:text-[1.125rem]">
+              The schedule cannot hold if what the field needs arrives late or wrong.
+            </p>
+          </div>
 
           <DependencyChain />
 

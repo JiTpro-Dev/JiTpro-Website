@@ -5,16 +5,16 @@
 
 const OUTCOMES = [
   {
-    title: 'Less chasing',
-    body: 'Your team knows what needs attention before it becomes urgent.',
+    title: 'Problems surface before they reach the field',
+    body: 'Missing decisions, unresolved scope, and coordination gaps are exposed while there is still time to resolve them collaboratively.',
   },
   {
-    title: 'More time to act',
-    body: 'Critical decisions and commitments are surfaced while the project still has options.',
+    title: 'The schedule has a chance to hold',
+    body: 'Critical decisions, approvals, commitments, products, materials, and services are driven by when the field actually needs them.',
   },
   {
-    title: 'More control',
-    body: 'The team can lead the project forward instead of constantly reacting to what was missed.',
+    title: 'Margin is protected',
+    body: 'Fewer preventable failures reach construction—reducing disruption, recovery work, lost productivity, and the cost of getting the schedule back.',
   },
 ];
 
