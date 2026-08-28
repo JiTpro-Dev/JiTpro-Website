@@ -163,7 +163,7 @@ export default function HomeHero() {
           style={rise(1).style}
         >
           <p>
-            As construction companies grow, keeping every decision, approval, product, material, and service ahead of the field gets harder. When that work falls behind, the project turns reactive&mdash;productivity suffers, schedules slip, recovery gets expensive, and profit disappears.
+            As construction companies grow, keeping every decision, approval, product, material, and service ahead of the field gets harder. When that work slips through the cracks, the project turns reactive. Productivity suffers, schedules slip, recovery gets expensive, and profit disappears.
           </p>
           <p>
             <strong className="font-semibold text-jp-text-primary">
