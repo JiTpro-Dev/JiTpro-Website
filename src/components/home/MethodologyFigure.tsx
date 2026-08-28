@@ -3,77 +3,109 @@ import { METHODOLOGY_STAGES } from '../../content/methodologyStages';
 /**
  * The methodology section's persistent visual column (Design System §46.8.1).
  *
- * NOT BUILT YET. This is a reserved footprint and a development readout, and it
- * is deliberately NOT a drawing: an attractive placeholder is the thing that
- * quietly becomes production, so this one states what it is in plain words and
- * could never be mistaken for a finished figure.
+ * PARTIALLY BUILT. Stages 01–03 carry real product screens; 04–05 keep the
+ * reserved footprint until their screens exist. A stage without a screen keeps
+ * the placeholder — borrowing a neighbour's screen to fill the gap is
+ * prohibited (§46.8.1), because it claims the stage produces something the
+ * image does not show.
  *
- * What lands here is one visual system that ACCUMULATES across the five stages
- * — raw project information, then validated scope, then exposed gaps, then
- * commitments and the parties holding them, then products, materials and
- * services tied to their Required Onsite Dates, then backward-planned timing.
- * §46.8.1 governs it, and the constraints are already binding on the shape of
- * this component:
+ * THE SCREENS ARE THE ACCUMULATING VISUAL (§46.8.1, amended 2026-08-27). They
+ * are not separate illustrations swapped in and out: they are one project
+ * carried forward — scope items are validated, gaps are found in those items,
+ * commitments are created against those gaps. The traceability is literal and
+ * MUST hold as later screens are added: an item visible at one stage has to be
+ * findable at the next, as the same item. A screen of a different project, or
+ * one with no relationship to its neighbours, breaks this section however real
+ * the capture is.
  *
- *   - Elements introduced at one stage persist, as the same elements, at every
- *     later stage. Nothing the visual has established is withdrawn.
- *   - It introduces no second interaction: no controls, no hover states, no
- *     focus targets. The rail is the section's only interactive element, which
- *     is why this takes `activeIndex` as a prop and owns no state.
- *   - Accumulation is legible without motion. Selecting stage 05 directly from
- *     stage 01 resolves to the correct accumulated state without animating the
- *     stages in between, so the state MUST be a pure function of `activeIndex`
- *     rather than a sequence of transitions.
- *   - The wide drawing is not scaled down for narrow viewports. A distinct
- *     compact composition is authored (§48.3, §35.1), which is why the reserved
- *     ratio changes by breakpoint rather than the box simply shrinking.
+ * PROVENANCE (§48.10, first product-capture use). The interface is authentic;
+ * the project, quantities, parties, names and dates inside it are constructed,
+ * and a reader reads those as a record. That is why the provenance line below
+ * is REQUIRED and sits with the figure. It MUST NOT be removed, moved to a
+ * footnote, or softened, and this content MUST NEVER be described as a customer
+ * project, a case study, or an actual engagement.
  *
- * PROVENANCE, when it is built (§48.10): representative construction content,
- * carrying one quiet provenance line in the caption register. Required Onsite
- * Dates are the figure's single kind of absolute date; every other quantity is
- * a working-day offset and MUST be typeset in a different register, never
- * converted into a calendar start-by date the source cannot support.
+ * The remaining §46.8.1 constraints continue to bind:
+ *   - No second interaction: no controls, no hover states, no focus targets, no
+ *     lightbox or zoom. The rail is the section's only interactive element,
+ *     which is why this takes `activeIndex` and owns no state.
+ *   - Legible without motion. The state is a pure function of `activeIndex`;
+ *     selecting 03 directly from 01 resolves correctly with nothing animating
+ *     in between.
+ *   - The meaning is carried in text beside the figure (§46.2), so nothing here
+ *     is required reading.
  *
- * SURFACE: light. Ink hierarchy only — the amber tokens carry no information on
- * this ground (§8.8, amber on light surfaces).
+ * ALL STATES STAY MOUNTED, sharing one grid cell, so switching is an instant
+ * cross-fade rather than a fetch against an empty frame. That is right for
+ * images and WILL BE WRONG for embedded demos: when a stage's screen becomes a
+ * Guidde embed or a video, this must switch to rendering the active state only,
+ * or every stage's media loads on every view.
  */
 
 type MethodologyFigureProps = {
-  /** Which stage is selected, 0-based. The figure accumulates up to it. */
+  /** Which stage is selected, 0-based. */
   activeIndex: number;
 };
 
-export default function MethodologyFigure({ activeIndex }: MethodologyFigureProps) {
-  const stage = METHODOLOGY_STAGES[activeIndex];
+const ASSET_BASE = `${import.meta.env.BASE_URL}assets/methodology`;
 
+export default function MethodologyFigure({ activeIndex }: MethodologyFigureProps) {
   return (
-    /* The reserved footprint. §46.8 requires the visual column to hold a height
-       independent of the active index, so the ratio is fixed per breakpoint and
-       never derived from content: portrait on a phone, where the compact
-       composition will be a short register; landscape from lg, where the wide
-       drawing needs room to be a real construction-planning artifact rather
-       than a diagram of one. These ratios are provisional and are the first
-       thing the finished figure may revise. */
-    <div
-      aria-hidden="true"
-      className="flex aspect-[4/5] w-full flex-col justify-between border border-dashed border-jp-ink-secondary/30 bg-jp-ink-secondary/[0.04] p-6 sm:aspect-[5/4] lg:aspect-[4/3] lg:p-8"
-    >
-      <div>
-        <p className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-jp-ink-secondary/85">
-          Reserved — methodology figure
-        </p>
-        <p className="mt-3 max-w-[38ch] text-[0.9375rem] leading-[1.6] text-jp-ink-secondary/85">
-          Not final. This area is intentionally empty; the accumulating visual has
-          not been built yet.
-        </p>
+    <figure>
+      {/* One 4:3 frame at every width — the ratio the captures were taken at.
+          It is fixed, so the column's height never depends on the active stage
+          (§46.8), and it is never re-cropped: a cropped interface capture is a
+          different claim about what the screen contains. */}
+      <div className="grid aspect-[4/3] w-full overflow-hidden border border-jp-ink-secondary/25 bg-jp-ink-secondary/[0.04]">
+        {METHODOLOGY_STAGES.map((stage, i) => {
+          const isActive = i === activeIndex;
+          const shared = `col-start-1 row-start-1 h-full w-full transition-opacity duration-200 ease-out motion-reduce:transition-none ${
+            isActive ? 'opacity-100' : 'pointer-events-none opacity-0'
+          }`;
+
+          if (!stage.demo) {
+            return (
+              <div
+                key={stage.id}
+                aria-hidden={!isActive}
+                className={`${shared} flex flex-col justify-between p-6 lg:p-8`}
+              >
+                <div>
+                  <p className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-jp-ink-secondary/85">
+                    Reserved
+                  </p>
+                  <p className="mt-3 max-w-[38ch] text-[0.9375rem] leading-[1.6] text-jp-ink-secondary/85">
+                    {`The ${stage.title} screen has not been captured yet. This area is intentionally empty.`}
+                  </p>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <img
+              key={stage.id}
+              src={`${ASSET_BASE}/${stage.demo.file}-1448.webp`}
+              srcSet={`${ASSET_BASE}/${stage.demo.file}-800.webp 800w, ${ASSET_BASE}/${stage.demo.file}-1448.webp 1448w`}
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              width={1448}
+              height={1086}
+              alt={isActive ? stage.demo.alt : ''}
+              aria-hidden={!isActive}
+              loading="lazy"
+              decoding="async"
+              className={`${shared} object-contain`}
+            />
+          );
+        })}
       </div>
 
-      {/* A wiring readout, not a design: it exists so the reserved area can be
-          seen responding to the rail during review. It leaves with the
-          placeholder. */}
-      <p className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-jp-ink-secondary/85">
-        {`Active 0${activeIndex + 1} · ${stage.title}`}
-      </p>
-    </div>
+      {/* §48.10: one quiet sentence, with the figure, never a disclaimer block.
+          Sentence case — this is a sentence, and uppercase is for short labels
+          only (§7.7). */}
+      <figcaption className="mt-4 max-w-[62ch] text-[0.875rem] leading-[1.6] text-jp-ink-secondary/85">
+        Representative JiTpro screens. The interface is real; the project, quantities, parties and dates are constructed to show realistic conditions and are not taken from an actual engagement.
+      </figcaption>
+    </figure>
   );
 }

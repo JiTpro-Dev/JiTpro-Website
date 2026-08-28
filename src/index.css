@@ -351,3 +351,23 @@
     animation: none;
   }
 }
+
+/* The methodology rail's copy area, revealed under the row that produced it
+   (Design System §46.8, inline copy placement). Opacity only: the area already
+   reserves the tallest stage's height, so there is nothing to slide and any
+   travel here would read as the rail moving. */
+@keyframes jp-stage-body-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.jp-stage-body-in {
+  animation: jp-stage-body-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-stage-body-in {
+    animation: none;
+  }
+}
