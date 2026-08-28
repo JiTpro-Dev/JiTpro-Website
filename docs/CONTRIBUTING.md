@@ -148,6 +148,18 @@ If something is actively harmful and even a minute or two is too long to wait, t
 >
 > **If you use this option, you must still complete "The right way" above, the same day**, so GitHub and Cloudflare agree again. Once that revert PR merges, the two are back in sync for good, until the next time a rollback is needed.
 
+## Automated Deployment Cleanup
+
+Old Cloudflare Pages deployments for this project are cleaned up
+automatically, on a weekly schedule, by a separate project:
+[jitpro-deployment-cleanup](https://github.com/JiTproLabs/jitpro-deployment-cleanup).
+
+In short: preview deployments are deleted about 7 days after their PR
+closes, and production deployments beyond the newest 30 are deleted,
+except the one currently live. If a deployment you expected to still
+exist has disappeared, this is very likely why. See that repo's
+README for the full rules and how to adjust them.
+
 ## One-Time Setup (Completed)
 
 - [x] CI check added (`build-and-test`)
