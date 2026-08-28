@@ -69,10 +69,18 @@ export const METHODOLOGY_STAGES: MethodologyStage[] = [
     id: 'product-register',
     title: 'Product Register',
     body: 'We identify and register the products, materials, and services the project will need, connecting what must arrive on site to the decisions, approvals, and Commitments required to get it there.',
+    demo: {
+      file: 'product-register',
+      alt: 'The JiTpro Product Register for the same project: 246 products, materials and equipment, each with a category, trade, supplier, approval status, lead time and required-on-site date, and a detail panel linking the aluminum window system to the Commitments that get it there.',
+    },
   },
   {
     id: 'backward-scheduling',
     title: 'Backward Scheduling',
     body: 'Starting with when each product, material, or service is required on site, JiTpro works backward to establish the dates for the Commitments that support it.',
+    demo: {
+      file: 'procurement-schedule',
+      alt: 'The JiTpro Procurement Schedule for the same project, as a Gantt view: 48 items, each drawn from pre-procurement through order, fabrication, shipping and installation, with a detail panel tracing an exterior concrete package back to its Commitment.',
+    },
   },
 ];

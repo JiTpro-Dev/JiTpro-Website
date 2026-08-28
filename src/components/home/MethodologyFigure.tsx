@@ -3,11 +3,10 @@ import { METHODOLOGY_STAGES } from '../../content/methodologyStages';
 /**
  * The methodology section's persistent visual column (Design System §46.8.1).
  *
- * PARTIALLY BUILT. Stages 01–03 carry real product screens; 04–05 keep the
- * reserved footprint until their screens exist. A stage without a screen keeps
- * the placeholder — borrowing a neighbour's screen to fill the gap is
- * prohibited (§46.8.1), because it claims the stage produces something the
- * image does not show.
+ * All five stages carry real product screens. Should a future stage ever lack
+ * one, it keeps the reserved placeholder — borrowing a neighbour's screen to
+ * fill the gap is prohibited (§46.8.1), because it claims the stage produces
+ * something the image does not show.
  *
  * THE SCREENS ARE THE ACCUMULATING VISUAL (§46.8.1, amended 2026-08-27). They
  * are not separate illustrations swapped in and out: they are one project
