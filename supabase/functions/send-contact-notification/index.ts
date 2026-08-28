@@ -1,18 +1,18 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+/**
+ * The columns this notification reads from a `leads` row. The unified
+ * contact form (2026-08-26) collects name, email, role, and note (stored as
+ * `message`) plus hidden source/page metadata; the legacy qualification
+ * columns still exist on the table but are no longer collected or rendered.
+ */
 interface LeadRecord {
   id: number;
   created_at: string;
   role: string;
-  intent: string;
   first_name: string;
   last_name: string;
   email: string;
-  phone: string | null;
-  company: string | null;
-  project_location: string | null;
-  project_type: string | null;
-  estimated_value: string | null;
   message: string | null;
   source: string | null;
   page: string | null;
@@ -64,14 +64,8 @@ Deno.serve(async (req: Request) => {
       <table style="border-collapse: collapse; width: 100%; max-width: 600px;">
         ${row("Name", name)}
         ${row("Email", lead.email)}
-        ${row("Phone", lead.phone)}
-        ${row("Company", lead.company)}
         ${row("Role", lead.role)}
-        ${row("Intent", lead.intent)}
-        ${row("Project Location", lead.project_location)}
-        ${row("Project Type", lead.project_type)}
-        ${row("Estimated Value", lead.estimated_value)}
-        ${row("Message", lead.message)}
+        ${row("Note", lead.message)}
         ${row("Source", `${lead.source || "—"} / ${lead.page || "—"}`)}
         ${row("Submitted", lead.created_at)}
       </table>

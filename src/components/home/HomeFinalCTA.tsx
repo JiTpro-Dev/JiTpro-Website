@@ -11,10 +11,14 @@ import { Link } from 'react-router-dom';
  * resolution rather than a column in a corner; below `sm` the block stays
  * left-aligned and stacked (Design System §7.7 centered CTA supporting copy
  * exception, §48.6; Decision Log 2026-08-08).
+ *
+ * No top hairline of its own: the surface band above (OutcomesSection,
+ * border-y) already marks this boundary, the same way the page's other
+ * surface bands own their edges.
  */
 export default function HomeFinalCTA() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-jp-border/12 bg-jp-background px-6 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-40">
+    <section className="relative isolate overflow-hidden bg-jp-background px-6 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-40">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(62%_58%_at_50%_100%,color-mix(in_oklab,var(--jp-brand-amber)_12%,transparent),transparent_70%)]"
@@ -36,7 +40,7 @@ export default function HomeFinalCTA() {
 
           <div className="mt-10 sm:mt-12">
             <Link
-              to="/contact/contractor"
+              to="/contact"
               className="inline-flex w-full max-w-md items-center justify-center gap-2.5 rounded-xl bg-jp-brand-amber px-4 py-4 text-center text-[0.9375rem] font-semibold text-jp-background shadow-[0_12px_30px_-12px_color-mix(in_oklab,var(--jp-brand-amber)_60%,transparent)] transition-colors duration-200 ease-out hover:bg-jp-brand-amber-active focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-jp-text-primary motion-reduce:transition-none sm:w-auto sm:px-7 sm:text-base"
             >
               <span className="[text-wrap:balance]">Protect your next project</span>

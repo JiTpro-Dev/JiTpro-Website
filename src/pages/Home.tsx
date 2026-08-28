@@ -1,37 +1,51 @@
 import HomeHero from '../components/home/HomeHero';
-import ReactiveProjectsSection from '../components/home/ReactiveProjectsSection';
-import UrgencySection from '../components/home/UrgencySection';
-import HomeThesisStatement from '../components/home/HomeThesisStatement';
-import WhatJiTproDoesSection from '../components/home/WhatJiTproDoesSection';
+import ProblemSection from '../components/home/ProblemSection';
+import MethodSection from '../components/home/MethodSection';
 import OutcomesSection from '../components/home/OutcomesSection';
-import ProjectWarningSignsSection from '../components/home/ProjectWarningSignsSection';
 import HomeFinalCTA from '../components/home/HomeFinalCTA';
 
 /**
- * The homepage runs one argument end to end:
+ * The five-section homepage on the buyer's psychological journey, in three
+ * narrative acts (Decision Log 2026-08-26; approved plan at
+ * docs/design/homepage-five-section-compression-plan.md).
  *
- *   your project depends on work you don't control
- *   → nobody leads it, so your team chases it
- *   → the time available to fix it is quietly disappearing
- *   → by the time the field feels it, recovery may be the only option
- *   → JiTpro helps you act while there is still time
- *   → start with one project
+ *   ACT ONE — the problem, on --jp-background
+ *     01 Hero          recognition, and enough orientation to continue
+ *     02 Problem       detection and the response window: two movements,
+ *                      one causal story told once
  *
- * Sections removed in the simplified rebuild — founder, risk transfer, the
- * failure chain, the structural steel example — are preserved in
- * `src/archive/homepage/`, with the whole previous page kept at
- * `src/pages/Home.before-simplified-homepage.tsx`.
+ *   ACT TWO — the answer, on --jp-surface-light
+ *     03 Method        the operating requirement, the five-stage rail and
+ *                      figure, closing on the §17.1 terminal field band
+ *
+ *   ACT THREE — trust and action, on --jp-surface then --jp-background
+ *     04 Why JiTpro    trust, the engagement model, and what changes
+ *     05 Timing + CTA  at award, during buyout, before mobilization
+ *
+ * The buyer journey (recognition → understanding → interest → respect →
+ * trust → timing) remains the organizing doctrine; the stages share sections
+ * rather than each owning one. Each section still creates the question the
+ * next one answers, and the backgrounds carry the acts.
+ *
+ * COMPRESSION IN PROGRESS: sections 01–03 are built. Slots 04–05 are served
+ * by stand-ins until their pass is approved:
+ *   04  OutcomesSection  -> gains the trust movement, the §20.1 engagement
+ *                           model, and concrete what-changes copy
+ *   05  HomeFinalCTA     -> gains the timing markers (award, preconstruction,
+ *                           buyout, mobilization); already the 05 base
+ *
+ * Preserved states: the pre-rebuild homepage at tag
+ * `homepage-pre-buyer-journey-rebuild-2026-08-25`, and the eight-section
+ * beat-three build at tag `homepage-eight-section-beat3-2026-08-26`.
  */
 export default function Home() {
   return (
     <div className="min-h-screen bg-jp-background text-jp-text-primary">
       <HomeHero />
-      <ReactiveProjectsSection />
-      <UrgencySection />
-      <HomeThesisStatement />
-      <WhatJiTproDoesSection />
+      <ProblemSection />
+      <MethodSection />
+
       <OutcomesSection />
-      <ProjectWarningSignsSection />
       <HomeFinalCTA />
     </div>
   );

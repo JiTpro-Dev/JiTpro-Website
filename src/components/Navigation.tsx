@@ -27,17 +27,9 @@ const dropdowns = {
       { to: '/roles', label: 'Roles' },
     ],
   },
-  contact: {
-    label: 'Contact',
-    items: [
-      { to: '/contact/contractor', label: 'General Contractors' },
-      { to: '/contact/architect', label: 'Architects & Engineers' },
-      { to: '/contact/owner', label: 'Owners & Developers' },
-    ],
-  },
 };
 
-const dropdownKeys = ['howItWorks', 'why', 'about', 'contact'] as const;
+const dropdownKeys = ['howItWorks', 'why', 'about'] as const;
 type DropdownKey = typeof dropdownKeys[number];
 
 export default function Navigation() {
@@ -109,6 +101,17 @@ export default function Navigation() {
                 </div>
               );
             })}
+
+            {/* Added 2026-08-26 (contact consolidation) — token classes per
+                §45.5; the literal classes around it are pre-standard legacy. */}
+            <Link
+              to="/contact"
+              className={`text-sm font-medium transition-colors ${
+                isActive('/contact') ? 'text-jp-text-primary' : 'text-jp-text-secondary hover:text-jp-text-primary'
+              }`}
+            >
+              Contact
+            </Link>
           </div>
 
           <button
@@ -160,6 +163,16 @@ export default function Navigation() {
                 </div>
               );
             })}
+
+            <Link
+              to="/contact"
+              className={`block py-2 text-base font-medium ${
+                isActive('/contact') ? 'text-jp-text-primary' : 'text-jp-text-secondary'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Contact
+            </Link>
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Product from './pages/Product';
 import HowItWorks from './pages/HowItWorks';
@@ -8,9 +8,7 @@ import Documentation from './pages/Documentation';
 import About from './pages/About';
 import FounderStory from './pages/FounderStory';
 import Demo from './pages/Demo';
-import OwnerContact from './pages/contact/OwnerContact';
-import ContractorContact from './pages/contact/ContractorContact';
-import ArchitectContact from './pages/contact/ArchitectContact';
+import Contact from './pages/contact/Contact';
 import ThankYou from './pages/ThankYou';
 import GeneralContractors from './pages/roles/GeneralContractors';
 import GeneralContractorsConcept from './pages/roles/GeneralContractorsConcept';
@@ -80,9 +78,11 @@ function App() {
           <Route path="/documentation" element={<Documentation />} />
           <Route path="/about" element={<About />} />
           <Route path="/founder-story" element={<FounderStory />} />
-          <Route path="/contact/owner" element={<OwnerContact />} />
-          <Route path="/contact/contractor" element={<ContractorContact />} />
-          <Route path="/contact/architect" element={<ArchitectContact />} />
+          <Route path="/contact" element={<Contact />} />
+          {/* Legacy role-specific contact routes — consolidated 2026-08-26 */}
+          <Route path="/contact/contractor" element={<Navigate to="/contact" replace />} />
+          <Route path="/contact/architect" element={<Navigate to="/contact" replace />} />
+          <Route path="/contact/owner" element={<Navigate to="/contact" replace />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/demo" element={<Demo />} />

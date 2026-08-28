@@ -134,7 +134,7 @@ When a submittal cannot be approved because a design decision is pending or an o
 JiTpro gives your team the context to prioritize reviews and the documentation to protect your position. You focus on design intent. JiTpro handles the procurement timing.
           </p>
           <Link
-            to="/contact/architect"
+            to="/contact"
             className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-8 py-4 text-lg font-semibold text-slate-950 transition-colors hover:bg-amber-400"
           >
             Let's Talk Procurement

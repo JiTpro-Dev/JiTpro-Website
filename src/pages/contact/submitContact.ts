@@ -1,37 +1,27 @@
 export interface ContactFormData {
-  // Metadata
-  role: string;
+  // Visitor-selected
+  role: string; // 'contractor' | 'owner' | 'architect' | 'other'
+
+  // Hidden metadata (not visitor-entered)
   intent: string;
   source: string;
   page: string;
-  timestamp: string;
 
-  // Project info
-  hasProject: string;
-  projectLocation?: string;
-  projectType?: string;
-  estimatedValue?: string;
-  projectTimeline?: string;
-  userRole?: string;
-  procurementMethod?: string;
-
-  // Contact info
+  // Visitor-entered
   firstName: string;
   lastName: string;
   email: string;
-  phone?: string;
-  company?: string;
-
-  // Message
-  message?: string;
-
-  // Next step
-  scheduleCall: string;
+  message: string;
 }
 
 /**
  * Submits form data through the submit-contact Edge Function,
  * which validates the Turnstile token and inserts into the leads table.
+ *
+ * The payload intentionally omits the legacy qualification columns
+ * (phone, company, has_project, project_*, user_role, procurement_method,
+ * schedule_call, timestamp) — all verified nullable on the live `leads`
+ * table (2026-08-26), so omitted keys simply insert as NULL.
  */
 export async function submitContactForm(data: ContactFormData, turnstileToken: string): Promise<void> {
   const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/submit-contact`;
@@ -42,21 +32,10 @@ export async function submitContactForm(data: ContactFormData, turnstileToken: s
     intent: data.intent,
     source: data.source,
     page: data.page,
-    timestamp: data.timestamp,
-    has_project: data.hasProject,
-    project_location: data.projectLocation,
-    project_type: data.projectType,
-    estimated_value: data.estimatedValue,
-    project_timeline: data.projectTimeline,
-    user_role: data.userRole,
-    procurement_method: data.procurementMethod,
     first_name: data.firstName,
     last_name: data.lastName,
     email: data.email,
-    phone: data.phone,
-    company: data.company,
     message: data.message,
-    schedule_call: data.scheduleCall,
   };
 
   const response = await fetch(apiUrl, {

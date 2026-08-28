@@ -36,6 +36,25 @@
   --jp-text-secondary: #cbd5e1; /* body copy */
   --jp-text-muted: #94a3b8; /* captions, supporting labels, de-emphasized text */
   --jp-border: #94a3b8; /* borders, hairlines, connectors, dividers — opacity varies */
+
+  /* Light surface (§8.8, approved 2026-08-25) — the ground for sections whose
+     job is explanation, document logic, evidence, or detailed reading. The page
+     canvas stays --jp-background; this is a section surface, not a theme.
+
+     Only ONE new value exists here. The rest of the light ramp is reuse:
+       primary / load-bearing ink  var(--jp-background)      18.41:1
+       body copy, structure        var(--jp-ink-secondary)    6.92:1
+       muted labels and captions   --jp-ink-secondary / 85    4.79:1
+       hairlines and dividers      --jp-ink-secondary at low opacity
+
+     The 85% floor is normative, not stylistic: below 83% this value measures
+     under 4.5:1 on --jp-surface-light and cannot carry normal-size text.
+
+     Amber does not work here and must not be used to carry information on this
+     ground — --jp-brand-amber is 1.96:1 and --jp-brand-amber-active 1.14:1
+     against it (§8.1.1, amber on light surfaces). Hierarchy is ink. */
+  --jp-surface-light: #f1f5f9; /* role inversion of --jp-text-primary */
+  --jp-ink-secondary: #475569; /* body and structural linework on light */
 }
 
 /*
@@ -59,6 +78,9 @@
   --color-jp-text-secondary: var(--jp-text-secondary);
   --color-jp-text-muted: var(--jp-text-muted);
   --color-jp-border: var(--jp-border);
+
+  --color-jp-surface-light: var(--jp-surface-light);
+  --color-jp-ink-secondary: var(--jp-ink-secondary);
 }
 
 /*
@@ -326,6 +348,26 @@
 
 @media (prefers-reduced-motion: reduce) {
   .jp-stage-lit {
+    animation: none;
+  }
+}
+
+/* The methodology rail's copy area, revealed under the row that produced it
+   (Design System §46.8, inline copy placement). Opacity only: the area already
+   reserves the tallest stage's height, so there is nothing to slide and any
+   travel here would read as the rail moving. */
+@keyframes jp-stage-body-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.jp-stage-body-in {
+  animation: jp-stage-body-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-stage-body-in {
     animation: none;
   }
 }

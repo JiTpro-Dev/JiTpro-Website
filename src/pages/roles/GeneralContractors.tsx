@@ -75,7 +75,7 @@ export default function GeneralContractors() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              to="/contact/contractor"
+              to="/contact"
               className="inline-flex items-center justify-center gap-2 bg-amber-500 text-slate-950 px-7 py-4 text-base md:text-lg font-bold rounded-lg hover:bg-amber-400 transition-colors"
             >
               Review my next project
@@ -230,7 +230,7 @@ export default function GeneralContractors() {
               JiTpro helps the GC reveal inherited constraints, sequence procurement steps, coordinate decisions early, and keep the project from falling back into the same reactive pattern.
             </p>
             <Link
-              to="/contact/contractor"
+              to="/contact"
               className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-7 py-4 text-lg font-bold text-slate-950 hover:bg-amber-400 transition-colors"
             >
               Review my next project
@@ -253,7 +253,7 @@ export default function GeneralContractors() {
             Start with one upcoming project. Identify the constraints. Sequence the procurement steps. Give the team a plan before the pressure starts.
           </p>
           <Link
-            to="/contact/contractor"
+            to="/contact"
             className="inline-flex items-center justify-center gap-2 bg-amber-500 text-slate-950 px-8 py-4 text-lg font-bold rounded-lg hover:bg-amber-400 transition-colors"
           >
             Start with one project
