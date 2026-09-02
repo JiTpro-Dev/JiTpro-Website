@@ -98,15 +98,14 @@ Deno.serve(async (req: Request) => {
     const visitorEmailHtml = `
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td align="center">
+          <td align="left">
             <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; font-family: sans-serif; color: #333;">
               <tr>
-                <td style="padding: 20px; line-height: 1.5;">
+                <td style="padding: 5px 20px; line-height: 1.5;">
                   <p>Hi ${cleanFirstName},</p>
                   <p>Thanks for reaching out to JiTpro. Your message has been received.</p>
                   <p>I review every inquiry personally and will follow up with you directly to learn a little more about your project and what prompted you to reach out.</p>
                   <p>You don't need to do anything else in the meantime.</p>
-                  <br>
                   <p>Talk soon,</p>
                   <p><strong>Jeff Kaufman</strong><br>Founder, JiTpro</p>
                 </td>
