@@ -96,21 +96,22 @@ Deno.serve(async (req: Request) => {
     `;
 
     const visitorEmailHtml = `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; font-family: sans-serif; color: #333; background-color: #ffffff;">
+        <!-- LOGO HEADER -->
         <tr>
-          <td align="left">
-            <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; font-family: sans-serif; color: #333;">
-              <tr>
-                <td style="padding: 5px 20px; line-height: 1.5;">
-                  <p>Hi ${cleanFirstName},</p>
-                  <p>Thanks for reaching out to JiTpro. Your message has been received.</p>
-                  <p>I review every inquiry personally and will follow up with you directly to learn a little more about your project and what prompted you to reach out.</p>
-                  <p>You don't need to do anything else in the meantime.</p>
-                  <p>Talk soon,</p>
-                  <p><strong>Jeff Kaufman</strong><br>Founder, JiTpro</p>
-                </td>
-              </tr>
-            </table>
+          <td align="left" style="padding: 20px 20px 12px 20px;">
+            <img src="https://jit-pro.com/assets/logo/jitpro-logo-email.png" width="160" alt="JiTpro Logo" style="display: block; border: 0;">
+          </td>
+        </tr>
+        <!-- EMAIL BODY -->
+        <tr>
+          <td style="padding: 5px 20px; line-height: 1.5;">
+            <p style="margin: 0 0 16px 0;">Hi ${cleanFirstName},</p>
+            <p style="margin: 0 0 16px 0;">Thanks for reaching out to JiTpro. Your message has been received.</p>
+            <p style="margin: 0 0 16px 0;">I review every inquiry personally and will follow up with you directly to learn a little more about your project and what prompted you to reach out.</p>
+            <p style="margin: 0 0 16px 0;">You don't need to do anything else in the meantime.</p>
+            <p style="margin: 0 0 16px 0;">Talk soon,</p>
+            <p style="margin: 0; font-size: 16px;"><strong>Jeff Kaufman</strong><br>Founder, JiTpro</p>
           </td>
         </tr>
       </table>
