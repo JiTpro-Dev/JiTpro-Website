@@ -106,11 +106,11 @@ Deno.serve(async (req: Request) => {
         <!-- EMAIL BODY -->
         <tr>
           <td style="padding: 5px 20px; line-height: 1.5;">
-            <p style="margin: 0 0 16px 0;">Hi ${cleanFirstName},</p>
-            <p style="margin: 0 0 16px 0;">Thanks for reaching out to JiTpro. Your message has been received.</p>
-            <p style="margin: 0 0 16px 0;">I review every inquiry personally and will follow up with you directly to learn a little more about your project and what prompted you to reach out.</p>
-            <p style="margin: 0 0 16px 0;">You don't need to do anything else in the meantime.</p>
-            <p style="margin: 0 0 16px 0;">Talk soon,</p>
+            <p style="margin: 0 0 16px 0; font-size: 16px;">Hi ${cleanFirstName},</p>
+            <p style="margin: 0 0 16px 0; font-size: 16px;">Thanks for reaching out to JiTpro. I've received your message.</p>
+            <p style="margin: 0 0 16px 0; font-size: 16px;">I review every inquiry personally and will follow up with you directly to learn more about your company, your project, and where you're experiencing challenges.</p>
+            <p style="margin: 0 0 16px 0; font-size: 16px;">There's nothing else you need to do right now. We'll start with a conversation and see whether JiTpro is a good fit for your next project.</p>
+            <p style="margin: 0 0 16px 0; font-size: 16px;">Talk soon,</p>
             <p style="margin: 0; font-size: 16px;"><strong>Jeff Kaufman</strong><br>Founder, JiTpro</p>
           </td>
         </tr>
