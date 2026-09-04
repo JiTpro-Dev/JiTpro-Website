@@ -12,10 +12,10 @@ import { Link } from 'react-router-dom';
  *             person, and an unattributed first person reads as brand voice.
  *   H1        the refusal itself, centered — the page's one display moment
  *   SWOOSH    the approved hand-drawn underline, geometry unchanged
- *   COPY      the chain, in a left-set reading column: growth and complexity →
- *             more to keep ahead of the field → reaction → lost productivity
- *             and schedule → expensive recovery → lost profit. Then what
- *             JiTpro is.
+ *   COPY      the growth condition as one declarative sub-headline (the
+ *             upstream work gets harder to keep ahead of the field), then the
+ *             on-ramp into the action: JiTpro helps you stay ahead.
+ *             (Decision Log 2026-09-03, the copy replacement.)
  *   CTA       unchanged, closing on the composition's own centre axis
  *
  * THE HERO NO LONGER EXPLAINS THE MECHANISM. The paired §27.1 panels and the
@@ -28,18 +28,26 @@ import { Link } from 'react-router-dom';
  * VOICE (binding, §20.1 audience rule): the reader is a successful contractor
  * whose complexity has outgrown the systems that got them here — never a
  * victim of chaos, never disorganized. The claim is that the industry
- * TOLERATES a cost it need not, and that we refused to. "We refused" is the
- * founder's own record, not a promise about the reader's project, and it must
- * never be rewritten into one.
+ * TOLERATES a cost it need not, and that we refuse to. "We refuse" is the
+ * brand's standing position, not a promise about the reader's project, and it
+ * must never be rewritten into one; "helps you stay ahead" is assistance,
+ * never a guarantee.
  *
  * ALIGNMENT: eyebrow, H1, underline and CTA hold the centre axis (§48.6 hero
- * allowance). The two paragraphs between them are body copy and are therefore
- * LEFT-ALIGNED inside a centered column — centered body copy is prohibited
- * (§7.7) and the CTA exception's four-line cap does not reach this much copy.
- * The column is the reading surface; the axis is the composition.
+ * allowance). The supporting copy between them is centered in a 52ch column
+ * under the §7.7 centered-supporting-copy allowance as extended to the hero
+ * composition (Decision Log 2026-09-03). The column is the reading surface;
+ * the axis is the composition.
  *
- * NO HERO GRAPHIC — deliberate (2026-08-26), and now doubly so: this hero's
- * argument is a sentence, not a diagram.
+ * THE HOUSE RENDER (Decision Log 2026-09-03; §48.8 bounded exception) is
+ * background atmosphere, not a return of the informational graphic the
+ * 2026-08-26 no-hero-graphic decision removed: the brand's own amber night
+ * render emerging slowly behind the message, arguing construction context
+ * while the sentence keeps the argument. It lives in the aria-hidden lighting
+ * stack, stays subordinate to the copy (restrained opacity, masked top edge,
+ * the scrim under the copy column), and may never gain annotations, callouts,
+ * or any informational role on this surface — the no-mechanism rule above is
+ * untouched.
  */
 
 // Per-page-load flag: the hero entrance plays on a fresh load, then stays
@@ -47,6 +55,12 @@ import { Link } from 'react-router-dom';
 let heroIntroPlayed = false;
 
 const HERO_STAGGER_MS = 70;
+
+// The house begins emerging after the copy's last beat has landed (~700ms
+// into the entrance the three groups start at 0/70/140ms) and takes ~2s to
+// resolve — the message never waits for the motion (§46.2), and the reveal
+// rides the same entrance timeline as the copy (§46.3).
+const HERO_HOUSE_DELAY_MS = 400;
 
 // Very light grain over the hero lighting — enough to keep the dark surface
 // from reading as flat, not enough to notice on its own.
@@ -79,7 +93,47 @@ export default function HomeHero() {
           has no visible seam. The warm key at the top right keeps the dark
           field from reading as flat around the centered headline. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        {/* The house render (§48.8 bounded exception, Decision Log
+            2026-09-03). Bottom-anchored and full-bleed so it reads as the
+            hero's own environment rather than a placed image; the top-edge
+            alpha mask dissolves it into the dark field well below the section
+            top, and `lighten` — contained by the section's isolate — melts
+            the render's night sky into --jp-background so only the lit
+            architecture lifts out of the page's own dark. The crop is
+            per-breakpoint: the wide composition at desktop, and at narrow
+            widths a taller slice keyed to the render's central illuminated
+            mass, so the house stays recognizable rather than becoming an
+            accidental sliver of the desktop frame. Resting opacity is the
+            restrained ceiling that keeps the copy in charge (§48.7); the
+            reveal releases to it (only a `from` frame), so reduced motion
+            shows this exact state, static. */}
+        <div
+          className={`absolute inset-x-0 bottom-0 h-[52%] opacity-55 mix-blend-lighten sm:h-[62%] lg:h-[86%] ${animateHero ? 'hero-house-reveal' : ''}`}
+          style={
+            {
+              maskImage: 'linear-gradient(180deg, transparent 0%, black 44%)',
+              WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, black 44%)',
+              '--hero-delay': `${HERO_HOUSE_DELAY_MS}ms`,
+            } as CSSProperties
+          }
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}assets/hero/house-render-1600.webp`}
+            srcSet={`${import.meta.env.BASE_URL}assets/hero/house-render-800.webp 800w, ${import.meta.env.BASE_URL}assets/hero/house-render-1600.webp 1600w`}
+            sizes="100vw"
+            width={1600}
+            height={954}
+            alt=""
+            loading="eager"
+            decoding="async"
+            className="h-full w-full object-cover object-[42%_68%] lg:object-[50%_58%]"
+          />
+        </div>
         <div className="absolute inset-0 bg-[radial-gradient(52%_48%_at_84%_2%,color-mix(in_oklab,var(--jp-brand-amber)_13%,transparent),transparent_68%)]" />
+        {/* The scrim that keeps the centered copy column and the CTA on a
+            dark ground over the house — the render's strongest details stay
+            on the flanks. */}
+        <div className="absolute inset-0 bg-[radial-gradient(58%_56%_at_50%_46%,color-mix(in_oklab,var(--jp-background)_74%,transparent),transparent_100%)]" />
         <div
           className="absolute inset-0 opacity-[0.05]"
           style={{ backgroundImage: `url("${HERO_NOISE}")` }}
@@ -109,7 +163,7 @@ export default function HomeHero() {
           </p>
 
           <h1 className="mx-auto mt-6 max-w-[30ch] text-center font-heading text-[2.125rem] font-extrabold leading-[1.06] tracking-[-0.025em] text-balance text-jp-text-primary sm:mt-7 sm:text-[3rem] lg:text-[3.5rem] lg:leading-[1.04] xl:text-[4rem] xl:tracking-[-0.03em]">
-            We refuse to accept that preventable chaos is just part of construction.
+            We refuse to accept that chaos is just part of construction.
           </h1>
 
           {/* The approved hand-drawn underline (Decision Log 2026-08-27, as
@@ -147,31 +201,27 @@ export default function HomeHero() {
           </svg>
         </div>
 
-        {/* THE QUESTION, then the response. Centered body copy in a 52ch
-            column, held on the hero's own axis (§7.7 centered supporting copy,
-            extended to the hero composition — Decision Log 2026-09-03): the
-            the question the growth condition raises, then what JiTpro is.
+        {/* THE SUB-HEADLINE, then the on-ramp. Centered supporting copy in a
+            52ch column, held on the hero's own axis (§7.7 centered supporting
+            copy, extended to the hero composition — Decision Log 2026-09-03):
+            the growth condition as one declarative sentence, then the on-ramp
+            into the action.
 
-            The second paragraph is the turn: standing (the founder's record,
-            never a claim about the reader), then what the reader can regain,
-            then JiTpro's role — structure the team uses, never above it or in
-            place of it (§20.1, engagement model). The mechanism belongs to
-            the Method section. */}
+            The on-ramp holds body size in semibold primary ink — the same
+            emphasis idiom this column has always used — so it bridges into
+            the CTA while staying subordinate to the H1 by size and position
+            (Decision Log 2026-09-03, the copy replacement). Its emphasis is
+            ink, not amber: the surface's amber count stays at three (§48.7).
+            The mechanism belongs to the Method section. */}
         <div
           className={`mx-auto mt-12 max-w-[52ch] space-y-6 text-center text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-14 sm:text-[1.125rem] lg:text-[1.1875rem] ${rise(1).className}`}
           style={rise(1).style}
         >
           <p>
-            As your company has grown, has it become harder to establish the early accountability needed to protect your profit?
+            As construction companies grow, keeping every decision, approval, product, material, and service ahead of the field gets harder.
           </p>
-          <p>
-            <strong className="font-semibold text-jp-text-primary">
-              We&rsquo;ve stood in your boots.
-            </strong>{' '}
-            You can build accountability early, set expectations, and stop preventable problems from consuming your profit.{' '}
-            <strong className="font-semibold text-jp-text-primary">
-              JiTpro gives you the structure to do it.
-            </strong>
+          <p className="font-semibold text-jp-text-primary">
+            JiTpro helps you stay ahead.
           </p>
         </div>
 
@@ -211,7 +261,7 @@ export default function HomeHero() {
           >
             <ChevronRight size={15} aria-hidden="true" className="shrink-0" />
             <span className="underline decoration-1 underline-offset-4">
-              Or click here to learn more
+              Or click here to learn more.
             </span>
           </Link>
         </div>
