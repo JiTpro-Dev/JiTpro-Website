@@ -183,7 +183,7 @@ export default function ProblemSection() {
                 The problem does not go away. Your options do.
               </h4>
               <p className="mt-4 text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:text-[1.125rem] lg:text-[1.1875rem]">
-                The longer an issue stays unresolved, the fewer good choices the team has left. What could have been handled early with a calm decision eventually becomes expediting, substitution, resequencing, escalation&mdash;or a problem the field has no choice but to absorb.
+                The longer an issue stays unresolved, the fewer good choices the team has left. What could have been handled early with a calm decision eventually becomes expediting, substitution, resequencing, escalation, or a problem the field has no choice but to absorb.
               </p>
             </div>
           </div>

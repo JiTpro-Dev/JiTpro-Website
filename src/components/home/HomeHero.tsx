@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 /**
@@ -109,7 +109,7 @@ export default function HomeHero() {
           </p>
 
           <h1 className="mx-auto mt-6 max-w-[30ch] text-center font-heading text-[2.125rem] font-extrabold leading-[1.06] tracking-[-0.025em] text-balance text-jp-text-primary sm:mt-7 sm:text-[3rem] lg:text-[3.5rem] lg:leading-[1.04] xl:text-[4rem] xl:tracking-[-0.03em]">
-            We refused to accept that chaos is just part of construction.
+            We refuse to accept that preventable chaos is just part of construction.
           </h1>
 
           {/* The approved hand-drawn underline (Decision Log 2026-08-27, as
@@ -147,36 +147,43 @@ export default function HomeHero() {
           </svg>
         </div>
 
-        {/* THE CHAIN, then the response. Left-set body copy in a centered
-            column (§7.7): growth and complexity, the fall behind, the reaction,
-            and what reaction costs — productivity, schedule, recovery, profit.
-            The full enumeration "decisions, approvals, products, materials,
-            and services" is load-bearing and must not be narrowed to long-lead
-            work (§20.1).
+        {/* THE QUESTION, then the response. Centered body copy in a 52ch
+            column, held on the hero's own axis (§7.7 centered supporting copy,
+            extended to the hero composition — Decision Log 2026-09-03): the
+            the question the growth condition raises, then what JiTpro is.
 
-            The second paragraph is the turn: what JiTpro IS, in one sentence,
-            and how it works with the team — never above it or in place of it
-            (§20.1, engagement model). It names the consultancy-first program
-            and stops. The mechanism belongs to the Method section. */}
+            The second paragraph is the turn: standing (the founder's record,
+            never a claim about the reader), then what the reader can regain,
+            then JiTpro's role — structure the team uses, never above it or in
+            place of it (§20.1, engagement model). The mechanism belongs to
+            the Method section. */}
         <div
-          className={`mx-auto mt-12 max-w-[58ch] space-y-6 text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-14 sm:text-[1.125rem] lg:text-[1.1875rem] ${rise(1).className}`}
+          className={`mx-auto mt-12 max-w-[52ch] space-y-6 text-center text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mt-14 sm:text-[1.125rem] lg:text-[1.1875rem] ${rise(1).className}`}
           style={rise(1).style}
         >
           <p>
-            As construction companies grow, keeping every decision, approval, product, material, and service ahead of the field gets harder. When that work slips through the cracks, the project turns reactive. Productivity suffers, schedules slip, recovery gets expensive, and profit disappears.
+            As your company has grown, has it become harder to establish the early accountability needed to protect your profit?
           </p>
           <p>
             <strong className="font-semibold text-jp-text-primary">
-              JiTpro is a consultancy-first program for growth-stage general contractors.
+              We&rsquo;ve stood in your boots.
             </strong>{' '}
-            We work alongside your team, on one project, to ensure the field has what it needs&mdash;Just-in-Time.
+            You can build accountability early, set expectations, and stop preventable problems from consuming your profit.{' '}
+            <strong className="font-semibold text-jp-text-primary">
+              JiTpro gives you the structure to do it.
+            </strong>
           </p>
         </div>
 
         {/* The action closes on the axis the composition opened on. Button
-            treatment, destination and label are unchanged. */}
+            treatment, destination and label are unchanged.
+
+            The primary action and its quiet alternative are ONE beat, not two
+            (§46.3): they stack on the same centre axis and rise together, so
+            the reader reads a single decision with two doors rather than two
+            competing arrivals. */}
         <div
-          className={`mt-10 flex justify-center sm:mt-12 ${rise(2).className}`}
+          className={`mt-10 flex flex-col items-center sm:mt-12 ${rise(2).className}`}
           style={rise(2).style}
         >
           <Link
@@ -186,6 +193,26 @@ export default function HomeHero() {
             <span className="[text-wrap:balance]">Start with one project</span>
             <ArrowRight size={17} aria-hidden="true" className="hidden shrink-0 sm:block" />
           </Link>
+
+          {/* The secondary action, quiet by §48.1: type and a small indicator,
+              no fill, no border, and no amber at rest — the primary keeps the
+              surface's amber. The underline is what marks it clickable; the
+              single hover gesture is the colour change to
+              --jp-brand-amber-active (§8.1.1, §48.1).
+
+              DESTINATION DELIBERATELY UNASSIGNED: it is a type="button" with
+              no handler, route or href until the behaviour is decided. It is
+              focusable and announced as a control, and it does nothing when
+              pressed. Wire it before this ships. */}
+          <button
+            type="button"
+            className="mt-5 inline-flex items-center gap-2 rounded px-3 py-3 text-[0.9375rem] text-jp-text-secondary transition-colors duration-200 ease-out hover:text-jp-brand-amber-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-jp-text-primary motion-reduce:transition-none sm:mt-6"
+          >
+            <ChevronRight size={15} aria-hidden="true" className="shrink-0" />
+            <span className="underline decoration-1 underline-offset-4">
+              Or click here to learn more
+            </span>
+          </button>
         </div>
       </div>
     </section>

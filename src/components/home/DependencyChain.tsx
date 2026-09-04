@@ -70,7 +70,7 @@ const LINKS: Link[] = [
   },
   {
     label: 'Windows arrive late or wrong',
-    note: 'The field is ready, but the windows are missing—or they do not coordinate with what was built.',
+    note: 'The field is ready. The windows are missing, or they do not coordinate with what was built.',
   },
 ];
 

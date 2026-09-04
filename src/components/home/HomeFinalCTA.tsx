@@ -35,7 +35,7 @@ export default function HomeFinalCTA() {
           </p>
 
           <p className="mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-jp-text-secondary sm:mx-auto sm:max-w-[52ch] sm:text-[1.125rem] lg:text-[1.1875rem]">
-            Start with the next project. JiTpro works alongside your team to identify the critical work, clarify who owns the next move, and put required dates around the decisions and commitments the project depends on—while there is still time to act.
+            Start with the next project. JiTpro works alongside your team to identify the critical work, clarify who owns the next move, and put required dates around the decisions and commitments the project depends on. There is still time to act.
           </p>
 
           <div className="mt-10 sm:mt-12">
