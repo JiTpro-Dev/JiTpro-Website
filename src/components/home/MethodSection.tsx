@@ -147,7 +147,7 @@ export default function MethodSection() {
             Everything upstream is planned and managed backward from the point it is required onsite.
           </p>
           <p className="mt-8 max-w-[52ch] text-[1.0625rem] leading-[1.7] text-jp-ink-secondary sm:text-[1.125rem] lg:col-span-5 lg:mt-2">
-            Five stages, each producing what the next one needs. By the last, every product, material and service the project depends on is tied to the date the field needs it&mdash;and every decision, approval and commitment that gets it there carries an owner and a date.
+            Five stages, each producing what the next one needs. By the last, every product, material and service the project depends on is tied to the date the field needs it. Every decision, approval and commitment that gets it there carries an owner and a date.
           </p>
         </div>
 
@@ -304,7 +304,7 @@ export default function MethodSection() {
             The only sentence that reaches back to the response window — it
             says WHEN the method acts. */}
         <p className="mt-16 max-w-[30ch] border-t border-jp-ink-secondary/20 pt-10 font-heading text-[1.5rem] font-bold leading-[1.2] tracking-[-0.02em] text-balance text-jp-background sm:max-w-none sm:text-[1.75rem] lg:mt-20 lg:pt-12 lg:text-[2rem]">
-          JiTpro builds accountability early&mdash;while there is still time to protect the field.
+          JiTpro builds accountability while there is still time to protect the field.
         </p>
 
         {/* The §17.1 terminal field band: the field condition the section has
@@ -324,7 +324,7 @@ export default function MethodSection() {
             className="aspect-[2/1] w-full object-cover object-[50%_55%] sm:aspect-[21/9] lg:aspect-video"
           />
           <figcaption className="mt-4 font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-jp-ink-secondary/85">
-            Structural steel erection on an active jobsite &mdash; the field everything upstream is planned backward from.
+            Structural steel erection on an active jobsite: the field everything upstream is planned backward from.
           </figcaption>
         </figure>
       </div>

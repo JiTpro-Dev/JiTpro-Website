@@ -14,7 +14,7 @@ const OUTCOMES = [
   },
   {
     title: 'Margin is protected',
-    body: 'Fewer preventable failures reach construction—reducing disruption, recovery work, lost productivity, and the cost of getting the schedule back.',
+    body: 'Fewer preventable failures reach construction. That reduces disruption, recovery work, lost productivity, and the cost of getting the schedule back.',
   },
 ];
 
