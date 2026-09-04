@@ -1,6 +1,6 @@
 # JiTpro Design System v1.0
 
-Status: Framework (Sections 1-44) + approved implementation standards (Part II, Sections 45-49)
+Status: Framework (Sections 1-44) + approved implementation standards (Part II, Sections 45-50)
 Owner: Jeff Kaufman
 Last updated: 2026-08-06
 Applies to: Marketing Website, SaaS Application, Internal Dashboard, Printed Reports, Documentation
@@ -23,7 +23,7 @@ Normative language:
 
 Document structure:
 - Sections 1-44 define design philosophy and capture where each decision must live. They are preserved unchanged.
-- Part II (Sections 45-49) defines the approved implementation standards derived from production work on the marketing website. Where Part II speaks, it is binding.
+- Part II (Sections 45-50) defines the approved implementation standards derived from production work on the marketing website. Where Part II speaks, it is binding.
 - A TODO that Part II has since answered is superseded by Part II. The original TODO text is retained for history, not as an open question.
 - This document is now the single source of truth for colors, design tokens, typography, spacing, animation, visual hierarchy, component styling, interaction states, and accessibility expectations. Implementation conforms to this document; this document does not describe implementation after the fact.
 
@@ -50,6 +50,8 @@ TODO:
 
 | Date | Decision | Scope | Owner | Source/Rationale |
 | --- | --- | --- | --- | --- |
+| 2026-09-03 | **The in-page guide gains a persistent rail presentation at the wide breakpoint, and Section 50.9 is added to define it.** On `/learn-more` the guide moves from a one-time block in the document flow to a `position: sticky` rail beside the content, so a reader deep in section 08 can reach section 02 without scrolling back. **Section 50.4's prohibition on "a sticky rail that follows the reader" is withdrawn and replaced** by 50.9, which bounds it: sticky rather than fixed, inside the guide's own container so it cannot reach the header or the footer, one presentation rendered at a time, and an active state carried on three non-colour axes. **Section 50.7 is amended**: where the rail is present the surface acts are carried by the content column rather than the full page width, because a rail cannot cross from the dark ground to the light one and stay readable. Below the breakpoint the existing in-flow guide and the full-bleed acts are unchanged. Page copy, section order, and CTAs are untouched. | Marketing website | Jeff Kaufman | Sections 25, 46.5, 48.7, 48.9, 49.1, 50.4, 50.7. Direction and the reference behaviour supplied by Jeff Kaufman 2026-09-03 (structural reference only; no branding, copy, dimensions, or visual identity borrowed). Supersedes the 50.4 bullet approved earlier the same day. |
+| 2026-09-03 | **The long-form explainer page is approved as a page type, and Section 50 is added to define it.** The homepage secondary action *Or click here to learn more*, which shipped with no destination, is wired to a new route `/learn-more`. The page carries the buyer from recognition to a reasonable first step across twelve numbered sections on the homepage's own three-act surface rhythm. Section 50 defines the page type, its numbered section headers, its in-page guide, its paired-condition comparison, its backward dependency sequence, and the conditions under which more than one primary action may appear on a single page. **Section 48.1's one-primary-action rule is amended, scoped to this page type only** (Section 50.5): a long-form page is a sequence of surfaces, not one surface, so a primary action MAY repeat, subject to the limits recorded there. Section 20.1's retired vocabulary and claim-strength rules are extended to this page (Section 50.2). Em dashes are prohibited in this page type's customer-facing copy (Section 50.7). | Marketing website | Jeff Kaufman | Sections 7.7, 20.1, 46.3, 46.5, 48.1, 48.6, 48.7, 48.9, 48.10, 49.1. Page architecture and copy direction supplied by Jeff Kaufman 2026-09-03. Structural reference (architecture only, no branding, copy, or visual identity borrowed): a third-party long-form offer page supplied with the direction. |
 | 2026-09-03 | **The hero copy is revised again, superseding the same-day full recopy (copy only; no structural or token change).** H1 becomes *We refuse to accept that preventable chaos is just part of construction.*, retiring *We refuse to accept that someone else’s chaos should cost you profit.* The question becomes *As your company has grown, has it become harder to establish the early accountability needed to protect your profit?*, and the closing paragraph's middle sentence becomes *You can build accountability early, set expectations, and stop preventable problems from consuming your profit.* **The amber body line *Expensive problems destroy profit.* is REMOVED**, returning the hero to three amber elements — eyebrow, underline, CTA — and restoring the §48.7 count recorded 2026-08-27; the same-day amendment that raised it to four is withdrawn. Present tense, the centered composition, the 52ch measure, both bolded phrases, the primary CTA and the new secondary action are unchanged. | Marketing website | Jeff Kaufman | Sections 20.1, 7.7, 48.6, 48.7, 49.1. Direction and all copy supplied by Jeff Kaufman 2026-09-03 as a complete hero specification; the amber line's absence from that specification is read as its removal. **§20.1 tension resolved in the document's favour:** *preventable chaos* returns the refusal to a condition of the industry rather than a consequence to the reader, so the 2026-08-27 guardrail — the reader is never a victim of chaos, and the H1 is the founder's position rather than a claim about the reader's project — holds again without the narrowing recorded earlier today. Present tense is retained. With *profit* now named in both the question and the closing paragraph, a third statement of it in amber was restating rather than landing. |
 | 2026-09-03 | **A quiet secondary action is added beneath the hero's primary CTA, and the site's text-link action treatment is specified (§48.1, §2276 button variants).** Copy: *Or click here to learn more*, stacked directly under *Start with one project* on the same centre axis. **The approved treatment:** a lucide `ChevronRight` at 15px, then the label with `underline decoration-1 underline-offset-4`; `--jp-text-secondary` at rest, **no fill, no border, and no amber at rest**, so the surface's amber budget is unchanged and the primary keeps it. The single hover gesture is the colour change to `--jp-brand-amber-active` (§8.1.1) — no underline change, no movement, no icon motion, per §48.1's one-gesture rule. Focus takes the standard `--jp-text-primary` outline at offset 2. It joins the primary's existing entrance beat rather than taking its own (§46.3): the CTA wrapper becomes `flex-col items-center` and the two actions rise as one idea. Spacing `mt-5 sm:mt-6`; hit area `px-3 py-3` (≈46px tall). **Destination deliberately unassigned** — shipped as a `type="button"` with no handler, route or href pending a separate decision. Nothing else in the hero changed. | Marketing website | Jeff Kaufman | Sections 48.1, 8.1.1, 46.3, 34, 36, 49.1. Direction supplied by Jeff Kaufman 2026-09-03; a reference image was cited for hierarchy only, explicitly not for colour or styling. §48.1 already permits a quiet text secondary action but had never specified one, so the underline weight, offset, indicator and hover were recorded here rather than settled inside the component (§49). A second amber control was never an option — §48.1 prohibits one — and amber at rest would have made the alternative compete with the recommended action. **Open TODO, not resolved by this entry:** Sections 34 and 36 still define no minimum touch target, so the hit area follows the existing quiet-control precedent in `BackwardPlannedTimeline` rather than a stated standard; the minimum still needs to be decided. |
 | 2026-09-03 | **The hero is recopied end to end, superseding the 2026-08-27 refusal-hero copy and both same-day hero entries (copy only; no structural or token change).** The approved surface: eyebrow *Built by contractors* (unchanged) — H1 *We refuse to accept that someone else’s chaos should cost you profit.*, retiring *We refused to accept that chaos is just part of construction.* — question *As your company has grown, has it become harder to establish the early accountability that keeps project problems from becoming expensive?* — amber line *Expensive problems destroy profit.*, which gains a full stop and **`font-semibold`** — and the closing paragraph *__We’ve stood in your boots.__ You can establish early accountability, set expectations, and stop preventable problems from consuming your profit. __JiTpro gives you the structure to do it.__* Centering, the 52ch measure, registers, spacing, the underline, the lighting stack, the entrance stagger, the CTA and the §48.7 four-element amber count are all unchanged. **§20.1 is amended in two respects, deliberately:** the H1 moves from past tense (the founder's record) to **present tense** as a standing position, and the refusal now names a consequence **to the reader** (*cost you profit*) rather than a condition of the industry. **The 2026-08-27 guardrail is narrowed accordingly:** the reader is still never the source of the chaos — the H1 attributes it to *someone else* and the reader is the party who should not pay for it — but the prohibition on the hero making a claim about the reader's project no longer holds in absolute form, and *early accountability* replaces *control* as the hero's word for what the reader can establish. | Marketing website | Jeff Kaufman | Sections 20.1, 7.7, 48.6, 48.7, 49.1. Direction and all copy supplied by Jeff Kaufman 2026-09-03. Past tense made the refusal a piece of company history the reader had no stake in; present tense makes it a position the reader is being invited to share, and naming profit in the H1 puts the stake in the first line rather than three paragraphs down. *Early accountability* is the same idea the Method section already teaches (§46.8), so the hero and the method now use one vocabulary instead of two. **Guardrail that survives unchanged:** §20.1's audience rule — a successful contractor outgrowing their systems, never a dysfunctional one — and the question is framed as growth (*As your company has grown*) precisely to hold it. |
@@ -3601,3 +3603,126 @@ A proposal to add or change a standard should state:
 - what production code becomes non-conforming as a result.
 
 Approval is recorded in the Decision Log with a date, owner, and rationale.
+
+---
+
+# 50. Long-Form Explainer Page Standard
+
+Status: APPROVED (2026-09-03). Direction supplied by Jeff Kaufman. Scope: long-form explainer pages on the marketing website. The homepage, role pages, the investor sub-site, and application surfaces are governed by their own decisions and are not changed by this section.
+
+Purpose: Define the one approved page type for a reader who has recognized the problem on the homepage but is not yet ready to act. Its job is a single continuous argument, read top to bottom, that moves the reader from *this sounds like my problem* to *starting with one project feels reasonable*.
+
+First approved use: `/learn-more`, the destination of the homepage secondary action *Or click here to learn more* (Decision Log 2026-09-03).
+
+## 50.1 What the page type is
+
+- A long-form explainer page is **one argument in numbered parts**, not a collection of marketing modules. Every section exists to make the next one readable, and a section that could be removed without breaking the sequence does not belong.
+- It is **the buyer's page, not the company's**. It explains the reader's condition, the operating philosophy, the method, what the method produces, what changes, who it is for, and how to begin. It is not a founder biography, a feature grid, a pricing page, or a press surface.
+- It MUST read as a continuation of the surface that sent the reader there. Voice, palette, type registers, section spacing, and the shared left edge are the homepage's, unchanged.
+- **At most one such page exists per audience.** A second long-form explainer competing with the first is a content decision requiring its own approval, not a variation of this standard.
+
+## 50.2 Copy governance
+
+- Section 20.1 applies to this page in full: the retired vocabulary, the operating requirement and its prohibited formulations, the engagement model, the long-lead rules, and the qualitative-audience rule. A page that avoids the retired words by becoming abstract has failed the rule, not satisfied it.
+- The reader is the growth-stage general contractor of Section 20.1. **External parties MUST NOT be written as adversaries.** Owners, architects, engineers, consultants, vendors, and subcontractors are participants whose decisions the project depends on. The failure the page names is an unmanaged dependency, never an uncooperative person.
+- **Qualification copy MUST disqualify by posture, never by character.** A statement of who the page is not for describes how a company chooses to operate; it MUST NOT insult the reader who recognizes themselves in it.
+- Claim strength is governed by Section 20.1: more time, more visibility, more accountability, and fewer preventable field failures. Perfect schedules, guaranteed delivery, and quantified improvement are prohibited.
+
+## 50.3 Numbered sections
+
+- Sections are numbered from `00` and the numbering is continuous. The ordinal takes the Section 48.9 convention without exception: the data face, small, increased tracking, `--jp-brand-amber` at a restrained opacity on dark surfaces and `--jp-ink-secondary` at or above the Section 8.8 floor on the approved light surface.
+- **The ordinal MUST NOT be the only expression of sequence** (Section 48.9). The argument reads in order without the numbers; they are wayfinding for a reader who scrolls back.
+- Each numbered section carries **one `h2`**, its own primary statement (Section 7.7). Sections do not compete: a section heading is never set at the hero's register.
+- Each numbered section MUST expose a stable `id` matching its ordinal slug, because the guide addresses it and a reader may arrive on a deep link.
+
+## 50.4 The in-page guide
+
+The guide is the page's table of contents, and it is a component role with one convention.
+
+- It sits **near the top**, after the opening and the summary, and appears **exactly once** in any given layout. A guide repeated mid-page is not this component and is not approved. **Amended 2026-09-03:** at the wide breakpoint the guide MAY instead be presented as a persistent rail beside the content, under Section 50.9. The two presentations are the same component at two breakpoints, and exactly one of them is rendered at a time.
+- It is an **ordered list of in-page anchors**, each showing the section ordinal and the section title. Nothing else: no descriptions, no icons, no progress state, no counts.
+- Links MUST be real anchors (`href="#..."`), so they are keyboard reachable, focusable, announced as links, and openable in a new tab. A click handler on a non-link element is prohibited.
+- Anchor movement uses the document's existing smooth scrolling and MUST resolve instantly under `prefers-reduced-motion: reduce` (Section 46.5).
+- The guide is structure, not accent. Its ordinals follow Section 48.9; the titles are ordinary interface type. Hover and focus are a single restrained gesture (Section 48.1).
+- An opening action that sends the reader to the guide is permitted and takes the quiet secondary treatment (Section 48.1). It is a navigation aid, never a second primary action.
+
+## 50.5 Repeated primary actions - amendment to Section 48.1
+
+Section 48.1 requires one primary action per surface. **A long-form explainer page is a sequence of surfaces rather than a single surface**, and the amendment is scoped to this page type only.
+
+- A primary action MAY appear more than once on the page. **Exactly one primary action may appear per section**, and no two may be visible in the same viewport at any supported width.
+- Every primary action on the page MUST carry **the same label and the same destination**. Two different primary offers on one page is a positioning decision, not a layout one, and is not approved here.
+- Three is the working ceiling: the opening, the section that lowers the perceived commitment, and the close. A CTA between every section is prohibited (Section 47.4).
+- Secondary actions remain quiet under Section 48.1 and MUST NOT accumulate. The page carries at most one secondary action.
+
+## 50.6 Approved figures for this page type
+
+Two comparison figures and one sequence are approved. They are the page's only figure types, and no other is to be introduced inside a component (Section 49.1).
+
+**The paired-condition comparison.** Two columns stating the same subject twice: the condition as it is, and the condition under the discipline the page argues for. It is approved for *what you do not control / what you can control* and for *without early control / with early control*.
+
+- The two columns are **typographically equal**. The difference is the words, not the weight. Making the preferred column heavier, brighter, or amber turns an argument into an advertisement.
+- **Colour MUST NOT carry the contrast** (Section 8.7, Section 47.3). Semantic tokens do not apply: neither column is a success state or an error state. Structure is hairline and ink.
+- The pairing MUST survive a single-column stack. On narrow widths the two halves of a pair stay adjacent so the reader never reads one column of the comparison alone.
+- Each column carries a short standing label so the reader always knows which side they are reading.
+
+**The backward dependency sequence.** An ordered figure running from the field need date back through the prerequisites that make it possible.
+
+- It reads **backward by construction**: the field date is stated first and every subsequent step is earlier. A figure that runs forward and is labelled backward is a defect.
+- It is a diagram of the method and carries **no dates, no durations, and no counts**, so its provenance is methodological and it needs no provenance line (Section 48.10).
+- It MUST be legible without motion (Section 46.2). Any animation derives from one shared state (Section 46.3), and reduced motion renders the resolved figure (Section 46.5).
+
+**Product interface captures.** Where the page shows what the method produces, captures follow Section 48.10 in full, including the provenance line placed with the figure. One provenance line MAY serve a group of captures presented as one figure. Fabricated screenshots remain prohibited (Section 48.8); a stage with no capture shows nothing rather than borrowing a neighbour's (Section 46.8.1).
+
+## 50.7 Surfaces, rhythm, and typography
+
+- The page uses the homepage's surface acts: `--jp-background` for the problem, the approved `--jp-surface-light` for the method, and `--jp-surface` for the bands that summarize or qualify. Alternating surface for variety is prohibited (Section 48.6); each change MUST mark a change of act.
+- **Where the persistent rail is present (Section 50.9), the acts are carried by the content column rather than by the full page width.** The rail keeps one constant ground for its whole length, and the act surfaces become full-height panels in the column beside it. This is required, not preferred: a rail that crossed from `--jp-background` into `--jp-surface-light` would be unreadable for the length of the crossing, and no per-scroll recolouring of the rail is approved to rescue it. Below that breakpoint the acts remain full-bleed page surfaces, unchanged.
+- On `--jp-surface-light` hierarchy is ink and amber carries no information (Section 8.8).
+- The shared left edge holds for every section. The Section 48.6 centered exceptions are available to the page opening and the closing CTA only, and are not repeated between them.
+- Amber is spent per section, not per page: Section 48.7 applies to each surface independently, and a page-long amber rhythm of accented headings is a defect.
+- **Em dashes MUST NOT appear in customer-facing copy on this page type**, including as `&mdash;`. Sentences are separated by full stops, colons, or parentheses.
+- Body copy holds the Section 7.7 measure. A long page makes an over-wide measure worse, not more acceptable.
+
+## 50.8 Accessibility
+
+- Heading levels are continuous: one `h1` for the page, `h2` per numbered section, `h3` below it. Levels MUST NOT be chosen for size.
+- Every anchor target MUST be a landmark or a heading a reader lands on with context, never a bare offset element.
+- Guide links, in-section actions, and the primary actions MUST all be reachable and visibly focused with a keyboard (Section 48.1).
+- All motion on the page respects `prefers-reduced-motion` (Section 46.5).
+
+## 50.9 The persistent guide rail
+
+Status: APPROVED (2026-09-03). Scope: the wide breakpoint of a long-form explainer page. Supersedes the Section 50.4 bullet prohibiting a rail, approved earlier the same day.
+
+A guide that has scrolled out of the viewport is a table of contents the reader cannot use. At widths that can afford the column, the guide is therefore presented as a rail beside the content instead of a block above it.
+
+**Sticky, never fixed.**
+
+- The rail uses `position: sticky` inside the guide's own container. It MUST NOT use `position: fixed`.
+- This is not a style preference. A sticky element is bounded by its container, so it enters when the guide area does, releases when the guide area ends, and **cannot reach the site header or the footer, or float over anything outside the guide**. A fixed element has to be taught all of that with measurements that go stale.
+- The rail's sticky offset MUST clear the site header, and anchor destinations MUST carry a `scroll-margin-top` that clears it too. Both are derived from the header's actual height, never from a guessed number.
+
+**One presentation at a time.**
+
+- The rail and the in-flow guide are the same component at two breakpoints. Exactly one is rendered at any width; both existing in the layout simultaneously is a defect.
+- Below the breakpoint the in-flow guide of Section 50.4 is unchanged. The rail model MUST NOT be forced onto narrow widths.
+- The breakpoint is chosen by what the CONTENT column can still carry, not by a device name. A rail that squeezes the content it indexes has taken space from the thing the page exists to deliver.
+
+**The page scrolls, not a pane.**
+
+- The document scrolls normally. The content column MUST NOT become an independently scrolling region: two scrolling panes make a marketing page feel like an application window.
+- The rail's own list MAY scroll, and only when the viewport is genuinely too short to hold it. At ordinary desktop heights the whole guide MUST be visible without scrolling inside it.
+
+**The active state.**
+
+- The rail MUST indicate which section the reader is in, and the indication MUST update both on click and on ordinary scrolling.
+- **It MUST NOT be carried by colour alone** (Section 8.7). At least two non-colour axes are required. The approved treatment is three: the ordinal steps from its resting opacity to full `--jp-brand-amber`, the title steps up in weight and ink, and a hairline indicator is drawn against the active item. It MUST also be exposed to assistive technology, which is the fourth axis and the only one that does not depend on sight.
+- The indicator continues the accent already running through the guide's ordinals (Section 48.9). It does not open a new one, and the rail MUST NOT accumulate further amber (Section 48.7).
+- Detection MUST be passive and cheap. `IntersectionObserver` is the approved mechanism; a scroll handler that runs layout work on every frame is not, and no library is to be added for this.
+
+**Accessibility.**
+
+- The rail is a `<nav>` landmark containing an ordered list of real anchors, exactly as Section 50.4 requires. Keyboard reach, focus visibility, and open-in-new-tab all survive.
+- Scrolling is the document's own smooth behaviour, which MUST resolve instantly under `prefers-reduced-motion: reduce` (Section 46.5).
+- The rail MUST NOT obscure content at raised zoom levels. Because it is sticky inside a column rather than fixed over the page, it reflows with everything else; a rail that overlaps body text at 200% zoom is a defect.

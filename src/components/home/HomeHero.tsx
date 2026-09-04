@@ -200,19 +200,20 @@ export default function HomeHero() {
               single hover gesture is the colour change to
               --jp-brand-amber-active (§8.1.1, §48.1).
 
-              DESTINATION DELIBERATELY UNASSIGNED: it is a type="button" with
-              no handler, route or href until the behaviour is decided. It is
-              focusable and announced as a control, and it does nothing when
-              pressed. Wire it before this ships. */}
-          <button
-            type="button"
+              DESTINATION WIRED 2026-09-03: /learn-more, the long-form
+              explainer page (Design System §50). It was a handler-less
+              type="button" until that page existed. The label is fixed —
+              the page it opens is written as the continuation of this hero,
+              and the two were approved together. */}
+          <Link
+            to="/learn-more"
             className="mt-5 inline-flex items-center gap-2 rounded px-3 py-3 text-[0.9375rem] text-jp-text-secondary transition-colors duration-200 ease-out hover:text-jp-brand-amber-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-jp-text-primary motion-reduce:transition-none sm:mt-6"
           >
             <ChevronRight size={15} aria-hidden="true" className="shrink-0" />
             <span className="underline decoration-1 underline-offset-4">
               Or click here to learn more
             </span>
-          </button>
+          </Link>
         </div>
       </div>
     </section>

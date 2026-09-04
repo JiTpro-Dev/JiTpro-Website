@@ -220,6 +220,15 @@
     scroll-behavior: smooth;
   }
 
+  /* Anchor navigation is motion, and a reader who has asked for less of it
+     gets an instant jump instead (Design System §46.5, §50.9). Without this
+     the smooth scroll above overrides the preference site-wide. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply antialiased;
     font-feature-settings: "kern" 1, "liga" 1;

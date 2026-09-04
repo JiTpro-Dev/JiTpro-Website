@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
+import LearnMore from './pages/LearnMore';
 import Product from './pages/Product';
 import HowItWorks from './pages/HowItWorks';
 import Roles from './pages/Roles';
@@ -64,6 +65,8 @@ function App() {
         {/* Main site */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          {/* The homepage secondary action's destination (Design System §50). */}
+          <Route path="/learn-more" element={<LearnMore />} />
           <Route path="/product" element={<Product />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/roles" element={<Roles />} />
