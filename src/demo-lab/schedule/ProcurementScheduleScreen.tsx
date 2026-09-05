@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight, Download, Filter, Plus, X } from 'lucide-react';
 import JiTproShell from '../../components/demo/shell/JiTproShell';
 import DemoStatusBadge from '../../components/demo/primitives/DemoStatusBadge';
@@ -29,8 +29,43 @@ const PAD_R = 26;
 const CONTENT_W = CANVAS_MAIN_W - PAD_L - PAD_R; // 945
 const LEFT_W = 226;
 const TIMELINE_W = CONTENT_W - LEFT_W; // 719
-const ROW_H = 63;
+/**
+ * ROW HEIGHT IS FITTED, NOT FIXED.
+ *
+ * 63px is the authored row - the height the reference screen was measured at,
+ * and what the schedule uses whenever the space is there. It is a MAXIMUM now
+ * rather than a constant: the canvas is a fixed 1086px box with
+ * `overflow: hidden`, so twelve rows at 63 fitted and fifteen did not. The
+ * bottom rows were not scrolled off, they were clipped away by the canvas.
+ *
+ * The fix deliberately does NOT scale the screen down. Scaling would shrink
+ * the type along with the rows, and the whole reason this canvas is real DOM
+ * rather than a bitmap is that its text stays sharp and readable. Instead only
+ * the row pitch gives, and only as far as it must: the rows are the one part
+ * of this layout with slack in them, because the bar is 18px inside a 63px
+ * band and the label block needs about 43.
+ *
+ * 48px is the floor. Below that the two-line package name plus the Required
+ * On-Site line stop fitting, and the point of compressing rows is to keep
+ * those readable - a row too short to show what it is would defeat the fit it
+ * was bought with. If a project ever has more rows than 48px each can hold,
+ * the answer is pagination, which the screen already has, not a smaller floor.
+ */
+const ROW_H_MAX = 63;
+const ROW_H_MIN = 48;
 const HEADER_H = 30;
+
+/**
+ * Procurement items on the fictional project as a whole.
+ *
+ * The fixture authors fifteen of them in full. This number exists so the board
+ * reads as a slice of a real project rather than as the whole of a small one -
+ * a house of this scope carries far more than fifteen procurement items, and a
+ * screen claiming otherwise would misrepresent the size of the problem JiTpro
+ * is for. The rendered count stays derived from the fixture, so the two can
+ * never drift into disagreeing about how many rows are actually on screen.
+ */
+const TOTAL_PROCUREMENT_ITEMS = 153;
 
 const ZOOMS: Zoom[] = ['quarters', 'months', 'weeks', 'days'];
 const ZOOM_LABEL: Record<Zoom, string> = {
@@ -58,6 +93,79 @@ export default function ProcurementScheduleScreen() {
     [selectedItemId],
   );
   const current = item.steps.find((s) => s.id === item.currentStepId);
+
+  /**
+   * THE FIT PASS.
+   *
+   * Available height is measured, never assumed. The two refs bracket the
+   * schedule: everything above it and everything below it are whatever the
+   * layout actually produced, so a page header that wraps to a second line or
+   * a legend that wraps to a second row is accounted for without a single
+   * hard-coded offset.
+   *
+   *   available = canvas height - space above the schedule - space below it
+   *
+   * `offsetTop`/`offsetHeight` are read rather than `getBoundingClientRect()`
+   * because these are LAYOUT pixels. The canvas is scaled by a CSS transform
+   * in every presentation context, and a client rect would report the scaled
+   * size - so the fit would come out different in the embedded preview, the
+   * lightbox and the lab, which is exactly wrong. The canvas is a fixed
+   * 1086px box; the fit must be identical at every scale.
+   *
+   * `gapBelow` is measured from the schedule's own bottom, so it is the
+   * distance from the schedule to the end of the page and does NOT move when
+   * the row height changes. That is what makes this converge in one pass
+   * instead of oscillating: nothing the effect writes can alter what it reads.
+   */
+  const ganttRef = useRef<HTMLDivElement>(null);
+  const footRef = useRef<HTMLDivElement>(null);
+  const [rowHeight, setRowHeight] = useState(ROW_H_MAX);
+
+  useLayoutEffect(() => {
+    const gantt = ganttRef.current;
+    const foot = footRef.current;
+    if (!gantt || !foot) return;
+
+    const measure = () => {
+      const canvas = gantt.offsetParent as HTMLElement | null;
+      if (!canvas) return;
+      const above = gantt.offsetTop;
+      const below = foot.offsetTop + foot.offsetHeight - (gantt.offsetTop + gantt.offsetHeight);
+      // The schedule box's own chrome: the period header band and its border.
+      const forRows = canvas.clientHeight - above - below - HEADER_H - 2;
+      const fitted = Math.floor(forRows / SCHEDULE_ITEMS.length);
+      setRowHeight(Math.max(ROW_H_MIN, Math.min(ROW_H_MAX, fitted)));
+    };
+    measure();
+
+    // The canvas is fixed at 1086px today, but it is the wrapper's job to say
+    // so, not this screen's. Observing it means a canvas that ever changes
+    // size - or content above the schedule that reflows - refits by itself.
+    const ro = new ResizeObserver(measure);
+    const canvas = gantt.offsetParent as HTMLElement | null;
+    if (canvas) ro.observe(canvas);
+    ro.observe(foot);
+    return () => ro.disconnect();
+  }, []);
+
+  /**
+   * The attention summary. Derived, so it cannot disagree with the chips on
+   * the rows: both read the same `health` value off the same records.
+   *
+   * At Risk and Impacted are reported SEPARATELY rather than as one combined
+   * attention count, because they call for different actions - an at-risk
+   * package needs watching, an impacted one needs a decision about a field
+   * date that is not going to be met.
+   */
+  const healthCounts = useMemo(() => {
+    let atRisk = 0;
+    let impacted = 0;
+    for (const it of SCHEDULE_ITEMS) {
+      if (it.health === 'at-risk') atRisk++;
+      else if (it.health === 'impacted') impacted++;
+    }
+    return { atRisk, impacted };
+  }, []);
 
   /** Families actually present, so the legend cannot list what is not drawn. */
   const usedFamilies = useMemo(() => {
@@ -284,6 +392,23 @@ export default function ProcurementScheduleScreen() {
             })}
           </div>
 
+          {/* Sits in existing toolbar whitespace rather than in the page
+              header, so nothing above the schedule had to be rearranged. */}
+          {(healthCounts.atRisk > 0 || healthCounts.impacted > 0) && (
+            <span className="flex items-center" style={{ marginLeft: 18, gap: 10 }}>
+              {healthCounts.impacted > 0 && (
+                <span className="jpd-health jpd-health--impacted">
+                  {healthCounts.impacted} IMPACTED
+                </span>
+              )}
+              {healthCounts.atRisk > 0 && (
+                <span className="jpd-health jpd-health--at-risk">
+                  {healthCounts.atRisk} AT RISK
+                </span>
+              )}
+            </span>
+          )}
+
           <div className="ml-auto flex items-center" style={{ gap: 9 }}>
             <Btn>Today</Btn>
             <Btn square>
@@ -302,6 +427,7 @@ export default function ProcurementScheduleScreen() {
 
         {/* -------------------------------------------------------- GANTT */}
         <div
+          ref={ganttRef}
           style={{
             marginTop: 14,
             border: '1px solid var(--jpd-border)',
@@ -314,7 +440,7 @@ export default function ProcurementScheduleScreen() {
             zoom={zoom}
             viewportWidth={TIMELINE_W}
             leftWidth={LEFT_W}
-            rowHeight={ROW_H}
+            rowHeight={rowHeight}
             headerHeight={HEADER_H}
             selectedItemId={selectedItemId}
             onSelectItem={setSelectedItemId}
@@ -367,12 +493,49 @@ export default function ProcurementScheduleScreen() {
               Diamond = milestone (point in time)
             </span>
           </span>
+
+          {/* Every mark drawn on this timeline earns a legend entry, for the
+              same reason each family does: a mark the legend does not explain
+              is a mark the viewer has to guess at. */}
+          <span className="flex items-center" style={{ gap: 6, marginLeft: 4 }}>
+            <span
+              style={{
+                width: 10,
+                height: 9,
+                clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
+                background: 'var(--jpd-warn-dot)',
+              }}
+            />
+            <span style={{ fontSize: 10.5, color: 'var(--jpd-text-body)' }}>
+              Triangle = issue affecting the procurement path
+            </span>
+          </span>
+
+          <span className="flex items-center" style={{ gap: 6, marginLeft: 4 }}>
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                transform: 'rotate(45deg)',
+                border: '1.5px solid var(--jpd-commitment)',
+                background: 'var(--jpd-surface)',
+                borderRadius: 1,
+              }}
+            />
+            <span style={{ fontSize: 10.5, color: 'var(--jpd-text-body)' }}>
+              Raised diamond = external commitment owed to the project
+            </span>
+          </span>
         </div>
 
         {/* ---------------------------------------------------- PAGINATION */}
-        <div className="flex items-center" style={{ marginTop: 12, paddingLeft: 2, height: 34 }}>
+        <div
+          ref={footRef}
+          className="flex items-center"
+          style={{ marginTop: 12, paddingLeft: 2, height: 34 }}
+        >
           <span style={{ fontSize: 12.5 }}>
-            Showing all {SCHEDULE_ITEMS.length} procurement items
+            Showing {SCHEDULE_ITEMS.length} of {TOTAL_PROCUREMENT_ITEMS} procurement items
           </span>
           <span className="ml-auto flex items-center" style={{ gap: 12 }}>
             <span style={{ fontSize: 12.5 }}>Rows per page:</span>

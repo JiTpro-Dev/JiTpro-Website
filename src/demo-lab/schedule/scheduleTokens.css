@@ -27,6 +27,15 @@
   --jpd-phase-logistics: #0d9488;    /* it is moving                    */
   --jpd-phase-required: #0f172a;     /* the field needs it              */
 
+  /* EXTERNAL COMMITMENTS. Deliberately outside the nine family hues: a
+     commitment is not a kind of procurement work, it is what the work waits
+     on, so it must not read as a tenth family. Rose sits clear of every
+     family hue and of the green/amber the status badges use. The late tone is
+     the one place red is correct here - a commitment agreed beyond the date
+     the schedule needs IS the problem this feature exists to surface. */
+  --jpd-commitment: #be185d;
+  --jpd-commitment-late: #b91c1c;
+
   --jpd-grid: #f1f2f4;
   --jpd-grid-strong: #e6e8ea;
   --jpd-today: #94a3b8;
@@ -125,6 +134,156 @@
   border-radius: 1px;
 }
 
+/* ------------------------------------------------ external commitment marker
+   A RAISED, HOLLOW diamond. Three things separate it from the solid family
+   diamond that marks a phase handoff, and they are redundant on purpose:
+   it sits above the bar rather than on it, it is drawn as an outline rather
+   than a solid, and it carries the commitment hue rather than a family hue.
+   Filled only when the commitment has actually been provided - so an
+   unresolved dependency reads as an open shape, which is what it is. */
+.jpd-commit {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.jpd-commit--interactive {
+  cursor: pointer;
+}
+
+.jpd-commit--interactive:focus-visible {
+  outline: 2px solid var(--jpd-text);
+  outline-offset: 1px;
+  border-radius: 3px;
+}
+
+.jpd-commit__mark {
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  border-radius: 1px;
+  border: 1.5px solid var(--jpd-commitment);
+  background: var(--jpd-surface);
+}
+
+/* Provided. The shape closes when the obligation is met. */
+.jpd-commit--complete .jpd-commit__mark {
+  background: var(--jpd-commitment);
+  opacity: 0.42;
+}
+
+/* Agreed, and the agreement holds. */
+.jpd-commit--committed .jpd-commit__mark {
+  background: var(--jpd-commitment);
+}
+
+/* Agreed for a date the schedule cannot absorb. The one marker on this
+   timeline that is allowed to look like a problem, because it is one. */
+.jpd-commit--beyond-required .jpd-commit__mark {
+  border-color: var(--jpd-commitment-late);
+  background: var(--jpd-commitment-late);
+}
+
+.jpd-commit--interactive:hover .jpd-commit__mark {
+  filter: brightness(1.12);
+}
+
+.jpd-commit--active .jpd-commit__mark {
+  box-shadow:
+    0 0 0 1.5px #ffffff,
+    0 0 0 3px var(--jpd-text);
+}
+
+.jpd-commit--active.jpd-commit--complete .jpd-commit__mark {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------ issue / risk marker
+   A small filled TRIANGLE, below the bar. Deliberately a different shape,
+   a different side of the bar and a different colour family from the
+   commitment diamond above it: a diamond is something the package is waiting
+   for, a triangle is something that has gone wrong. Tone follows package
+   health, so the mark itself says whether the field date still holds. */
+.jpd-issue {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.jpd-issue--interactive {
+  cursor: pointer;
+}
+
+.jpd-issue--interactive:focus-visible {
+  outline: 2px solid var(--jpd-text);
+  outline-offset: 1px;
+  border-radius: 3px;
+}
+
+.jpd-issue__mark {
+  width: 10px;
+  height: 9px;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+/* Exposure recorded, field date still protected. */
+.jpd-issue--at-risk .jpd-issue__mark {
+  background: var(--jpd-warn-dot);
+}
+
+/* The forecast no longer satisfies the requirement. */
+.jpd-issue--impacted .jpd-issue__mark {
+  background: var(--jpd-error-fg);
+}
+
+.jpd-issue--interactive:hover .jpd-issue__mark {
+  filter: brightness(1.12);
+}
+
+/* A triangle cannot take a ring cleanly, so the active state is a halo behind
+   the mark rather than an outline around it. */
+.jpd-issue--active {
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1.5px #ffffff,
+    0 0 0 3px var(--jpd-text);
+}
+
+/* -------------------------------------------------- package health chip
+   Sized against the 8px REQ ON-SITE label it sits beside, so it reads as part
+   of that line rather than as a second heading competing with the item name. */
+.jpd-health {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.jpd-health--at-risk {
+  background: var(--jpd-warn-bg);
+  border-color: var(--jpd-warn-border);
+  color: var(--jpd-warn-fg);
+}
+
+.jpd-health--impacted {
+  background: var(--jpd-error-bg);
+  border-color: var(--jpd-error-border);
+  color: var(--jpd-error-fg);
+}
+
 /* --------------------------------------------------------- inspection popover
    Rendered OUTSIDE the scaled canvas via a portal, so its typography is never
    multiplied by the canvas transform. */
@@ -159,6 +318,15 @@
   font-weight: 700;
   line-height: 20px;
   margin-top: 3px;
+}
+
+.jpd-pop__badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 5px;
+  border: 1px solid;
 }
 
 .jpd-pop__ball {
@@ -212,6 +380,29 @@
   font-size: 13px;
   font-weight: 600;
   margin-top: 3px;
+}
+
+/* A labelled comparison line - required vs committed vs completed. Kept as one
+   rule so every such pair in every card body lines up identically. */
+.jpd-pop__cmp {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.jpd-pop__cmp > span:first-child {
+  color: var(--jpd-text-secondary);
+}
+
+.jpd-pop__cmp > span:last-child {
+  font-weight: 600;
+}
+
+.jpd-pop__cmp--bad > span:last-child {
+  color: var(--jpd-commitment-late);
 }
 
 .jpd-pop__foot {
