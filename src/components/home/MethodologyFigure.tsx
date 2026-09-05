@@ -1,4 +1,6 @@
 import { METHODOLOGY_STAGES } from '../../content/methodologyStages';
+import DemoScreenFrame from '../demo/DemoScreenFrame';
+import { hasDemoScreen } from '../demo/registry';
 
 /**
  * The methodology section's persistent visual column (Design System §46.8.1).
@@ -24,10 +26,16 @@ import { METHODOLOGY_STAGES } from '../../content/methodologyStages';
  * footnote, or softened, and this content MUST NEVER be described as a customer
  * project, a case study, or an actual engagement.
  *
- * The remaining §46.8.1 constraints continue to bind:
- *   - No second interaction: no controls, no hover states, no focus targets, no
- *     lightbox or zoom. The rail is the section's only interactive element,
- *     which is why this takes `activeIndex` and owns no state.
+ * MIGRATION IN PROGRESS. A stage with a canonical HTML/React screen renders it
+ * through DemoScreenFrame; the rest keep their raster until they are built. The
+ * registry is the switch, so finishing a screen is one line there.
+ *
+ * The remaining §46.8.1 constraints continue to bind, with ONE amendment:
+ *   - The enlarge affordance is now permitted (Decision Log 2026-09-04),
+ *     superseding the no-second-interaction rule for this figure. It is a
+ *     non-committing control: it does not change the selected stage, so the
+ *     rail remains the only thing that drives the section. Nothing else here
+ *     gains a control, a hover state, or a focus target.
  *   - Legible without motion. The state is a pure function of `activeIndex`;
  *     selecting 03 directly from 01 resolves correctly with nothing animating
  *     in between.
@@ -81,6 +89,15 @@ export default function MethodologyFigure({ activeIndex }: MethodologyFigureProp
             );
           }
 
+          /* Migrated stage: the canonical React screen, scaled to the column. */
+          if (hasDemoScreen(stage.id)) {
+            return (
+              <div key={stage.id} aria-hidden={!isActive} className={shared}>
+                <DemoScreenFrame screen={stage.id} label={stage.demo.alt} />
+              </div>
+            );
+          }
+
           return (
             <img
               key={stage.id}
@@ -101,7 +118,13 @@ export default function MethodologyFigure({ activeIndex }: MethodologyFigureProp
 
       {/* §48.10: one quiet sentence, with the figure, never a disclaimer block.
           Sentence case — this is a sentence, and uppercase is for short labels
-          only (§7.7). */}
+          only (§7.7).
+
+          It applies to the live DOM screens exactly as it did to the rasters
+          they are replacing, and more pointedly: a real, operable-looking
+          application screen makes a stronger implicit claim about its contents
+          than a picture of one does. The sentence stays with the figure for as
+          long as the figure shows constructed project data. */}
       <figcaption className="mt-4 max-w-[62ch] text-[0.875rem] leading-[1.6] text-jp-ink-secondary/85">
         Representative JiTpro screens. The interface is real; the project, quantities, parties and dates are constructed to show realistic conditions and are not taken from an actual engagement.
       </figcaption>

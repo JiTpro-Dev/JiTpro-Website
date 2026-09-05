@@ -1,5 +1,7 @@
 import { METHODOLOGY_STAGES } from '../../content/methodologyStages';
 import { PRODUCED_OUTPUTS, SECTION } from '../../content/learnMore';
+import DemoScreenFrame from '../demo/DemoScreenFrame';
+import { hasDemoScreen } from '../demo/registry';
 import { NumberedSection, SectionHeader } from './LearnMoreShell';
 import { TONE } from './tone';
 
@@ -9,10 +11,14 @@ const ASSET_BASE = `${import.meta.env.BASE_URL}assets/methodology`;
 /**
  * 05 - What JiTpro produces.
  *
- * NOT A FEATURE GRID (Sections 47.2, 48.2). Each entry answers the reader's
- * three questions in the order they ask them: what am I looking at, what does
- * it expose that I could not see before, and why would I care. A tile with an
+ * NOT A FEATURE GRID (Sections 47.2, 48.2). Each entry leads with the
+ * QUESTION the output answers, in the form the reader would ask it, and then
+ * answers two more: what am I looking at, and why would I care. A tile with an
  * icon and a noun answers none of them.
+ *
+ * THE QUESTION-FIRST FORM IS FROM 2026-09-04, replacing a what/exposes/matters
+ * triple in which the first two lines were doing similar work. Three lines, one
+ * of which is now the reader's own question, is shorter and lands harder.
  *
  * THE NAMES AND THE SCREENS ARE DOCTRINE. Titles come from
  * src/content/methodologyStages.ts and are rendered unchanged; the captures
@@ -47,7 +53,7 @@ export default function ProducesSection() {
         heading="What your team actually ends up holding."
         lede={
           <p>
-            None of this is a report that gets read once. Each one is a working record your team uses to decide what to chase this week and what can wait, and each one exists because the one before it produced what it needs.
+            JiTpro turns the things your project is depending on into things your team can see and manage. None of these is a report that gets read once. Each is a working record used to decide what to chase this week and what can wait, and each exists because the one before it produced what it needs.
           </p>
         }
       />
@@ -58,8 +64,8 @@ export default function ProducesSection() {
           if (!output) return null;
 
           const lines = [
+            { label: 'The question it answers', body: output.question },
             { label: 'What it is', body: output.what },
-            { label: 'What it exposes', body: output.exposes },
             { label: 'Why it matters', body: output.matters },
           ];
 
@@ -89,10 +95,15 @@ export default function ProducesSection() {
                 </dl>
               </div>
 
-              {stage.demo ? (
-                /* One 4:3 frame, the ratio the captures were taken at, never
-                   re-cropped: a cropped interface capture is a different claim
-                   about what the screen contains (Section 46.8.1). */
+              {stage.demo && hasDemoScreen(stage.id) ? (
+                /* Migrated: the canonical React screen, scaled to the column.
+                   Sharp at any size, and openable. */
+                <div className={`mt-8 overflow-hidden border lg:mt-0 ${tone.rule}`}>
+                  <DemoScreenFrame screen={stage.id} label={stage.demo.alt} />
+                </div>
+              ) : stage.demo ? (
+                /* Not yet migrated: the raster, in the same 4:3 frame, never
+                   re-cropped (Section 46.8.1). */
                 <div
                   className={`mt-8 overflow-hidden border bg-jp-ink-secondary/[0.04] lg:mt-0 ${tone.rule}`}
                 >
@@ -114,11 +125,6 @@ export default function ProducesSection() {
         })}
       </ol>
 
-      {/* Section 48.10: one quiet sentence, with the figures, never a
-          disclaimer block. */}
-      <p className={`mt-8 max-w-[62ch] text-[0.875rem] leading-[1.6] ${tone.muted}`}>
-        Representative JiTpro screens. The interface is real; the project, quantities, parties and dates are constructed to show realistic conditions and are not taken from an actual engagement.
-      </p>
     </NumberedSection>
   );
 }
