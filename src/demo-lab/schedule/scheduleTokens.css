@@ -1,0 +1,241 @@
+/* --------------------------------------------------------------------------
+   PROCUREMENT SCHEDULE - phase-family tokens. PROTOTYPE.
+
+   Nine families, defined once. The legend, the bars and the milestone markers
+   all read these same tokens, which is what makes the legend structurally
+   incapable of drifting away from the schedule the way the original raster's
+   legend did (it labelled Fabrication as "Installation" and Shipping as
+   "Closeout").
+
+   FAMILY IS NOT STATUS. These hues classify the KIND of work. How the work is
+   performing is carried separately by the status badge. A Review phase is
+   review-violet whether it is complete, on track or at risk.
+
+   The palette is deliberately not the reference's matplotlib tab10 set: that
+   is a charting palette whose red and green read as failure and success, which
+   would collide with status the moment the two appear together.
+   -------------------------------------------------------------------------- */
+
+.jpd {
+  --jpd-phase-buyout: #64748b;       /* GC scoping and award            */
+  --jpd-phase-coordination: #0891b2; /* getting the requirements right  */
+  --jpd-phase-preparation: #1d4ed8;  /* producing the submittal         */
+  --jpd-phase-review: #7c3aed;       /* design/agency reviewing it      */
+  --jpd-phase-revision: #d97706;     /* vendor correcting it            */
+  --jpd-phase-approval: #059669;     /* the gate is cleared             */
+  --jpd-phase-production: #9a3412;   /* it is being made                */
+  --jpd-phase-logistics: #0d9488;    /* it is moving                    */
+  --jpd-phase-required: #0f172a;     /* the field needs it              */
+
+  --jpd-grid: #f1f2f4;
+  --jpd-grid-strong: #e6e8ea;
+  --jpd-today: #94a3b8;
+}
+
+/* Complete work is drawn at reduced weight so the eye lands on what is still
+   ahead. Status still reads from the badge; this is reinforcement, not the
+   only signal. */
+.jpd-step--complete {
+  opacity: 0.42;
+}
+
+.jpd-step {
+  position: absolute;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.jpd-step--interactive {
+  cursor: pointer;
+}
+
+.jpd-step--interactive:focus-visible {
+  outline: 2px solid var(--jpd-text);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.jpd-step__bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 18px;
+  border-radius: 2px;
+}
+
+.jpd-step__diamond {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 1px;
+}
+
+.jpd-step--interactive:hover .jpd-step__bar,
+.jpd-step--interactive:focus-visible .jpd-step__bar {
+  filter: brightness(1.12);
+}
+
+/* THE SEGMENT BEING READ.
+   A double ring - white inner, ink outer - so it reads on any family colour
+   and against both the white row and the tinted selected row. Deliberately a
+   ring rather than a size or colour change: the bar must not grow, the family
+   hue must not shift, and the schedule must not reflow. Keyboard focus gets
+   the same treatment because it sets the same active state. */
+.jpd-step--active .jpd-step__bar,
+.jpd-step--active .jpd-step__diamond,
+.jpd-step--active .jpd-ros__cap {
+  box-shadow:
+    0 0 0 1.5px #ffffff,
+    0 0 0 3px var(--jpd-text);
+}
+
+.jpd-step--active .jpd-step__bar {
+  filter: brightness(1.08);
+}
+
+/* An active segment is never dimmed, even when complete, or the ring would
+   read as faint on exactly the row the visitor is reading. */
+.jpd-step--active.jpd-step--complete {
+  opacity: 1;
+}
+
+/* The terminal Required On-Site marker. Distinct from an ordinary milestone,
+   but deliberately not loud enough to dominate the row. */
+/* Sized against the 34px hit area, not the full row. */
+.jpd-ros {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 2px;
+  background: var(--jpd-phase-required);
+  border-radius: 1px;
+}
+
+.jpd-ros__cap {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--jpd-phase-required);
+  border-radius: 1px;
+}
+
+/* --------------------------------------------------------- inspection popover
+   Rendered OUTSIDE the scaled canvas via a portal, so its typography is never
+   multiplied by the canvas transform. */
+.jpd-pop {
+  position: fixed;
+  z-index: 60;
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #e2e4e7;
+  border-radius: 8px;
+  box-shadow: 0 12px 34px -10px rgba(2, 6, 23, 0.35);
+  font-family: 'Inter Tight', Inter, system-ui, sans-serif;
+  color: #0a0a0a;
+  padding: 14px 15px 13px;
+  /* The hover card must never become a pointer obstacle: the visitor has to be
+     able to keep moving along the bar underneath it. The card is purely
+     informational, so it takes no pointer events at all. If it ever gains
+     interactive controls, that mode will need its own pinned treatment. */
+  pointer-events: none;
+}
+
+.jpd-pop__kicker {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.jpd-pop__title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  margin-top: 3px;
+}
+
+.jpd-pop__ball {
+  margin-top: 11px;
+  padding: 9px 10px;
+  border-radius: 6px;
+  background: #fdf6e7;
+  border: 1px solid #f6dfae;
+}
+
+.jpd-pop__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #8a6d3b;
+}
+
+.jpd-pop__person {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.jpd-pop__org {
+  font-size: 12px;
+  color: #4b5563;
+  margin-top: 1px;
+}
+
+.jpd-pop__section {
+  margin-top: 11px;
+}
+
+.jpd-pop__slabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.jpd-pop__text {
+  font-size: 12.5px;
+  line-height: 17px;
+  margin-top: 3px;
+  color: #1f2937;
+}
+
+.jpd-pop__dates {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.jpd-pop__foot {
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid #eceef0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.jpd-pop__ros {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/* Screen-reader route to the same records (governing instruction Section 59).
+   Focusable, so the schedule is operable without a pointer. */
+.jpd-sr-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
