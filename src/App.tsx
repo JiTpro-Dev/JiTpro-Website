@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import LearnMore from './pages/LearnMore';
@@ -34,6 +35,14 @@ import AdminApproved from './pages/AdminApproved';
 import BrokenBeforeJobStarts from './pages/BrokenBeforeJobStarts';
 import TheRealProcurementTimeline from './pages/TheRealProcurementTimeline';
 import ProcurementSchedule from './pages/ProcurementSchedule';
+
+/* PROTOTYPE LAB - dev-only. Lazy so its CSS (which pulls a Google font) lands
+   in a separate chunk instead of the production stylesheet. The route below is
+   also DEV-gated, so the chunk is never requested in a production build. */
+const DemoLab = lazy(() => import('./demo-lab/DemoLab'));
+const TableFidelityTest = lazy(() => import('./demo-lab/TableFidelityTest'));
+const ScheduleLab = lazy(() => import('./demo-lab/schedule/ScheduleLab'));
+
 import HomepageConcept from './pages/HomepageConcept';
 import CompanyProjectHealth from './pages/CompanyProjectHealth';
 
@@ -61,6 +70,23 @@ function App() {
           <Route path="appendix" element={<InvestorAppendix />} />
           <Route path="deck" element={<InvestorDeckPage />} />
         </Route>
+
+        {/* PROTOTYPE LAB - dev-only, never built into production.
+            Temporary visual-validation routes for the JiTpro demo UI
+            migration. `import.meta.env.DEV` is statically replaced at build
+            time, so Rollup drops both these routes and the lazily-imported
+            lab bundle from the production output entirely. Not in navigation,
+            not in the sitemap, not linked from any surface. */}
+        {import.meta.env.DEV && (
+          <>
+            <Route path="/demo-lab/commitment-register-a" element={<Suspense fallback={null}><DemoLab initial="a" /></Suspense>} />
+            <Route path="/demo-lab/commitment-register-b" element={<Suspense fallback={null}><DemoLab initial="b" /></Suspense>} />
+            <Route path="/demo-lab/commitment-register-compare" element={<Suspense fallback={null}><DemoLab initial="overlay-a" /></Suspense>} />
+            <Route path="/demo-lab/table-test" element={<Suspense fallback={null}><TableFidelityTest /></Suspense>} />
+            <Route path="/demo-lab/procurement-schedule" element={<Suspense fallback={null}><ScheduleLab initial="inspect" /></Suspense>} />
+            <Route path="/demo-lab/procurement-schedule-compare" element={<Suspense fallback={null}><ScheduleLab initial="compare" /></Suspense>} />
+          </>
+        )}
 
         {/* Main site */}
         <Route element={<MainLayout />}>
