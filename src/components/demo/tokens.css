@@ -1,0 +1,187 @@
+/* --------------------------------------------------------------------------
+   JiTpro DEMO UI TOKENS - the bounded `--jpd-*` product-demo palette.
+
+   Approved as a scoped namespace (Visual Fidelity Implementation Standard,
+   Part 2 Section 16) precisely BECAUSE it is not the marketing palette: these
+   are a different product's application colours - greens, ambers, reds and
+   neutral surfaces that the `--jp-*` system was never designed to express.
+   Forcing the marketing tokens to carry application semantics, or scattering
+   raw hex through the demo components, are the two failure modes this file
+   exists to prevent (Design System Sections 45, 8.9).
+
+   Every value is measured from `assets-src/methodology/commitment-capture.png`
+   and approved as Visual Master v1. Scoped under `.jpd` so nothing here can
+   reach a marketing surface.
+
+   TYPEFACE: Inter Tight, already loaded site-wide by `src/index.css`. Weights
+   400 and 500 were added to that import for this system.
+   -------------------------------------------------------------------------- */
+
+.jpd {
+  /* Neutrals (measured from the reference render) */
+  --jpd-nav-bg-start: #071420;
+  --jpd-nav-bg-end: #02101b;
+  --jpd-nav-active-bg: #172530;
+  --jpd-nav-divider: #1f2d37;
+  --jpd-nav-text: #ffffff;
+  --jpd-nav-text-dim: #eceded;
+
+  --jpd-surface: #fefefe;
+  --jpd-surface-sunken: #fbfbfb;
+  --jpd-surface-header: #f7f7f7;
+
+  --jpd-border: #edeff1;
+  --jpd-border-subtle: #f0f0f1;
+  --jpd-divider: #f0f0f0;
+
+  --jpd-text: #0a0a0a;
+  --jpd-text-strong: #232424;
+  --jpd-text-body: #313134;
+  --jpd-text-secondary: #41454f;
+  --jpd-text-muted: #86868b;
+
+  /* Status. Semantically distinct by design. */
+  --jpd-ok-bg: #e9f6e4;
+  --jpd-ok-border: #cfe8c6;
+  --jpd-ok-fg: #217a3c;
+  --jpd-warn-bg: #fef2e1;
+  --jpd-warn-border: #fadfba;
+  --jpd-warn-fg: #b7791f;
+  --jpd-warn-dot: #f59e0b;
+  --jpd-error-bg: #fee8e8;
+  --jpd-error-border: #f8cdcd;
+  --jpd-error-fg: #d13438;
+  --jpd-neutral-bg: #f1f1f1;
+
+  /* RECOMMENDED FACE: Inter Tight. Chosen on rendered result, not forensic
+     glyph identification (which had pointed at Urbanist). It is a neutral
+     grotesque rather than a geometric display face, which is what the
+     reference actually reads as in a dense table; it is the narrowest neutral
+     candidate, so it matches the reference's set width far better than Inter
+     (6.7% mean vs 11.9%); and it is already loaded by the production site, so
+     it adds no new dependency. Override per-element with --jpd-font. */
+  font-family: 'Inter Tight', Inter, system-ui, sans-serif;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+/* The approved Visual Master v1 accents. These are the FOUR measured oranges
+   from the reference render, preserved as measured rather than normalised onto
+   `--jp-brand-amber`. Prototype B tested consolidating the three interface
+   oranges onto #f59e0b; that refinement was not adopted for v1. */
+.jpd {
+  --jpd-accent: #f7a612;        /* sidebar active indicator + icon */
+  --jpd-action: #f98201;        /* primary buttons */
+  --jpd-action-strong: #f57f01; /* panel primary button (measured darker) */
+  --jpd-row-bar: #fe8611;       /* selected-row left bar */
+  --jpd-row-tint: #fdf6e7;
+  --jpd-page-current: #f7a612;
+
+  letter-spacing: -0.006em;
+}
+
+.jpd .jpd-tight { letter-spacing: -0.022em; }
+.jpd-tight-sm { letter-spacing: inherit; }
+
+/* The fixed application canvas. NEVER responsive: presentation scaling belongs
+   to DemoScreenFrame, which scales this whole canvas as one unit. */
+.jpd-canvas {
+  width: 1448px;
+  height: 1086px;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  background: var(--jpd-surface);
+  color: var(--jpd-text);
+}
+
+/* --------------------------------------------------------------------------
+   Expanded view. The dialog is the backdrop, so a click landing on the element
+   itself (rather than on `__inner`) counts as "outside".
+   -------------------------------------------------------------------------- */
+.jpd-lightbox {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.jpd-lightbox::backdrop {
+  background: color-mix(in oklab, #020617 88%, transparent);
+}
+
+.jpd-lightbox__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 2vw, 28px);
+}
+
+.jpd-lightbox__viewport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+/* Desktop fits both axes, so centre it. Below 768px the canvas is fitted to
+   height and panned horizontally, which requires start alignment. */
+@media (min-width: 768px) {
+  .jpd-lightbox__viewport {
+    justify-content: center;
+    overflow-x: hidden;
+  }
+}
+
+.jpd-lightbox__close {
+  position: absolute;
+  top: clamp(8px, 1.6vw, 20px);
+  right: clamp(8px, 1.6vw, 20px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklab, #f1f5f9 24%, transparent);
+  background: color-mix(in oklab, #020617 70%, transparent);
+  color: #f1f5f9;
+  cursor: pointer;
+  transition: background-color 150ms ease-out;
+}
+
+.jpd-lightbox__close:hover {
+  background: color-mix(in oklab, #020617 88%, transparent);
+}
+
+.jpd-lightbox__close:focus-visible {
+  outline: 2px solid #f1f5f9;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jpd-lightbox__close {
+    transition: none;
+  }
+}
+
+/* The embedded trigger's focus ring must not be clipped by the frame. */
+.jpd-frame:focus-visible {
+  outline: 2px solid var(--jp-text-primary, #f1f5f9);
+  outline-offset: 3px;
+}
